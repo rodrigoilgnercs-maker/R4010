@@ -160,9 +160,9 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
 <body>
 
 <div class="header">
-  <div class="header-logo"><svg viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zm-7 3l5 4-5 4-5-4 5-4zm0 10l-5-4h10l-5 4z"/></svg></div>
+  <div class="header-logo"><svg viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zm-7 3l5 4-5-4-5-4 5-4zm0 10l-5-4h10l-5 4z"/></svg></div>
   <div><h1 id="header-title">EFD-Reinf — Gerador R-4020 e R-4010</h1><p>Prefeitura de Fortaleza · Administração pública municipal descentralizada</p></div>
-  <div class="header-badge">v4.1 Premium</div>
+  <div class="header-badge">v4.2 Premium</div>
   <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">🌙 Modo Escuro</button>
 </div>
 
@@ -176,14 +176,19 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
 </div>
 
 <!-- STEP 1 -->
-<div class="card" style="margin-bottom:1rem; border-color:var(--blue-600); background:var(--blue-50);">
+<div class="section active" id="step1">
+  <div class="section-header">
+    <div><div class="section-title">Configuração da Unidade Gestora</div><div class="section-sub">Dados cadastrais da UG declarante — incluídos em todos os XMLs gerados.</div></div>
+  </div>
+  
+  <div class="card" style="margin-bottom:1rem; border-color:var(--blue-600); background:var(--blue-50);">
     <div class="form-row">
       <label style="color:var(--blue-800); font-size:14px; font-weight: 600;">Qual evento você deseja gerar com a planilha do GRPFOR?<span class="req">*</span></label>
       <div style="display:flex; gap: 2rem; margin-top: 8px;">
-        <label style="cursor:pointer; display:flex; align-items:center; gap:8px; font-size: 14px; font-weight: 500; color:var(--blue-800);">
+        <label style="cursor:pointer; display:flex; align-items:center; gap:8px; font-size: 14px; font-weight: 500; color:var(--text-primary);">
           <input type="radio" name="tipoEvento" value="4020" checked style="width:18px; height:18px;" onchange="mudarEvento()"> R-4020 (Empresas / CNPJ)
         </label>
-        <label style="cursor:pointer; display:flex; align-items:center; gap:8px; font-size: 14px; font-weight: 500; color:var(--blue-800);">
+        <label style="cursor:pointer; display:flex; align-items:center; gap:8px; font-size: 14px; font-weight: 500; color:var(--text-primary);">
           <input type="radio" name="tipoEvento" value="4010" style="width:18px; height:18px;" onchange="mudarEvento()"> R-4010 (Pessoas Físicas / CPF)
         </label>
       </div>
