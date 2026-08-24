@@ -22,137 +22,411 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
   }
 
   :root {
-    --blue-50:#E6F1FB;--blue-100:#B5D4F4;--blue-600:#185FA5;--blue-800:#0C447C;--blue-900:#042C53;
-    --teal-50:#E1F5EE;--teal-600:#0F6E56;--teal-800:#085041;
-    --amber-50:#FAEEDA;--amber-100:#FAC775;--amber-600:#854F0B;--amber-800:#633806;
-    --red-50:#FCEBEB;--red-600:#A32D2D;--red-800:#791F1F;
-    --green-50:#EAF3DE;--green-600:#3B6D11;--green-800:#27500A;
-    --gray-50:#F1EFE8;--gray-100:#D3D1C7;--gray-600:#5F5E5A;--gray-800:#444441;
-    --purple-50:#EEEDFE;--purple-600:#534AB7;--purple-800:#3C3489;
-    --radius-md:8px;--radius-lg:12px;
-    --text-primary:#1a1a18;--text-secondary:#5F5E5A;--text-muted:#888780;
-    --bg-primary:#ffffff;--bg-secondary:#F1EFE8;--bg-page:#F8F7F4;
-    --border:rgba(0,0,0,0.12);--border-md:rgba(0,0,0,0.2);
-    --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
-    --font:'Segoe UI',system-ui,-apple-system,sans-serif;
+    --brand-primary: #f15a22;
+    --brand-primary-hover: #d94812;
+    --brand-dark: #1e3644;
+    --brand-dark-light: #325565;
+    --brand-bg-soft: #fff7ef;
+    --brand-bg-accent: #ffe6cb;
+
+    --blue-50:#e8f1f5;--blue-100:#c5dce7;--blue-600:#325565;--blue-800:#1e3644;--blue-900:#13242e;
+    --teal-50:#e6f7f2;--teal-600:#0f766e;--teal-800:#115e59;
+    --amber-50:#fef8ed;--amber-100:#fed7aa;--amber-600:#c2410c;--amber-800:#9a3412;
+    --red-50:#fef2f2;--red-600:#dc2626;--red-800:#991b1b;
+    --green-50:#f0fdf4;--green-600:#16a34a;--green-800:#15803d;
+    --gray-50:#f8fafc;--gray-100:#e2e8f0;--gray-600:#64748b;--gray-800:#334155;
+
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+
+    --text-primary: #1e293b;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8fafc;
+    --bg-page: #f1f5f9;
+
+    --border: rgba(50, 85, 101, 0.15);
+    --border-md: rgba(50, 85, 101, 0.25);
+    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+
+    --font: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
   }
+
   [data-theme="dark"] {
-    --bg-page: #0f172a; --bg-primary: #1e293b; --bg-secondary: #334155;
-    --text-primary: #f8fafc; --text-secondary: #cbd5e1; --text-muted: #94a3b8;
-    --border: rgba(255,255,255,0.1); --border-md: rgba(255,255,255,0.2);
-    --blue-50: rgba(59, 130, 246, 0.15); --blue-800: #93c5fd; --blue-900: #020617;
-    --teal-50: rgba(20, 184, 166, 0.15); --teal-800: #5eead4;
-    --amber-50: rgba(245, 158, 11, 0.15); --amber-800: #fcd34d;
-    --red-50: rgba(239, 68, 68, 0.15); --red-800: #fca5a5;
-    --purple-50: rgba(139, 92, 246, 0.15); --purple-800: #c4b5fd;
-    --green-50: rgba(34, 197, 94, 0.15); --green-800: #86efac;
-    --gray-50: rgba(148, 163, 184, 0.15); --gray-100: rgba(148, 163, 184, 0.25);
+    --bg-page: #0b1319;
+    --bg-primary: #13222b;
+    --bg-secondary: #1b303d;
+
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+
+    --border: rgba(255, 255, 255, 0.12);
+    --border-md: rgba(255, 255, 255, 0.22);
+
+    --blue-50: rgba(50, 85, 101, 0.35);
+    --blue-800: #93c5fd;
+    --blue-900: #0a141b;
+
+    --teal-50: rgba(15, 118, 110, 0.25);
+    --teal-800: #5eead4;
+
+    --amber-50: rgba(241, 90, 34, 0.15);
+    --amber-800: #fdba74;
+
+    --red-50: rgba(220, 38, 38, 0.2);
+    --red-800: #fca5a5;
+
+    --purple-50: rgba(139, 92, 246, 0.2);
+    --purple-800: #c4b5fd;
+
+    --green-50: rgba(22, 163, 74, 0.2);
+    --green-800: #86efac;
+
+    --gray-50: rgba(148, 163, 184, 0.12);
+    --gray-100: rgba(148, 163, 184, 0.2);
   }
-  *{box-sizing:border-box;margin:0;padding:0;}
-  body{font-family:var(--font);background:var(--bg-page);color:var(--text-primary);font-size:14px;line-height:1.6; transition: background-color 0.3s, color 0.3s;}
-  .header{background:var(--blue-900);padding:1.25rem 2rem;display:flex;align-items:center;gap:1rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);}
-  .header-logo{width:36px;height:36px;background:var(--blue-600);border-radius:8px;display:flex;align-items:center;justify-content:center;}
-  .header-logo svg{width:20px;height:20px;fill:white;}
-  .header h1{color:white;font-size:16px;font-weight:600;}
-  .header p{color:#94a3b8;font-size:12px;margin-top:1px;}
-  .header-badge{background:var(--blue-600);color:white;font-size:11px;padding:4px 10px;border-radius:20px;font-weight:500;}
-  .theme-toggle {margin-left:auto; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-size: 12px; font-weight: 500; display: flex; align-items: center; gap: 6px; transition: 0.2s;}
-  .theme-toggle:hover {background: rgba(255,255,255,0.2);}
-  .container{max-width:1160px;margin:0 auto;padding:1.5rem 2rem;}
-  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
-  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;}
-  .grid-5{display:grid;grid-template-columns:repeat(5,1fr);gap:.75rem;}
-  .card{background:var(--bg-primary);border:.5px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem; box-shadow: var(--shadow-sm); transition: background-color 0.3s, border-color 0.3s;}
-  .card-title{font-size:12px;font-weight:500;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.75rem;display:flex;align-items:center;gap:6px;}
-  .metric{background:var(--bg-secondary);border-radius:var(--radius-md);padding:.875rem 1rem; border: 1px solid var(--border);}
-  .metric-label{font-size:11px;color:var(--text-muted);font-weight:500;text-transform:uppercase;letter-spacing:.04em;}
-  .metric-value{font-size:20px;font-weight:600;color:var(--text-primary);margin-top:2px;}
-  .metric-sub{font-size:11px;color:var(--text-muted);margin-top:2px;}
-  .metric.blue{background:var(--blue-50); border-color: rgba(59, 130, 246, 0.2);} .metric.blue .metric-value{color:var(--blue-800);}
-  .metric.teal{background:var(--teal-50); border-color: rgba(20, 184, 166, 0.2);} .metric.teal .metric-value{color:var(--teal-800);}
-  .metric.amber{background:var(--amber-50); border-color: rgba(245, 158, 11, 0.2);} .metric.amber .metric-value{color:var(--amber-800);}
-  .metric.red{background:var(--red-50); border-color: rgba(239, 68, 68, 0.2);} .metric.red .metric-value{color:var(--red-800);}
-  .metric.purple{background:var(--purple-50); border-color: rgba(139, 92, 246, 0.2);} .metric.purple .metric-value{color:var(--purple-800);}
-  .form-row{display:grid;gap:.75rem;margin-bottom:.75rem;}
-  .form-row.c2{grid-template-columns:1fr 1fr;}
-  .form-row.c3{grid-template-columns:1fr 1fr 1fr;}
-  .form-row.c4{grid-template-columns:1fr 1fr 1fr 1fr;}
-  label{font-size:12px;font-weight:500;color:var(--text-secondary);display:block;margin-bottom:4px;}
-  label .req{color:var(--red-600);margin-left:2px;}
-  input,select{width:100%;height:36px;padding:0 10px;border:1px solid var(--border-md);border-radius:var(--radius-md);font-size:13px;font-family:var(--font);color:var(--text-primary);background:var(--bg-primary);outline:none;transition:all .2s;}
-  input:focus,select:focus{border-color:var(--blue-600);box-shadow:0 0 0 3px rgba(59,130,246,.15);}
-  input.error{border-color:var(--red-600);background:var(--red-50);}
-  .hint{font-size:11px;color:var(--text-muted);margin-top:3px;}
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:0 16px;height:36px;border-radius:var(--radius-md);font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--border-md);background:var(--bg-primary);color:var(--text-primary);transition:all .2s;font-family:var(--font);}
-  .btn:hover{background:var(--bg-secondary); transform: translateY(-1px);}
-  .btn:active{transform:scale(.98);}
-  .btn-primary{background:var(--blue-600);color:white;border-color:transparent;}
-  .btn-primary:hover{background:#2563eb; box-shadow: 0 4px 12px rgba(37,99,235,0.2);}
-  .btn-success{background:var(--teal-600);color:white;border-color:transparent;}
-  .btn-success:hover{background:var(--teal-800);}
-  .btn-sm{height:28px;padding:0 10px;font-size:12px;}
-  .btn:disabled{opacity:.5;cursor:not-allowed;transform:none !important;box-shadow:none !important;}
-  .upload-zone{border:2px dashed var(--border-md);border-radius:var(--radius-lg);padding:3rem;text-align:center;cursor:pointer;transition:all .3s;background:var(--bg-primary);}
-  .upload-zone:hover,.upload-zone.drag{border-color:var(--blue-600);background:var(--blue-50);}
-  .upload-zone svg{width:48px;height:48px;color:var(--blue-600);margin-bottom:1rem; opacity: 0.8;}
-  .upload-zone h3{font-size:15px;font-weight:600;}
-  .upload-zone p{font-size:12px;color:var(--text-muted);margin-top:4px;}
-  #file-input{display:none;}
-  .table-wrap{overflow-x:auto;border-radius:var(--radius-md);border:1px solid var(--border); box-shadow: var(--shadow-sm);}
-  table{width:100%;border-collapse:collapse;font-size:12px;}
-  th{background:var(--bg-secondary);padding:10px;text-align:left;font-weight:600;color:var(--text-secondary);border-bottom:1px solid var(--border);white-space:nowrap;position:sticky;top:0; z-index: 10;}
-  td{padding:8px 10px;border-bottom:1px solid var(--border);color:var(--text-primary);white-space:nowrap;}
-  tr:last-child td{border-bottom:none;}
-  tr:hover td{background:var(--bg-secondary);}
-  .td-num{text-align:right;}
-  .td-mono{font-family:'Cascadia Code', monospace;font-size:11px;}
-  .badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:600;}
-  .badge-ok{background:var(--green-50);color:var(--green-800);}
-  .badge-warn{background:var(--amber-50);color:var(--amber-800);}
-  .badge-err{background:var(--red-50);color:var(--red-800);}
-  .badge-info{background:var(--blue-50);color:var(--blue-800);}
-  .badge-gray{background:var(--gray-50);color:var(--gray-600);}
-  .badge-excl{background:var(--gray-100);color:var(--gray-800);}
-  .badge-conf{background:var(--amber-100);color:var(--amber-800);}
-  .alert{padding:12px 16px;border-radius:var(--radius-md);font-size:13px;margin-bottom:1rem;display:flex;align-items:flex-start;gap:10px; border: 1px solid;}
-  .alert svg{width:18px;height:18px;flex-shrink:0;margin-top:2px;}
-  .alert-warn{background:var(--amber-50);color:var(--amber-800);border-color:rgba(245,158,11,0.3);}
-  .alert-info{background:var(--blue-50);color:var(--blue-800);border-color:rgba(59,130,246,0.3);}
-  .alert-err{background:var(--red-50);color:var(--red-800);border-color:rgba(239,68,68,0.3);}
-  .alert-ok{background:var(--green-50);color:var(--green-800);border-color:rgba(34,197,94,0.3);}
-  .steps{display:flex;gap:0;margin-bottom:2rem; background: var(--bg-primary); border-radius: var(--radius-lg); padding: 4px; box-shadow: var(--shadow-sm); border: 1px solid var(--border);}
-  .step{flex:1;padding:.875rem 1rem;border-radius: var(--radius-md);color:var(--text-muted);font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer; transition: all 0.2s;}
-  .step .num{width:22px;height:22px;border-radius:50%;background:var(--gray-100);color:var(--gray-600);font-size:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-  .step.active{background:var(--blue-50);color:var(--blue-800);}
-  .step.active .num{background:var(--blue-600);color:white;}
-  .step.done{color:var(--teal-800);}
-  .step.done .num{background:var(--teal-600);color:white;}
-  .section{display:none; animation: fadeIn 0.3s ease;}
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-  .section.active{display:block;}
-  .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;}
-  .section-title{font-size:18px;font-weight:700; color: var(--text-primary);}
-  .section-sub{font-size:13px;color:var(--text-secondary);margin-top:4px;}
-  .xml-box{background:#0f172a;border-radius:var(--radius-md);padding:1.25rem;overflow-x:auto;max-height:420px;overflow-y:auto; border: 1px solid #334155;}
-  .xml-box pre{font-family:'Cascadia Code','Fira Code',monospace;font-size:12px;color:#e2e8f0;white-space:pre;}
-  .xml-tag{color:#60a5fa;} .xml-val{color:#a7f3d0;} .xml-comment{color:#94a3b8;font-style:italic;}
-  .sep{border:none;border-top:1px solid var(--border);margin:1.25rem 0;}
-  select.nat-sel{height:28px;font-size:11px;padding:0 6px;}
-  tr.row-excluido td{background:var(--gray-50) !important;color:var(--text-muted);}
-  tr.row-confirmar td{background:var(--amber-50) !important;}
-  tr.row-erro td{background:var(--red-50) !important;}
-  .legenda{display:flex;gap:1rem;flex-wrap:wrap;font-size:12px;color:var(--text-secondary);margin-bottom:.75rem;}
-  .legenda-item{display:flex;align-items:center;gap:6px;}
-  .legenda-cor{width:12px;height:12px;border-radius:3px;}
-  .tabs{display:flex;gap:6px;margin-bottom:1rem; border-bottom: 1px solid var(--border); padding-bottom: 8px;}
-  .tab{padding:8px 16px;border-radius:var(--radius-md);font-size:13px;font-weight:600;cursor:pointer;background:transparent;color:var(--text-secondary); transition: 0.2s;}
-  .tab:hover{background: var(--bg-secondary);}
-  .tab.active{background:var(--blue-600);color:white;border-color:transparent;}
-  .err-list{font-size:11px;color:var(--red-600);list-style:none;}
-  .err-list li::before{content:'• ';}
-  .warn-list{font-size:11px;color:var(--amber-600);list-style:none;}
-  .warn-list li::before{content:'⚠ ';}
-  .footer{text-align:center;padding:1.5rem;font-size:11px;color:var(--text-muted);border-top:1px solid var(--border);margin-top:2rem;}
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--font);
+    background: var(--bg-page);
+    color: var(--text-primary);
+    font-size: 14px;
+    line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .header {
+    background: linear-gradient(135deg, var(--brand-dark) 0%, var(--brand-dark-light) 100%);
+    padding: 1.25rem 2.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border-bottom: 3px solid var(--brand-primary);
+  }
+  .header-logo {
+    width: 44px;
+    height: 44px;
+    background: var(--brand-primary);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(241, 90, 34, 0.4);
+  }
+  .header-logo svg { width: 24px; height: 24px; fill: white; }
+  .header h1 { color: #ffffff; font-size: 17px; font-weight: 700; letter-spacing: -0.01em; }
+  .header p { color: #cbd5e1; font-size: 12px; margin-top: 2px; }
+  .header-badge {
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+    font-size: 11px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+  }
+  .theme-toggle {
+    margin-left: auto;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    padding: 7px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+  }
+  .theme-toggle:hover { background: rgba(255, 255, 255, 0.2); transform: translateY(-1px); }
+
+  .container { max-width: 1180px; margin: 0 auto; padding: 2rem 2rem; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+  .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; }
+
+  .card {
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+  }
+  .card:hover { box-shadow: var(--shadow-md); }
+  .card-title {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .metric {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--border);
+    transition: transform 0.2s ease;
+  }
+  .metric:hover { transform: translateY(-2px); }
+  .metric-label { font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+  .metric-value { font-size: 22px; font-weight: 700; color: var(--text-primary); margin-top: 4px; }
+  .metric-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+  .metric.blue { background: var(--blue-50); border-color: var(--border-md); }
+  .metric.blue .metric-value { color: var(--brand-dark-light); }
+  [data-theme="dark"] .metric.blue .metric-value { color: #93c5fd; }
+
+  .metric.teal { background: var(--teal-50); border-color: rgba(15, 118, 110, 0.2); }
+  .metric.teal .metric-value { color: var(--teal-800); }
+
+  .metric.amber { background: var(--amber-50); border-color: rgba(241, 90, 34, 0.2); }
+  .metric.amber .metric-value { color: var(--brand-primary); }
+
+  .metric.red { background: var(--red-50); border-color: rgba(220, 38, 38, 0.2); }
+  .metric.red .metric-value { color: var(--red-800); }
+
+  .metric.purple { background: var(--purple-50); border-color: rgba(139, 92, 246, 0.2); }
+  .metric.purple .metric-value { color: var(--purple-800); }
+
+  .form-row { display: grid; gap: 1rem; margin-bottom: 1rem; }
+  .form-row.c2 { grid-template-columns: 1fr 1fr; }
+  .form-row.c3 { grid-template-columns: 1fr 1fr 1fr; }
+  .form-row.c4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+
+  label { font-size: 12px; font-weight: 600; color: var(--text-secondary); display: block; margin-bottom: 6px; }
+  label .req { color: var(--brand-primary); margin-left: 2px; }
+
+  input, select {
+    width: 100%;
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid var(--border-md);
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    font-family: var(--font);
+    color: var(--text-primary);
+    background: var(--bg-primary);
+    outline: none;
+    transition: all 0.2s ease;
+  }
+  input:focus, select:focus {
+    border-color: var(--brand-primary);
+    box-shadow: 0 0 0 3px rgba(241, 90, 34, 0.18);
+  }
+  input.error { border-color: var(--red-600); background: var(--red-50); }
+
+  .hint { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 0 20px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid var(--border-md);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    transition: all 0.2s ease;
+    font-family: var(--font);
+  }
+  .btn:hover { background: var(--bg-secondary); transform: translateY(-1px); }
+  .btn:active { transform: scale(0.98); }
+
+  .btn-primary {
+    background: var(--brand-primary);
+    color: #ffffff;
+    border-color: transparent;
+    box-shadow: 0 2px 6px rgba(241, 90, 34, 0.3);
+  }
+  .btn-primary:hover {
+    background: var(--brand-primary-hover);
+    box-shadow: 0 4px 12px rgba(241, 90, 34, 0.4);
+  }
+
+  .btn-success {
+    background: var(--teal-600);
+    color: #ffffff;
+    border-color: transparent;
+    box-shadow: 0 2px 6px rgba(15, 118, 110, 0.3);
+  }
+  .btn-success:hover { background: var(--teal-800); }
+
+  .btn-sm { height: 32px; padding: 0 12px; font-size: 12px; border-radius: var(--radius-sm); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+
+  .upload-zone {
+    border: 2px dashed var(--border-md);
+    border-radius: var(--radius-lg);
+    padding: 3.5rem 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: var(--bg-primary);
+  }
+  .upload-zone:hover, .upload-zone.drag {
+    border-color: var(--brand-primary);
+    background: var(--amber-50);
+  }
+  .upload-zone svg { width: 52px; height: 52px; color: var(--brand-primary); margin-bottom: 1rem; opacity: 0.9; }
+  .upload-zone h3 { font-size: 16px; font-weight: 700; color: var(--text-primary); }
+  .upload-zone p { font-size: 12px; color: var(--text-muted); margin-top: 6px; }
+  #file-input { display: none; }
+
+  .table-wrap {
+    overflow-x: auto;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th {
+    background: var(--bg-secondary);
+    padding: 12px 14px;
+    text-align: left;
+    font-weight: 700;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--text-primary); white-space: nowrap; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--bg-secondary); }
+  .td-num { text-align: right; }
+  .td-mono { font-family: 'Cascadia Code', monospace; font-size: 11px; }
+
+  .badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+  .badge-ok { background: var(--green-50); color: var(--green-800); }
+  .badge-warn { background: var(--amber-50); color: var(--amber-800); }
+  .badge-err { background: var(--red-50); color: var(--red-800); }
+  .badge-info { background: var(--blue-50); color: var(--brand-dark-light); }
+
+  .alert {
+    padding: 14px 18px;
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    border: 1px solid;
+    box-shadow: var(--shadow-sm);
+  }
+  .alert svg { width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px; }
+  .alert-warn { background: var(--amber-50); color: var(--amber-800); border-color: rgba(241, 90, 34, 0.3); }
+  .alert-info { background: var(--blue-50); color: var(--brand-dark); border-color: rgba(50, 85, 101, 0.3); }
+  .alert-err { background: var(--red-50); color: var(--red-800); border-color: rgba(220, 38, 38, 0.3); }
+  .alert-ok { background: var(--green-50); color: var(--green-800); border-color: rgba(22, 163, 74, 0.3); }
+
+  .steps {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 2rem;
+    background: var(--bg-primary);
+    border-radius: var(--radius-lg);
+    padding: 6px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border);
+  }
+  .step {
+    flex: 1;
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius-md);
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .step .num {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--gray-100);
+    color: var(--gray-600);
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .step.active {
+    background: var(--amber-50);
+    color: var(--brand-primary);
+  }
+  .step.active .num {
+    background: var(--brand-primary);
+    color: #ffffff;
+  }
+  .step.done { color: var(--teal-800); }
+  .step.done .num { background: var(--teal-600); color: #ffffff; }
+
+  .section { display: none; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .section.active { display: block; }
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
+  .section-title { font-size: 20px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.01em; }
+  .section-sub { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
+
+  .xml-box {
+    background: #0d161d;
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+    overflow-x: auto;
+    max-height: 420px;
+    overflow-y: auto;
+    border: 1px solid #233744;
+  }
+  .xml-box pre { font-family: 'Cascadia Code', 'Fira Code', monospace; font-size: 12px; color: #e2e8f0; white-space: pre; }
+  .xml-tag { color: #fdba74; } .xml-val { color: #a7f3d0; }
+
+  select.nat-sel { height: 32px; font-size: 12px; padding: 0 8px; }
+  tr.row-confirmar td { background: var(--amber-50) !important; }
+  tr.row-excluido td { background: var(--gray-50) !important; color: var(--text-muted); }
+  tr.row-erro td { background: var(--red-50) !important; }
+
+  .tabs { display: flex; gap: 8px; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+  .tab {
+    padding: 8px 18px;
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    background: transparent;
+    color: var(--text-secondary);
+    transition: 0.2s ease;
+  }
+  .tab:hover { background: var(--bg-secondary); color: var(--text-primary); }
+  .tab.active { background: var(--brand-dark-light); color: #ffffff; }
+
   @keyframes spin { 100% { transform: rotate(360deg); } }
   .spinner { animation: spin 1s linear infinite; }
 </style>
@@ -162,7 +436,7 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
 <div class="header">
   <div class="header-logo"><svg viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zm-7 3l5 4-5-4-5-4 5-4zm0 10l-5-4h10l-5 4z"/></svg></div>
   <div><h1 id="header-title">EFD-Reinf — Gerador R-4020 e R-4010</h1><p>Prefeitura de Fortaleza · Administração pública municipal descentralizada</p></div>
-  <div class="header-badge">v4.8 Premium</div>
+  <div class="header-badge">v5.0 Oficial</div>
   <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">🌙 Modo Escuro</button>
 </div>
 
@@ -181,21 +455,21 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
     <div><div class="section-title">Configuração da Unidade Gestora</div><div class="section-sub">Dados cadastrais da UG declarante — incluídos em todos os XMLs gerados.</div></div>
   </div>
   
-  <div class="card" style="margin-bottom:1rem;">
+  <div class="card" style="margin-bottom:1.25rem;">
     <div class="form-row">
-      <label style="font-size:14px; font-weight: 600;">Qual evento você deseja gerar com a planilha do GRPFOR?<span class="req">*</span></label>
-      <div style="display:flex; gap: 2rem; margin-top: 8px;">
-        <label style="cursor:pointer; display:flex; align-items:center; gap:8px; font-size: 14px;">
-          <input type="radio" name="tipoEvento" value="4020" checked style="width:18px; height:18px;" onchange="mudarEvento()"> R-4020 (Empresas / CNPJ)
+      <label style="font-size:14px; font-weight: 700; color: var(--text-primary);">Qual evento você deseja gerar com a planilha do GRPFOR?<span class="req">*</span></label>
+      <div style="display:flex; gap: 2.5rem; margin-top: 10px;">
+        <label style="cursor:pointer; display:flex; align-items:center; gap:8px; font-size: 14px; font-weight: 600;">
+          <input type="radio" name="tipoEvento" value="4020" checked style="width:18px; height:18px; accent-color: var(--brand-primary);" onchange="mudarEvento()"> R-4020 (Empresas / CNPJ)
         </label>
-        <label style="cursor:pointer; display:flex; align-items:center; gap:8px; font-size: 14px;">
-          <input type="radio" name="tipoEvento" value="4010" style="width:18px; height:18px;" onchange="mudarEvento()"> R-4010 (Pessoas Físicas / CPF)
+        <label style="cursor:pointer; display:flex; align-items:center; gap:8px; font-size: 14px; font-weight: 600;">
+          <input type="radio" name="tipoEvento" value="4010" style="width:18px; height:18px; accent-color: var(--brand-primary);" onchange="mudarEvento()"> R-4010 (Pessoas Físicas / CPF)
         </label>
       </div>
     </div>
   </div>
 
-  <div class="grid-2" style="gap:1rem;align-items:start;">
+  <div class="grid-2" style="gap:1.25rem; align-items:start;">
     <div class="card">
       <div class="card-title">Identificação da UG</div>
       <div class="form-row c2">
@@ -233,7 +507,7 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
       <div class="form-row"><div><label>E-mail</label><input type="email" id="emailContato" placeholder="setor@fortaleza.ce.gov.br"></div></div>
     </div>
   </div>
-  <div style="display:flex;justify-content:flex-end;margin-top:1rem;"><button class="btn btn-primary" onclick="validateStep1()">Continuar →</button></div>
+  <div style="display:flex;justify-content:flex-end;margin-top:1.5rem;"><button class="btn btn-primary" onclick="validateStep1()">Continuar →</button></div>
 </div>
 
 <!-- STEP 2 -->
@@ -241,15 +515,15 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
   <div class="section-header"><div><div class="section-title">Importar planilha do GRPFOR-FC</div></div><button class="btn" onclick="goStep(1)">← Voltar</button></div>
   <div class="card">
     <div class="upload-zone" id="dropzone" onclick="document.getElementById('file-input').click()" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropFile(event)">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
       <h3>Arraste o CSV aqui ou clique para selecionar</h3>
       <p>GRPFOR-FC · ViewDespesaFinanceira · Separador ; · Codificação Latin-1</p>
     </div>
     <input type="file" id="file-input" accept=".csv" onchange="loadFile(event)">
   </div>
   <div id="preview-area" style="display:none;">
-    <div class="grid-5" style="margin:1rem 0;" id="preview-metrics"></div>
-    <div style="display:flex;justify-content:flex-end;gap:.5rem;margin-top:1rem;">
+    <div class="grid-5" style="margin:1.25rem 0;" id="preview-metrics"></div>
+    <div style="display:flex;justify-content:flex-end;gap:.75rem;margin-top:1.5rem;">
       <button class="btn" onclick="document.getElementById('file-input').click()">Trocar arquivo</button>
       <button class="btn btn-primary" onclick="goStep(3)">Ver triagem automática →</button>
     </div>
@@ -259,7 +533,7 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
 <!-- STEP 3 -->
 <div class="section" id="step3">
   <div class="section-header"><div><div class="section-title">Triagem automática</div></div><button class="btn" onclick="goStep(2)">← Voltar</button></div>
-  <div id="triagem-resumo" class="grid-5" style="margin-bottom:1rem;"></div>
+  <div id="triagem-resumo" class="grid-5" style="margin-bottom:1.25rem;"></div>
   <div class="alert alert-warn" id="alert-confirmar" style="display:none;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><div id="alert-confirmar-txt"></div></div>
   <div class="tabs">
     <div class="tab active" onclick="setTab('todos')">Todos</div>
@@ -269,46 +543,45 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
     <div class="tab" onclick="setTab('erro')">❌ Erros</div>
   </div>
   <div class="card"><div class="table-wrap" style="max-height:440px;overflow-y:auto;"><table id="triagem-table"><thead><tr><th style="width:32px;"></th><th>Credor</th><th>CPF/CNPJ</th><th>Elemento</th><th class="td-num">Vl. Bruto</th><th class="td-num">IRRF</th><th>Dt. Pag</th><th>Classificação</th><th>Ação</th></tr></thead><tbody id="triagem-tbody"></tbody></table></div></div>
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1rem;"><div id="triagem-summary" style="font-size:13px;color:var(--text-secondary);"></div><button class="btn btn-primary" onclick="goStep(4)">Avançar para revisão →</button></div>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><div id="triagem-summary" style="font-size:13px;color:var(--text-secondary);font-weight:600;"></div><button class="btn btn-primary" onclick="goStep(4)">Avançar para revisão →</button></div>
 </div>
 
 <!-- STEP 4 -->
 <div class="section" id="step4">
   <div class="section-header"><div><div class="section-title">Revisar lançamentos e atribuir natureza do rendimento</div></div><button class="btn" onclick="goStep(3)">← Voltar</button></div>
   <div id="step4-alerts"></div>
-  <div class="card" style="margin-bottom:1rem;">
-    <div style="display:flex;gap:.75rem;align-items:center;flex-wrap:wrap;margin-bottom:.75rem;">
+  <div class="card" style="margin-bottom:1.25rem;">
+    <div style="display:flex;gap:.75rem;align-items:center;flex-wrap:wrap;">
       <input type="text" id="filter-credor" placeholder="Filtrar por credor..." style="width:220px;" oninput="filterReview()">
-      <select id="filter-status" onchange="filterReview()" style="width:170px;height:36px;font-size:13px;padding:0 10px;">
+      <select id="filter-status" onchange="filterReview()" style="width:180px;height:40px;font-size:13px;padding:0 10px;">
         <option value="">Todos os status</option>
         <option value="pendente">❌ Faltando Natureza</option>
         <option value="ok">✅ Natureza OK</option>
       </select>
-      <button class="btn btn-sm" onclick="applyNatToAll()">Aplicar selecionados</button>
-      <select id="nat-global" style="width:240px;height:28px;font-size:12px;padding:0 6px;"><option value="">Selecionar natureza global...</option></select>
+      <button class="btn btn-sm btn-primary" onclick="applyNatToAll()">Aplicar selecionados</button>
+      <select id="nat-global" style="width:260px;height:32px;font-size:12px;padding:0 8px;"><option value="">Selecionar natureza global...</option></select>
     </div>
-    <div id="sugestao-metrics" style="display:flex;gap:.5rem;flex-wrap:wrap;"></div>
+    <div id="sugestao-metrics" style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:10px;"></div>
   </div>
-  <div class="card"><div class="table-wrap" style="max-height:420px;overflow-y:auto;"><table><thead><tr><th style="width:32px;"><input type="checkbox" id="sel-all" onchange="selAll(this)"></th><th>Credor</th><th>CPF/CNPJ</th><th class="td-num">Vl. Bruto</th><th class="td-num">IRRF</th><th>Dt. Pag</th><th>Natureza do rendimento<span class="req">*</span></th><th>Status</th></tr></thead><tbody id="review-tbody"></tbody></table></div></div>
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1rem;"><div id="review-summary" style="font-size:13px;color:var(--text-secondary);"></div><button class="btn btn-primary" id="btn-gerar" onclick="gerarXML_Visual()" disabled style="font-weight:600; padding:0 24px;">Gerar Lote →</button></div>
+  <div class="card"><div class="table-wrap" style="max-height:420px;overflow-y:auto;"><table><thead><tr><th style="width:32px;"><input type="checkbox" id="sel-all" onchange="selAll(this)" style="accent-color: var(--brand-primary);"></th><th>Credor</th><th>CPF/CNPJ</th><th class="td-num">Vl. Bruto</th><th class="td-num">IRRF</th><th>Dt. Pag</th><th>Natureza do rendimento<span class="req">*</span></th><th>Status</th></tr></thead><tbody id="review-tbody"></tbody></table></div></div>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><div id="review-summary" style="font-size:13px;color:var(--text-secondary);font-weight:600;"></div><button class="btn btn-primary" id="btn-gerar" onclick="gerarXML_Visual()" disabled style="font-weight:700; padding:0 28px;">Gerar Lote →</button></div>
 </div>
 
 <!-- STEP 5 -->
 <div class="section" id="step5">
   <div class="section-header"><div><div class="section-title">Lote de Arquivos Gerados</div><div class="section-sub">Assine com o Transmissor Java e envie à Receita. Faça o fechamento e a DCTFWeb diretamente no e-CAC.</div></div><button class="btn" onclick="goStep(4)">← Voltar</button></div>
   <div class="alert alert-ok" id="xml-ok-alert"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><div id="xml-ok-msg"></div></div>
-  <div id="banner-producao" style="display:none;background:#7f1d1d;color:white;border-radius:8px;padding:14px 18px;margin-bottom:1rem;font-size:14px;font-weight:600;display:flex;align-items:center;gap:10px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>⚠ AMBIENTE DE PRODUÇÃO — Envio oficial à Receita Federal.</div>
+  <div id="banner-producao" style="display:none;background:#7f1d1d;color:white;border-radius:var(--radius-md);padding:14px 18px;margin-bottom:1.25rem;font-size:14px;font-weight:600;display:flex;align-items:center;gap:10px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>⚠ AMBIENTE DE PRODUÇÃO — Envio oficial à Receita Federal.</div>
   
-  <div class="grid-4" id="xml-metrics" style="margin-bottom:1rem;"></div>
+  <div class="grid-4" id="xml-metrics" style="margin-bottom:1.25rem;"></div>
   
-  <div class="grid-2" style="gap:1rem;align-items:start;">
+  <div class="grid-2" style="gap:1.25rem; align-items:start;">
     <div class="card">
       <div class="card-title" style="justify-content:space-between; margin-bottom: 12px;">
         <span>Lista de Arquivos (Download Manual)</span>
         <button class="btn btn-sm btn-success" onclick="downloadTodosXML()">⬇ Tentar Baixar Todos</button>
       </div>
       
-      <!-- LISTA DE ARQUIVOS -->
       <div id="lista-arquivos-xml" style="display:grid; gap:8px; margin-bottom: 1.5rem; max-height: 220px; overflow-y: auto; padding-right: 4px;"></div>
       
       <div class="card-title" style="justify-content:space-between;">
@@ -319,7 +592,7 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
     </div>
     
     <div>
-      <div class="card" style="margin-bottom:1rem;">
+      <div class="card" style="margin-bottom:1.25rem;">
         <div class="card-title">Próximos passos</div>
         <ol style="padding-left:1.25rem;font-size:13px;color:var(--text-secondary);line-height:2.2;">
           <li>Baixe os arquivos XML gerados acima.</li>
@@ -328,12 +601,12 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
         </ol>
       </div>
       
-      <div class="card" style="margin-bottom:1rem; border-color: var(--blue-600); background: var(--blue-50);">
-        <div class="card-title" style="color: var(--blue-800);">Auditoria e Compliance</div>
-        <p style="font-size:12px; color: var(--text-primary); margin-bottom: 10px;">
+      <div class="card" style="margin-bottom:1.25rem; border-color: var(--brand-primary); background: var(--amber-50);">
+        <div class="card-title" style="color: var(--brand-primary);">Auditoria e Compliance</div>
+        <p style="font-size:12px; color: var(--text-primary); margin-bottom: 12px;">
           Gere o relatório detalhando as justificativas de inclusão e exclusão de todos os pagamentos processados neste lote. Ideal para prestação de contas.
         </p>
-        <button class="btn btn-primary btn-sm" onclick="baixarRelatorioAuditoria()" style="width: 100%;">📊 Baixar Relatório (CSV)</button>
+        <button class="btn btn-primary btn-sm" onclick="baixarRelatorioAuditoria()" style="width: 100%; font-weight:700;">📊 Baixar Relatório (CSV)</button>
       </div>
       
       <div class="card"><div class="card-title">Totalizadores (R-9005)</div><table style="width:100%;font-size:12px;border-collapse:collapse;" id="totalizador-table"></table></div>
@@ -612,7 +885,7 @@ function loadFile(e){if(e.target.files[0])processFile(e.target.files[0]);}
 
 function processFile(file){
   const zone = document.getElementById('dropzone');
-  zone.innerHTML = `<p style="color:var(--blue-800);font-weight:500;">⏳ Lendo arquivo: <strong>${file.name}</strong>...</p>`;
+  zone.innerHTML = `<p style="color:var(--brand-dark-light);font-weight:600;">⏳ Lendo arquivo: <strong>${file.name}</strong>...</p>`;
   const reader = new FileReader();
   reader.onload = e => {
     try {
@@ -622,7 +895,7 @@ function processFile(file){
       Papa.parse(text, { delimiter: delim, header: true, skipEmptyLines: true,
         complete: r => {
           if(!r.data || r.data.length === 0){ zone.innerHTML = `<p style="color:var(--red-600);">❌ Nenhuma linha encontrada.</p>`; return; }
-          zone.innerHTML = `<p style="color:var(--teal-600);font-weight:500;">✅ Arquivo lido: <strong>${r.data.length}</strong> linhas</p>`;
+          zone.innerHTML = `<p style="color:var(--teal-600);font-weight:600;">✅ Arquivo lido: <strong>${r.data.length}</strong> linhas</p>`;
           parseRows(r.data);
         }
       });
@@ -664,10 +937,10 @@ function renderTriagem(){
   document.getElementById('triagem-tbody').innerHTML=rows.map(r=>`
     <tr class="${r.cls==='confirmar'?'row-confirmar':r.cls==='excluido'?'row-excluido':r.cls==='erro'?'row-erro':''}">
       <td>${r.cls==='incluir'?'✅':r.cls==='confirmar'?'⚠':r.cls==='excluido'?'🚫':'❌'}</td>
-      <td><div style="font-weight:500;font-size:12px;">${r.nome}</div></td><td class="td-mono">${fmtDoc(r.doc)}</td>
+      <td><div style="font-weight:600;font-size:12px;">${r.nome}</div></td><td class="td-mono">${fmtDoc(r.doc)}</td>
       <td class="td-mono">${r.elemento}</td><td class="td-num">R$ ${fmtBRL(r.vlBruto)}</td><td class="td-num">${r.irrf>0?'R$ '+fmtBRL(r.irrf):'—'}</td>
-      <td class="td-mono">${r.dtPag}</td><td><span title="${r.motivo}">${r.cls}</span></td>
-      <td>${r.cls==='confirmar'?`<button class="btn btn-sm" onclick="reclassificar(${r.idx},'incluir')">✅ Incluir</button> <button class="btn btn-sm" onclick="reclassificar(${r.idx},'excluido')">🚫 Excluir</button>`
+      <td class="td-mono">${r.dtPag}</td><td><span title="${r.motivo}" style="font-weight:600;">${r.cls}</span></td>
+      <td>${r.cls==='confirmar'?`<button class="btn btn-sm btn-primary" onclick="reclassificar(${r.idx},'incluir')">✅ Incluir</button> <button class="btn btn-sm" onclick="reclassificar(${r.idx},'excluido')">🚫 Excluir</button>`
         :r.cls==='excluido'||r.cls==='incluir'?`<button class="btn btn-sm" onclick="reclassificar(${r.idx},${r.cls==='excluido'?`'incluir'`:`'excluido'`})">↩ Trocar</button>`:''}</td>
     </tr>`).join('');
 }
@@ -688,8 +961,8 @@ function filterReview(){
   const filtrados = getFiltrados();
   document.getElementById('review-tbody').innerHTML=filtrados.map(r=>`
     <tr>
-      <td><input type="checkbox" class="row-chk" ${r.selected?'checked':''} onchange="toggleRow(${r.idx},this.checked)"></td>
-      <td><div style="font-weight:500;font-size:12px;">${r.nome}</div><div style="font-size:10px;color:var(--text-muted);">${r.elemento} · ${r.hist.slice(0,50)}</div></td>
+      <td><input type="checkbox" class="row-chk" ${r.selected?'checked':''} onchange="toggleRow(${r.idx},this.checked)" style="accent-color: var(--brand-primary);"></td>
+      <td><div style="font-weight:600;font-size:12px;">${r.nome}</div><div style="font-size:10px;color:var(--text-muted);">${r.elemento} · ${r.hist.slice(0,50)}</div></td>
       <td class="td-mono">${fmtDoc(r.doc)}</td><td class="td-num">R$ ${fmtBRL(r.vlBruto)}</td><td class="td-num">${r.irrf>0?'R$ '+fmtBRL(r.irrf):'—'}</td>
       <td class="td-mono">${r.dtPag}</td>
       <td><select class="nat-sel" style="width:100%;min-width:200px;" onchange="setNatureza(${r.idx},this.value)"><option value="">Selecionar...</option>${buildNatOpts(r.natureza)}</select></td>
@@ -746,15 +1019,12 @@ function baixarRelatorioAuditoria() {
   state.allRows.forEach(r => {
     let nat = r.natureza ? r.natureza : "N/A";
     let statusFinal = (r.selected && r.cls === 'incluir') ? 'Enviado no Lote' : 'Não Enviado';
-    let docFmt = is4010 ? cleanCPF(r.doc) : cleanCNPJ(r.doc); // clean to avoid formatting issues in excel
-    
-    // Evitar quebras de linha que o histórico do GRPFOR costuma trazer
+    let docFmt = is4010 ? cleanCPF(r.doc) : cleanCNPJ(r.doc);
     let histLimpo = r.hist.replace(/(\r\n|\n|\r)/gm, " ");
     
     csv += `"${r.nome}";"${docFmt}";"${r.elemento}";"${fmtDec(r.vlBruto)}";"${fmtDec(r.irrf)}";"${r.dtPag}";"${statusFinal}";"${nat}";"${r.motivo}"\n`;
   });
   
-  // Adiciona BOM para o Excel entender acentuação UTF-8 automaticamente
   const blob = new Blob(["\uFEFF"+csv], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
@@ -862,20 +1132,20 @@ function gerarXML(){
   document.getElementById('xml-output').innerHTML = colorXML(ultimoXmlGerado);
 
   document.getElementById('lista-arquivos-xml').innerHTML = state.arquivosGerados.map((arq, i) => `
-    <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 12px; background:var(--bg-secondary); border-radius:var(--radius-md); border:1px solid var(--border);">
-      <div style="font-family:'Cascadia Code', monospace; font-size:12px; color:var(--text-primary); font-weight:600;">📄 ${arq.nome}</div>
-      <button class="btn btn-sm btn-success" onclick="downloadXMLIndice(${i})" style="height:26px;">⬇ Baixar</button>
+    <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 14px; background:var(--bg-secondary); border-radius:var(--radius-md); border:1px solid var(--border);">
+      <div style="font-family:'Cascadia Code', monospace; font-size:12px; color:var(--text-primary); font-weight:700;">📄 ${arq.nome}</div>
+      <button class="btn btn-sm btn-success" onclick="downloadXMLIndice(${i})">⬇ Baixar</button>
     </div>
   `).join('');
 
   document.getElementById('xml-metrics').innerHTML=`
     <div class="metric blue"><div class="metric-label">Arquivos Gerados</div><div class="metric-value">${benefs.size}</div></div>
     <div class="metric teal"><div class="metric-label">Vl. Bruto total</div><div class="metric-value">R$ ${fmtBRL(vlBrutoTotal)}</div></div>
-    <div class="metric"><div class="metric-label">IRRF retido</div><div class="metric-value">R$ ${fmtBRL(vlIrTotal)}</div></div>`;
+    <div class="metric amber"><div class="metric-label">IRRF retido</div><div class="metric-value">R$ ${fmtBRL(vlIrTotal)}</div></div>`;
 
   document.getElementById('totalizador-table').innerHTML=`
-    <thead><tr><th style="padding:10px;background:var(--bg-secondary);font-size:11px;">Tributo</th><th style="padding:10px;background:var(--bg-secondary);font-size:11px;text-align:right;">Retenção</th></tr></thead>
-    <tbody><tr><td style="padding:8px 10px;font-size:12px;border-bottom:1px solid var(--border);">IRRF (${is4010?'PF':'PJ'})</td><td style="padding:8px 10px;font-size:12px;text-align:right;border-bottom:1px solid var(--border);">R$ ${fmtBRL(vlIrTotal)}</td></tr></tbody>`;
+    <thead><tr><th style="padding:10px 14px;background:var(--bg-secondary);font-size:11px;">Tributo</th><th style="padding:10px 14px;background:var(--bg-secondary);font-size:11px;text-align:right;">Retenção</th></tr></thead>
+    <tbody><tr><td style="padding:10px 14px;font-size:12px;border-bottom:1px solid var(--border);font-weight:600;">IRRF (${is4010?'PF':'PJ'})</td><td style="padding:10px 14px;font-size:12px;text-align:right;border-bottom:1px solid var(--border);font-weight:700;color:var(--brand-primary);">R$ ${fmtBRL(vlIrTotal)}</td></tr></tbody>`;
 
   document.getElementById('xml-ok-msg').innerHTML = `Foram gerados <b>${benefs.size} arquivos ${ug.tipoEvento}</b>. Se o navegador bloqueou o download múltiplo, baixe os arquivos manualmente na lista abaixo.`;
   document.getElementById('banner-producao').style.display = ug.ambiente === '1' ? 'flex' : 'none';
