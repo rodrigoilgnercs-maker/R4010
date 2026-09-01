@@ -22,77 +22,53 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
   }
 
   :root {
+    /* Neumorphism Base Variables - Light Mode */
+    --bg-page: #e0e5ec;
+    --shadow-light: #ffffff;
+    --shadow-dark: #a3b1c6;
+
+    /* Brand Accents */
     --brand-primary: #f15a22;
-    --brand-primary-hover: #d94812;
-    --brand-dark: #1e3644;
-    --brand-dark-light: #325565;
-    --brand-bg-soft: #fff7ef;
-    --brand-bg-accent: #ffe6cb;
+    --brand-dark: #325565;
+    
+    /* Text Colors */
+    --text-primary: #2d3748;
+    --text-secondary: #4a5568;
+    --text-muted: #718096;
 
-    --blue-50:#e8f1f5;--blue-100:#c5dce7;--blue-600:#325565;--blue-800:#1e3644;--blue-900:#13242e;
-    --teal-50:#e6f7f2;--teal-600:#0f766e;--teal-800:#115e59;
-    --amber-50:#fef8ed;--amber-100:#fed7aa;--amber-600:#c2410c;--amber-800:#9a3412;
-    --red-50:#fef2f2;--red-600:#dc2626;--red-800:#991b1b;
-    --green-50:#f0fdf4;--green-600:#16a34a;--green-800:#15803d;
-    --gray-50:#f8fafc;--gray-100:#e2e8f0;--gray-600:#64748b;--gray-800:#334155;
+    /* Semantic Accents */
+    --color-green: #16a34a;
+    --color-red: #dc2626;
+    --color-amber: #d97706;
 
-    --radius-sm: 6px;
-    --radius-md: 10px;
-    --radius-lg: 14px;
-
-    --text-primary: #1e293b;
-    --text-secondary: #475569;
-    --text-muted: #64748b;
-
-    --bg-primary: #ffffff;
-    --bg-secondary: #f8fafc;
-    --bg-page: #f1f5f9;
-
-    --border: rgba(50, 85, 101, 0.15);
-    --border-md: rgba(50, 85, 101, 0.25);
-    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.06);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
-
+    /* Structural Variables */
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
     --font: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+
+    /* Neumorphic Shadows */
+    --nm-out: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light);
+    --nm-out-sm: 4px 4px 8px var(--shadow-dark), -4px -4px 8px var(--shadow-light);
+    --nm-in: inset 6px 6px 12px var(--shadow-dark), inset -6px -6px 12px var(--shadow-light);
+    --nm-in-sm: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light);
   }
 
   [data-theme="dark"] {
-    --bg-page: #0b1319;
-    --bg-primary: #13222b;
-    --bg-secondary: #1b303d;
-
-    --text-primary: #f8fafc;
-    --text-secondary: #cbd5e1;
-    --text-muted: #94a3b8;
-
-    --border: rgba(255, 255, 255, 0.12);
-    --border-md: rgba(255, 255, 255, 0.22);
-
-    --blue-50: rgba(50, 85, 101, 0.35);
-    --blue-800: #93c5fd;
-    --blue-900: #0a141b;
-
-    --teal-50: rgba(15, 118, 110, 0.25);
-    --teal-800: #5eead4;
-
-    --amber-50: rgba(241, 90, 34, 0.15);
-    --amber-800: #fdba74;
-
-    --red-50: rgba(220, 38, 38, 0.2);
-    --red-800: #fca5a5;
-
-    --purple-50: rgba(139, 92, 246, 0.2);
-    --purple-800: #c4b5fd;
-
-    --green-50: rgba(22, 163, 74, 0.2);
-    --green-800: #86efac;
-
-    --gray-50: rgba(148, 163, 184, 0.12);
-    --gray-100: rgba(148, 163, 184, 0.2);
+    --bg-page: #26282B;
+    --shadow-light: #36393e; 
+    --shadow-dark: #161718;
+    --text-primary: #e2e8f0;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --color-green: #4ade80;
+    --color-red: #f87171;
+    --color-amber: #fbbf24;
+    --brand-primary: #fb923c;
+    --brand-dark: #7dd3fc;
   }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
   body {
     font-family: var(--font);
     background: var(--bg-page);
@@ -102,45 +78,46 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
     transition: background-color 0.3s ease, color 0.3s ease;
   }
 
+  /* Header Neumórfico */
   .header {
-    background: linear-gradient(135deg, var(--brand-dark) 0%, var(--brand-dark-light) 100%);
+    background: var(--bg-page);
     padding: 1.25rem 2.25rem;
     display: flex;
     align-items: center;
     gap: 1.25rem;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    border-bottom: 3px solid var(--brand-primary);
+    box-shadow: 0 4px 10px var(--shadow-dark);
   }
   .header-logo {
     width: 44px;
     height: 44px;
-    background: var(--brand-primary);
+    background: var(--bg-page);
     border-radius: var(--radius-md);
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 8px rgba(241, 90, 34, 0.4);
+    box-shadow: var(--nm-out-sm);
   }
-  .header-logo svg { width: 24px; height: 24px; fill: white; }
-  .header h1 { color: #ffffff; font-size: 17px; font-weight: 700; letter-spacing: -0.01em; }
-  .header p { color: #cbd5e1; font-size: 12px; margin-top: 2px; }
+  .header-logo svg { width: 24px; height: 24px; fill: var(--brand-primary); }
+  .header h1 { color: var(--text-primary); font-size: 17px; font-weight: 700; letter-spacing: -0.01em; }
+  .header p { color: var(--text-muted); font-size: 12px; margin-top: 2px; }
   .header-badge {
-    background: rgba(255, 255, 255, 0.12);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    color: #ffffff;
+    background: var(--bg-page);
+    color: var(--brand-primary);
+    box-shadow: var(--nm-in-sm);
     font-size: 11px;
     padding: 5px 12px;
     border-radius: 20px;
-    font-weight: 600;
+    font-weight: 700;
   }
   .theme-toggle {
     margin-left: auto;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: #ffffff;
-    padding: 7px 14px;
+    background: var(--bg-page);
+    color: var(--text-primary);
+    box-shadow: var(--nm-out-sm);
+    padding: 8px 16px;
     border-radius: 20px;
     cursor: pointer;
+    border: none;
     font-size: 12px;
     font-weight: 600;
     display: flex;
@@ -148,284 +125,290 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
     gap: 6px;
     transition: all 0.2s ease;
   }
-  .theme-toggle:hover { background: rgba(255, 255, 255, 0.2); transform: translateY(-1px); }
+  .theme-toggle:active { box-shadow: var(--nm-in-sm); }
 
   .container { max-width: 1180px; margin: 0 auto; padding: 2rem 2rem; }
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
-  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
-  .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
+  .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1.25rem; }
 
+  /* Cards Neumórficos */
   .card {
-    background: var(--bg-primary);
-    border: 1px solid var(--border);
+    background: var(--bg-page);
+    border: none;
     border-radius: var(--radius-lg);
-    padding: 1.5rem;
-    box-shadow: var(--shadow-sm);
-    transition: all 0.3s ease;
+    padding: 1.75rem;
+    box-shadow: var(--nm-out);
+    margin-bottom: 1.5rem;
   }
-  .card:hover { box-shadow: var(--shadow-md); }
   .card-title {
     font-size: 12px;
     font-weight: 700;
     color: var(--text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    margin-bottom: 1rem;
+    margin-bottom: 1.25rem;
     display: flex;
     align-items: center;
     gap: 8px;
   }
 
+  /* Metrics Extrudadas */
   .metric {
-    background: var(--bg-secondary);
+    background: var(--bg-page);
     border-radius: var(--radius-md);
-    padding: 1rem 1.25rem;
-    border: 1px solid var(--border);
-    transition: transform 0.2s ease;
+    padding: 1.25rem;
+    box-shadow: var(--nm-out-sm);
+    border: none;
   }
-  .metric:hover { transform: translateY(-2px); }
   .metric-label { font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
-  .metric-value { font-size: 22px; font-weight: 700; color: var(--text-primary); margin-top: 4px; }
-  .metric-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+  .metric-value { font-size: 22px; font-weight: 800; color: var(--text-primary); margin-top: 6px; }
+  .metric-sub { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+  .metric.amber .metric-value { color: var(--color-amber); }
+  .metric.teal .metric-value { color: var(--color-green); }
 
-  .metric.blue { background: var(--blue-50); border-color: var(--border-md); }
-  .metric.blue .metric-value { color: var(--brand-dark-light); }
-  [data-theme="dark"] .metric.blue .metric-value { color: #93c5fd; }
-
-  .metric.teal { background: var(--teal-50); border-color: rgba(15, 118, 110, 0.2); }
-  .metric.teal .metric-value { color: var(--teal-800); }
-
-  .metric.amber { background: var(--amber-50); border-color: rgba(241, 90, 34, 0.2); }
-  .metric.amber .metric-value { color: var(--brand-primary); }
-
-  .metric.red { background: var(--red-50); border-color: rgba(220, 38, 38, 0.2); }
-  .metric.red .metric-value { color: var(--red-800); }
-
-  .metric.purple { background: var(--purple-50); border-color: rgba(139, 92, 246, 0.2); }
-  .metric.purple .metric-value { color: var(--purple-800); }
-
-  .form-row { display: grid; gap: 1rem; margin-bottom: 1rem; }
+  .form-row { display: grid; gap: 1.25rem; margin-bottom: 1.25rem; }
   .form-row.c2 { grid-template-columns: 1fr 1fr; }
   .form-row.c3 { grid-template-columns: 1fr 1fr 1fr; }
   .form-row.c4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
 
-  label { font-size: 12px; font-weight: 600; color: var(--text-secondary); display: block; margin-bottom: 6px; }
+  label { font-size: 12px; font-weight: 700; color: var(--text-secondary); display: block; margin-bottom: 8px; }
   label .req { color: var(--brand-primary); margin-left: 2px; }
 
-  input, select {
+  input[type="text"], input[type="email"], select {
     width: 100%;
-    height: 40px;
-    padding: 0 12px;
-    border: 1px solid var(--border-md);
+    height: 44px;
+    padding: 0 14px;
+    border: none;
     border-radius: var(--radius-md);
     font-size: 13px;
     font-family: var(--font);
     color: var(--text-primary);
-    background: var(--bg-primary);
-    outline: none;
+    background: var(--bg-page);
+    box-shadow: var(--nm-in);
     transition: all 0.2s ease;
   }
-  input:focus, select:focus {
-    border-color: var(--brand-primary);
-    box-shadow: 0 0 0 3px rgba(241, 90, 34, 0.18);
+  select { appearance: none; -webkit-appearance: none; }
+  input[type="text"]:focus, input[type="email"]:focus, select:focus {
+    box-shadow: var(--nm-in), inset 0 0 0 2px var(--brand-primary);
   }
-  input.error { border-color: var(--red-600); background: var(--red-50); }
-
-  .hint { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+  
+  input[type="radio"] {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--bg-page);
+    box-shadow: var(--nm-in-sm);
+    display: grid;
+    place-content: center;
+    margin: 0;
+    cursor: pointer;
+  }
+  input[type="radio"]::before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    transform: scale(0);
+    transition: 120ms transform ease-in-out;
+    box-shadow: inset 1em 1em var(--brand-primary);
+  }
+  input[type="radio"]:checked::before { transform: scale(1); }
 
   .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    padding: 0 20px;
-    height: 40px;
+    padding: 0 22px;
+    height: 44px;
     border-radius: var(--radius-md);
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
-    border: 1px solid var(--border-md);
-    background: var(--bg-primary);
+    border: none;
+    background: var(--bg-page);
     color: var(--text-primary);
+    box-shadow: var(--nm-out-sm);
     transition: all 0.2s ease;
     font-family: var(--font);
   }
-  .btn:hover { background: var(--bg-secondary); transform: translateY(-1px); }
-  .btn:active { transform: scale(0.98); }
+  .btn:active { box-shadow: var(--nm-in-sm); transform: scale(0.98); }
 
-  .btn-primary {
-    background: var(--brand-primary);
-    color: #ffffff;
-    border-color: transparent;
-    box-shadow: 0 2px 6px rgba(241, 90, 34, 0.3);
-  }
-  .btn-primary:hover {
-    background: var(--brand-primary-hover);
-    box-shadow: 0 4px 12px rgba(241, 90, 34, 0.4);
-  }
+  .btn-primary { color: var(--brand-primary); }
+  .btn-success { color: var(--color-green); }
 
-  .btn-success {
-    background: var(--teal-600);
-    color: #ffffff;
-    border-color: transparent;
-    box-shadow: 0 2px 6px rgba(15, 118, 110, 0.3);
-  }
-  .btn-success:hover { background: var(--teal-800); }
-
-  .btn-sm { height: 32px; padding: 0 12px; font-size: 12px; border-radius: var(--radius-sm); }
-  .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+  .btn-sm { height: 34px; padding: 0 14px; font-size: 12px; border-radius: var(--radius-sm); }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: var(--nm-in-sm) !important; }
 
   .upload-zone {
-    border: 2px dashed var(--border-md);
+    border: none;
     border-radius: var(--radius-lg);
-    padding: 3.5rem 2rem;
+    padding: 4rem 2rem;
     text-align: center;
     cursor: pointer;
+    background: var(--bg-page);
+    box-shadow: var(--nm-in);
     transition: all 0.3s ease;
-    background: var(--bg-primary);
   }
-  .upload-zone:hover, .upload-zone.drag {
-    border-color: var(--brand-primary);
-    background: var(--amber-50);
-  }
-  .upload-zone svg { width: 52px; height: 52px; color: var(--brand-primary); margin-bottom: 1rem; opacity: 0.9; }
+  .upload-zone svg { width: 52px; height: 52px; color: var(--brand-dark); margin-bottom: 1.25rem; opacity: 0.8; }
   .upload-zone h3 { font-size: 16px; font-weight: 700; color: var(--text-primary); }
-  .upload-zone p { font-size: 12px; color: var(--text-muted); margin-top: 6px; }
+  .upload-zone p { font-size: 12px; color: var(--text-muted); margin-top: 8px; }
   #file-input { display: none; }
 
   .table-wrap {
     overflow-x: auto;
-    border-radius: var(--radius-md);
-    border: 1px solid var(--border);
-    box-shadow: var(--shadow-sm);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--nm-in);
+    padding: 4px;
+    background: var(--bg-page);
   }
   table { width: 100%; border-collapse: collapse; font-size: 12px; }
   th {
-    background: var(--bg-secondary);
-    padding: 12px 14px;
+    background: transparent;
+    padding: 14px;
     text-align: left;
     font-weight: 700;
     color: var(--text-secondary);
-    border-bottom: 1px solid var(--border);
     white-space: nowrap;
     position: sticky;
     top: 0;
     z-index: 10;
+    border-bottom: 2px solid rgba(0,0,0,0.05);
   }
-  td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--text-primary); white-space: nowrap; }
+  td { padding: 12px 14px; border-bottom: 1px solid rgba(0,0,0,0.03); color: var(--text-primary); white-space: nowrap; }
+  [data-theme="dark"] th { border-bottom: 2px solid rgba(255,255,255,0.05); }
+  [data-theme="dark"] td { border-bottom: 1px solid rgba(255,255,255,0.03); }
   tr:last-child td { border-bottom: none; }
-  tr:hover td { background: var(--bg-secondary); }
   .td-num { text-align: right; }
-  .td-mono { font-family: 'Cascadia Code', monospace; font-size: 11px; }
+  .td-mono { font-family: 'Cascadia Code', monospace; font-size: 11px; font-weight: 600; color: var(--text-muted); }
 
-  .badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
-  .badge-ok { background: var(--green-50); color: var(--green-800); }
-  .badge-warn { background: var(--amber-50); color: var(--amber-800); }
-  .badge-err { background: var(--red-50); color: var(--red-800); }
-  .badge-info { background: var(--blue-50); color: var(--brand-dark-light); }
+  .badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 800; box-shadow: var(--nm-in-sm); }
+  .badge-ok { color: var(--color-green); }
+  .badge-err { color: var(--color-red); }
 
   .alert {
-    padding: 14px 18px;
+    padding: 16px 20px;
     border-radius: var(--radius-md);
     font-size: 13px;
-    margin-bottom: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
     display: flex;
     align-items: flex-start;
-    gap: 12px;
-    border: 1px solid;
-    box-shadow: var(--shadow-sm);
+    gap: 14px;
+    box-shadow: var(--nm-in);
+    background: var(--bg-page);
   }
-  .alert svg { width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px; }
-  .alert-warn { background: var(--amber-50); color: var(--amber-800); border-color: rgba(241, 90, 34, 0.3); }
-  .alert-info { background: var(--blue-50); color: var(--brand-dark); border-color: rgba(50, 85, 101, 0.3); }
-  .alert-err { background: var(--red-50); color: var(--red-800); border-color: rgba(220, 38, 38, 0.3); }
-  .alert-ok { background: var(--green-50); color: var(--green-800); border-color: rgba(22, 163, 74, 0.3); }
+  .alert svg { width: 22px; height: 22px; flex-shrink: 0; }
+  .alert-warn { color: var(--color-amber); }
+  .alert-ok { color: var(--color-green); }
 
   .steps {
     display: flex;
-    gap: 6px;
-    margin-bottom: 2rem;
-    background: var(--bg-primary);
+    gap: 12px;
+    margin-bottom: 2.5rem;
+    background: var(--bg-page);
     border-radius: var(--radius-lg);
-    padding: 6px;
-    box-shadow: var(--shadow-sm);
-    border: 1px solid var(--border);
+    padding: 10px;
+    box-shadow: var(--nm-out);
   }
   .step {
     flex: 1;
     padding: 1rem 1.25rem;
     border-radius: var(--radius-md);
     color: var(--text-muted);
-    font-size: 13px;
-    font-weight: 600;
+    font-size: 12px;
+    font-weight: 700;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
     cursor: pointer;
+    box-shadow: var(--nm-out-sm);
     transition: all 0.2s ease;
   }
   .step .num {
     width: 24px;
     height: 24px;
     border-radius: 50%;
-    background: var(--gray-100);
-    color: var(--gray-600);
-    font-size: 12px;
-    font-weight: 700;
+    box-shadow: var(--nm-in-sm);
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 800;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
   }
-  .step.active {
-    background: var(--amber-50);
-    color: var(--brand-primary);
-  }
-  .step.active .num {
-    background: var(--brand-primary);
-    color: #ffffff;
-  }
-  .step.done { color: var(--teal-800); }
-  .step.done .num { background: var(--teal-600); color: #ffffff; }
+  .step.active { box-shadow: var(--nm-in); color: var(--brand-primary); }
+  .step.active .num { color: var(--brand-primary); }
+  .step.done { color: var(--brand-dark); }
+  .step.done .num { color: var(--brand-dark); }
 
-  .section { display: none; animation: fadeIn 0.3s ease; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .section { display: none; animation: fadeIn 0.4s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }
   .section.active { display: block; }
-  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
-  .section-title { font-size: 20px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.01em; }
-  .section-sub { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem; }
+  .section-title { font-size: 22px; font-weight: 800; color: var(--text-primary); letter-spacing: -0.02em; }
+  .section-sub { font-size: 13px; color: var(--text-secondary); margin-top: 6px; font-weight: 500; }
 
   .xml-box {
-    background: #0d161d;
+    background: var(--bg-page);
     border-radius: var(--radius-md);
-    padding: 1.25rem;
+    padding: 1.5rem;
     overflow-x: auto;
     max-height: 420px;
     overflow-y: auto;
-    border: 1px solid #233744;
+    box-shadow: var(--nm-in);
   }
-  .xml-box pre { font-family: 'Cascadia Code', 'Fira Code', monospace; font-size: 12px; color: #e2e8f0; white-space: pre; }
-  .xml-tag { color: #fdba74; } .xml-val { color: #a7f3d0; }
+  .xml-box pre { font-family: 'Cascadia Code', 'Fira Code', monospace; font-size: 12px; color: var(--text-secondary); white-space: pre; }
+  .xml-tag { color: var(--brand-primary); font-weight: 600; } 
+  .xml-val { color: var(--brand-dark); font-weight: 700;}
 
-  select.nat-sel { height: 32px; font-size: 12px; padding: 0 8px; }
-  tr.row-confirmar td { background: var(--amber-50) !important; }
-  tr.row-excluido td { background: var(--gray-50) !important; color: var(--text-muted); }
-  tr.row-erro td { background: var(--red-50) !important; }
-
-  .tabs { display: flex; gap: 8px; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
-  .tab {
-    padding: 8px 18px;
-    border-radius: var(--radius-md);
-    font-size: 13px;
-    font-weight: 700;
+  input[type="checkbox"] {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    background: var(--bg-page);
+    box-shadow: var(--nm-in-sm);
+    display: grid;
+    place-content: center;
+    margin: 0;
     cursor: pointer;
-    background: transparent;
+    border: none;
+    padding: 0;
+  }
+  input[type="checkbox"]::before {
+    content: "✓";
+    font-size: 14px;
+    color: var(--brand-primary);
+    transform: scale(0);
+    transition: 120ms transform ease-in-out;
+  }
+  input[type="checkbox"]:checked::before { transform: scale(1); }
+
+  select.nat-sel { height: 36px; font-size: 11px; padding: 0 10px; border-radius: var(--radius-sm); }
+  
+  .tabs { display: flex; gap: 12px; margin-bottom: 1.5rem; padding-bottom: 8px; }
+  .tab {
+    padding: 10px 20px;
+    border-radius: var(--radius-md);
+    font-size: 12px;
+    font-weight: 800;
+    cursor: pointer;
+    background: var(--bg-page);
     color: var(--text-secondary);
+    box-shadow: var(--nm-out-sm);
     transition: 0.2s ease;
   }
-  .tab:hover { background: var(--bg-secondary); color: var(--text-primary); }
-  .tab.active { background: var(--brand-dark-light); color: #ffffff; }
+  .tab:active { box-shadow: var(--nm-in-sm); }
+  .tab.active { box-shadow: var(--nm-in); color: var(--brand-primary); }
+
+  tr.row-confirmar td { color: var(--color-amber); }
+  tr.row-excluido td { color: var(--text-muted); opacity: 0.6; }
+  tr.row-erro td { color: var(--color-red); }
 
   @keyframes spin { 100% { transform: rotate(360deg); } }
   .spinner { animation: spin 1s linear infinite; }
@@ -436,7 +419,7 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
 <div class="header">
   <div class="header-logo"><svg viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zm-7 3l5 4-5-4-5-4 5-4zm0 10l-5-4h10l-5 4z"/></svg></div>
   <div><h1 id="header-title">EFD-Reinf — Gerador R-4020 e R-4010</h1><p>Prefeitura de Fortaleza · Administração pública municipal descentralizada</p></div>
-  <div class="header-badge">v5.0 Oficial</div>
+  <div class="header-badge">v7.0 Neumorphism Premium</div>
   <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">🌙 Modo Escuro</button>
 </div>
 
@@ -455,21 +438,21 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
     <div><div class="section-title">Configuração da Unidade Gestora</div><div class="section-sub">Dados cadastrais da UG declarante — incluídos em todos os XMLs gerados.</div></div>
   </div>
   
-  <div class="card" style="margin-bottom:1.25rem;">
+  <div class="card">
     <div class="form-row">
-      <label style="font-size:14px; font-weight: 700; color: var(--text-primary);">Qual evento você deseja gerar com a planilha do GRPFOR?<span class="req">*</span></label>
-      <div style="display:flex; gap: 2.5rem; margin-top: 10px;">
-        <label style="cursor:pointer; display:flex; align-items:center; gap:8px; font-size: 14px; font-weight: 600;">
-          <input type="radio" name="tipoEvento" value="4020" checked style="width:18px; height:18px; accent-color: var(--brand-primary);" onchange="mudarEvento()"> R-4020 (Empresas / CNPJ)
+      <label style="font-size:14px; font-weight: 800;">Qual evento você deseja gerar com a planilha do GRPFOR?<span class="req">*</span></label>
+      <div style="display:flex; gap: 2.5rem; margin-top: 14px;">
+        <label style="cursor:pointer; display:flex; align-items:center; gap:12px; font-size: 14px;">
+          <input type="radio" name="tipoEvento" value="4020" checked onchange="mudarEvento()"> R-4020 (Empresas / CNPJ)
         </label>
-        <label style="cursor:pointer; display:flex; align-items:center; gap:8px; font-size: 14px; font-weight: 600;">
-          <input type="radio" name="tipoEvento" value="4010" style="width:18px; height:18px; accent-color: var(--brand-primary);" onchange="mudarEvento()"> R-4010 (Pessoas Físicas / CPF)
+        <label style="cursor:pointer; display:flex; align-items:center; gap:12px; font-size: 14px;">
+          <input type="radio" name="tipoEvento" value="4010" onchange="mudarEvento()"> R-4010 (Pessoas Físicas / CPF)
         </label>
       </div>
     </div>
   </div>
 
-  <div class="grid-2" style="gap:1.25rem; align-items:start;">
+  <div class="grid-2" style="align-items:start;">
     <div class="card">
       <div class="card-title">Identificação da UG</div>
       <div class="form-row c2">
@@ -512,686 +495,4 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
 
 <!-- STEP 2 -->
 <div class="section" id="step2">
-  <div class="section-header"><div><div class="section-title">Importar planilha do GRPFOR-FC</div></div><button class="btn" onclick="goStep(1)">← Voltar</button></div>
-  <div class="card">
-    <div class="upload-zone" id="dropzone" onclick="document.getElementById('file-input').click()" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropFile(event)">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-      <h3>Arraste o CSV aqui ou clique para selecionar</h3>
-      <p>GRPFOR-FC · ViewDespesaFinanceira · Separador ; · Codificação Latin-1</p>
-    </div>
-    <input type="file" id="file-input" accept=".csv" onchange="loadFile(event)">
-  </div>
-  <div id="preview-area" style="display:none;">
-    <div class="grid-5" style="margin:1.25rem 0;" id="preview-metrics"></div>
-    <div style="display:flex;justify-content:flex-end;gap:.75rem;margin-top:1.5rem;">
-      <button class="btn" onclick="document.getElementById('file-input').click()">Trocar arquivo</button>
-      <button class="btn btn-primary" onclick="goStep(3)">Ver triagem automática →</button>
-    </div>
-  </div>
-</div>
-
-<!-- STEP 3 -->
-<div class="section" id="step3">
-  <div class="section-header"><div><div class="section-title">Triagem automática</div></div><button class="btn" onclick="goStep(2)">← Voltar</button></div>
-  <div id="triagem-resumo" class="grid-5" style="margin-bottom:1.25rem;"></div>
-  <div class="alert alert-warn" id="alert-confirmar" style="display:none;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><div id="alert-confirmar-txt"></div></div>
-  <div class="tabs">
-    <div class="tab active" onclick="setTab('todos')">Todos</div>
-    <div class="tab" onclick="setTab('incluir')">✅ Incluir</div>
-    <div class="tab" onclick="setTab('confirmar')">⚠ Confirmar</div>
-    <div class="tab" onclick="setTab('excluido')">🚫 Excluídos</div>
-    <div class="tab" onclick="setTab('erro')">❌ Erros</div>
-  </div>
-  <div class="card"><div class="table-wrap" style="max-height:440px;overflow-y:auto;"><table id="triagem-table"><thead><tr><th style="width:32px;"></th><th>Credor</th><th>CPF/CNPJ</th><th>Elemento</th><th class="td-num">Vl. Bruto</th><th class="td-num">IRRF</th><th>Dt. Pag</th><th>Classificação</th><th>Ação</th></tr></thead><tbody id="triagem-tbody"></tbody></table></div></div>
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><div id="triagem-summary" style="font-size:13px;color:var(--text-secondary);font-weight:600;"></div><button class="btn btn-primary" onclick="goStep(4)">Avançar para revisão →</button></div>
-</div>
-
-<!-- STEP 4 -->
-<div class="section" id="step4">
-  <div class="section-header"><div><div class="section-title">Revisar lançamentos e atribuir natureza do rendimento</div></div><button class="btn" onclick="goStep(3)">← Voltar</button></div>
-  <div id="step4-alerts"></div>
-  <div class="card" style="margin-bottom:1.25rem;">
-    <div style="display:flex;gap:.75rem;align-items:center;flex-wrap:wrap;">
-      <input type="text" id="filter-credor" placeholder="Filtrar por credor..." style="width:220px;" oninput="filterReview()">
-      <select id="filter-status" onchange="filterReview()" style="width:180px;height:40px;font-size:13px;padding:0 10px;">
-        <option value="">Todos os status</option>
-        <option value="pendente">❌ Faltando Natureza</option>
-        <option value="ok">✅ Natureza OK</option>
-      </select>
-      <button class="btn btn-sm btn-primary" onclick="applyNatToAll()">Aplicar selecionados</button>
-      <select id="nat-global" style="width:260px;height:32px;font-size:12px;padding:0 8px;"><option value="">Selecionar natureza global...</option></select>
-    </div>
-    <div id="sugestao-metrics" style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:10px;"></div>
-  </div>
-  <div class="card"><div class="table-wrap" style="max-height:420px;overflow-y:auto;"><table><thead><tr><th style="width:32px;"><input type="checkbox" id="sel-all" onchange="selAll(this)" style="accent-color: var(--brand-primary);"></th><th>Credor</th><th>CPF/CNPJ</th><th class="td-num">Vl. Bruto</th><th class="td-num">IRRF</th><th>Dt. Pag</th><th>Natureza do rendimento<span class="req">*</span></th><th>Status</th></tr></thead><tbody id="review-tbody"></tbody></table></div></div>
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><div id="review-summary" style="font-size:13px;color:var(--text-secondary);font-weight:600;"></div><button class="btn btn-primary" id="btn-gerar" onclick="gerarXML_Visual()" disabled style="font-weight:700; padding:0 28px;">Gerar Lote →</button></div>
-</div>
-
-<!-- STEP 5 -->
-<div class="section" id="step5">
-  <div class="section-header"><div><div class="section-title">Lote de Arquivos Gerados</div><div class="section-sub">Assine com o Transmissor Java e envie à Receita. Faça o fechamento e a DCTFWeb diretamente no e-CAC.</div></div><button class="btn" onclick="goStep(4)">← Voltar</button></div>
-  <div class="alert alert-ok" id="xml-ok-alert"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><div id="xml-ok-msg"></div></div>
-  <div id="banner-producao" style="display:none;background:#7f1d1d;color:white;border-radius:var(--radius-md);padding:14px 18px;margin-bottom:1.25rem;font-size:14px;font-weight:600;display:flex;align-items:center;gap:10px;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>⚠ AMBIENTE DE PRODUÇÃO — Envio oficial à Receita Federal.</div>
-  
-  <div class="grid-4" id="xml-metrics" style="margin-bottom:1.25rem;"></div>
-  
-  <div class="grid-2" style="gap:1.25rem; align-items:start;">
-    <div class="card">
-      <div class="card-title" style="justify-content:space-between; margin-bottom: 12px;">
-        <span>Lista de Arquivos (Download Manual)</span>
-        <button class="btn btn-sm btn-success" onclick="downloadTodosXML()">⬇ Tentar Baixar Todos</button>
-      </div>
-      
-      <div id="lista-arquivos-xml" style="display:grid; gap:8px; margin-bottom: 1.5rem; max-height: 220px; overflow-y: auto; padding-right: 4px;"></div>
-      
-      <div class="card-title" style="justify-content:space-between;">
-        <span>Pré-visualização (Amostra do Último XML)</span>
-        <button class="btn btn-sm" onclick="copyXML()">Copiar Texto</button>
-      </div>
-      <div class="xml-box"><pre id="xml-output"></pre></div>
-    </div>
-    
-    <div>
-      <div class="card" style="margin-bottom:1.25rem;">
-        <div class="card-title">Próximos passos</div>
-        <ol style="padding-left:1.25rem;font-size:13px;color:var(--text-secondary);line-height:2.2;">
-          <li>Baixe os arquivos XML gerados acima.</li>
-          <li>Transmita o lote utilizando o <b>Transmissor Java</b>.</li>
-          <li>Acesse o portal do <b>e-CAC</b> para consultar os recibos consolidados e realizar o fechamento oficial / DCTFWeb.</li>
-        </ol>
-      </div>
-      
-      <div class="card" style="margin-bottom:1.25rem; border-color: var(--brand-primary); background: var(--amber-50);">
-        <div class="card-title" style="color: var(--brand-primary);">Auditoria e Compliance</div>
-        <p style="font-size:12px; color: var(--text-primary); margin-bottom: 12px;">
-          Gere o relatório detalhando as justificativas de inclusão e exclusão de todos os pagamentos processados neste lote. Ideal para prestação de contas.
-        </p>
-        <button class="btn btn-primary btn-sm" onclick="baixarRelatorioAuditoria()" style="width: 100%; font-weight:700;">📊 Baixar Relatório (CSV)</button>
-      </div>
-      
-      <div class="card"><div class="card-title">Totalizadores (R-9005)</div><table style="width:100%;font-size:12px;border-collapse:collapse;" id="totalizador-table"></table></div>
-    </div>
-  </div>
-</div>
-</div>
-
-<script>
-function toggleTheme() {
-  const currentTheme = document.documentElement.getAttribute("data-theme");
-  const newTheme = currentTheme === "dark" ? "light" : "dark";
-  document.documentElement.setAttribute("data-theme", newTheme);
-  const btn = document.getElementById("theme-btn");
-  btn.innerHTML = newTheme === "dark" ? "☀️ Modo Claro" : "🌙 Modo Escuro";
-  localStorage.setItem("reinf_theme", newTheme);
-}
-document.addEventListener('DOMContentLoaded', () => {
-  const savedTheme = localStorage.getItem("reinf_theme");
-  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-  if (savedTheme === "dark" || (!savedTheme && prefersDark)) {
-    document.documentElement.setAttribute("data-theme", "dark");
-    document.getElementById("theme-btn").innerHTML = "☀️ Modo Claro";
-  }
-});
-function gerarXML_Visual() {
-  const btn = document.getElementById('btn-gerar');
-  const txtOriginal = btn.innerHTML;
-  btn.disabled = true;
-  btn.innerHTML = `<svg class="spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;margin-right:6px;"><circle cx="12" cy="12" r="10" stroke-dasharray="32" stroke-dashoffset="10"/></svg> Gerando Lote...`;
-  setTimeout(() => { try { gerarXML(); } finally { btn.innerHTML = txtOriginal; btn.disabled = false; } }, 400);
-}
-
-// -------------------------------------------------------------
-// DADOS BASE (R-4020 E R-4010)
-// -------------------------------------------------------------
-const ELEMENTOS_EXCLUIR = ['319011','319012','319013','319016','319092','319096','319113','339046','339049','311'];
-const CNPJS_EXCLUIR = ['66666666666','29979036'];
-const CNPJS_CONFIRMAR = ['07040108','07047251','15139629','09444530','07354939','07965184','00000000'];
-const NOMES_CONFIRMAR = ['TRIBUNAL','JUDICI','PREVFOR','IPM ','INSS','COELCE','ENEL','CAGECE','EMBASA','SABESP','COPASA','COGERH','ELETROBRAS','CHESF','CORREIOS','BANCO DO BRASIL','CAIXA ECONOM','SINDIONIBUS','SIND '];
-
-const NATUREZAS_4020 = [
-  {grp:'Administração Pública', cod:'17001', desc:'Alimentação'},{grp:'Administração Pública', cod:'17002', desc:'Energia elétrica'},{grp:'Administração Pública', cod:'17003', desc:'Serviços prestados com emprego de materiais'},{grp:'Administração Pública', cod:'17004', desc:'Construção civil por empreitada com emprego de materiais'},{grp:'Administração Pública', cod:'17005', desc:'Serviços hospitalares'},{grp:'Administração Pública', cod:'17006', desc:'Transporte de cargas'},{grp:'Administração Pública', cod:'17007', desc:'Serviços de auxílio diagnóstico e terapia'},{grp:'Administração Pública', cod:'17008', desc:'Produtos farmacêuticos e higiene'},{grp:'Administração Pública', cod:'17009', desc:'Mercadorias e bens em geral'},{grp:'Administração Pública', cod:'17028', desc:'Abastecimento de água'},{grp:'Administração Pública', cod:'17029', desc:'Telefone'},{grp:'Administração Pública', cod:'17031', desc:'Vigilância'},{grp:'Administração Pública', cod:'17032', desc:'Limpeza'},{grp:'Administração Pública', cod:'17033', desc:'Locação de mão de obra'},{grp:'Administração Pública', cod:'17035', desc:'Administração, locação ou cessão de bens imóveis e móveis'},{grp:'Administração Pública', cod:'17099', desc:'Demais serviços'}
-];
-
-const NATUREZAS_4010 = [
-  {grp:'Rendimentos do Trabalho', cod:'10014', desc:'Trabalhador Autônomo (RPA)'},
-  {grp:'Rendimentos do Trabalho', cod:'10012', desc:'Remuneração de serviços de natureza profissional'},
-  {grp:'Aluguéis e Royalties', cod:'13009', desc:'Aluguéis e royalties pagos a residente'},
-  {grp:'Outros Rendimentos', cod:'14001', desc:'Prêmios em concursos e sorteios'},
-  {grp:'Outros Rendimentos', cod:'15001', desc:'Bolsas de estudo e pesquisa (doação)'},
-  {grp:'Decisões Judiciais', cod:'18001', desc:'Cumprimento de decisão da Justiça (RPV)'},
-  {grp:'Decisões Judiciais', cod:'18005', desc:'Rendimentos Recebidos Acumuladamente - RRA'}
-];
-
-let state = { step:1, ug:{tipoEvento:'4020'}, allRows:[], tabAtiva:'todos', xmlContent:'', arquivosGerados:[] };
-
-function mudarEvento() {
-  const tipo = document.querySelector('input[name="tipoEvento"]:checked').value;
-  state.ug.tipoEvento = tipo;
-  document.getElementById('header-title').innerText = `EFD-Reinf — Gerador R-${tipo}`;
-}
-
-try {
-  const saved = sessionStorage.getItem('reinf_ug');
-  if(saved){
-    state.ug = JSON.parse(saved);
-    if(!state.ug.tipoEvento) state.ug.tipoEvento = '4020';
-    window.addEventListener('DOMContentLoaded', () => {
-      const ug = state.ug;
-      document.querySelector(`input[name="tipoEvento"][value="${ug.tipoEvento}"]`).checked = true;
-      mudarEvento();
-      
-      if(ug.cnpjRaiz){
-        const r=ug.cnpjRaiz.replace(/[^0-9A-Za-z]/g,'').slice(0,8);
-        document.getElementById('cnpjRaiz').value=r.length>=8?r.slice(0,2)+'.'+r.slice(2,5)+'.'+r.slice(5,8):r;
-      }
-      if(ug.competencia) document.getElementById('competencia').value = ug.competencia;
-      if(ug.razaoSocial) document.getElementById('razaoSocial').value = ug.razaoSocial;
-      if(ug.naturezaJuridica) document.getElementById('naturezaJuridica').value = ug.naturezaJuridica;
-      if(ug.classifTrib) document.getElementById('classifTrib').value = ug.classifTrib;
-      if(ug.indPertIRRF) document.getElementById('indPertIRRF').value = ug.indPertIRRF;
-      if(ug.nomeContato) document.getElementById('nomeContato').value = ug.nomeContato;
-      if(ug.cpfContato) document.getElementById('cpfContato').value = ug.cpfContato.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/,'$1.$2.$3-$4');
-      if(ug.telefoneContato) document.getElementById('telefoneContato').value = ug.telefoneContato;
-      if(ug.emailContato) document.getElementById('emailContato').value = ug.emailContato;
-      if(ug.ambiente) document.getElementById('ambiente').value = ug.ambiente;
-    });
-  }
-} catch(e){}
-
-// -------------------------------------------------------------
-// FUNÇÕES DE FORMATAÇÃO E VALIDAÇÃO (CPF E CNPJ)
-// -------------------------------------------------------------
-function fmtCnpjRaiz(el){ let v=el.value.replace(/[^0-9A-Za-z]/g,'').slice(0,14).toUpperCase(); if(v.length<=8){ if(v.length>5) v=v.slice(0,2)+'.'+v.slice(2,5)+'.'+v.slice(5); else if(v.length>2) v=v.slice(0,2)+'.'+v.slice(2); } else { v=v.slice(0,2)+'.'+v.slice(2,5)+'.'+v.slice(5,8)+'/'+v.slice(8,12)+(v.length>12?'-'+v.slice(12):''); } el.value=v; }
-function fmtComp(el){let v=el.value.replace(/\D/g,'').slice(0,6);if(v.length>2)v=v.slice(0,2)+'/'+v.slice(2);el.value=v;}
-function fmtCpf(el){let v=el.value.replace(/\D/g,'').slice(0,11);if(v.length>9)v=v.slice(0,3)+'.'+v.slice(3,6)+'.'+v.slice(6,9)+'-'+v.slice(9);else if(v.length>6)v=v.slice(0,3)+'.'+v.slice(3,6)+'.'+v.slice(6);else if(v.length>3)v=v.slice(0,3)+'.'+v.slice(3);el.value=v;}
-function parseBRL(s){return parseFloat(String(s||0).replace(/\./g,'').replace(',','.'))||0;}
-function fmtBRL(n){return n.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});}
-function cleanCNPJ(s) { return String(s || '').replace(/[^0-9A-Za-z]/g, '').toUpperCase(); }
-function cleanCPF(s) { return String(s || '').replace(/\D/g, ''); }
-
-function fmtDoc(s) { 
-  let c = cleanCNPJ(s);
-  if(c.length === 11) return c.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
-  return c.length === 14 ? c.replace(/^([0-9A-Z]{2})([0-9A-Z]{3})([0-9A-Z]{3})([0-9A-Z]{4})([0-9]{2})$/, '$1.$2.$3/$4-$5') : c; 
-}
-
-function fmtDate(s){if(!s)return'';const p=s.trim().split('/');return p.length===3?`${p[2]}-${p[1]}-${p[0]}`:s;}
-function fmtDec(n){if(isNaN(n) || n === null || n === '') return "0,00";return Number(n).toFixed(2).replace('.', ',');}
-function getPerApur(){const c=document.getElementById('competencia').value;if(!c||c.length<7)return'';const[mm,yyyy]=c.split('/');return`${yyyy}-${mm}`;}
-
-function validCNPJ(cnpj) {
-  cnpj = cleanCNPJ(cnpj);
-  if (cnpj.length !== 14) return false;
-  const calcDigit = (cnpjStr, weight) => {
-    let sum = 0;
-    for (let i = 0; i < weight.length; i++) {
-      let val = cnpjStr.charCodeAt(i) - 48;
-      sum += val * weight[i];
-    }
-    let rest = sum % 11;
-    return rest < 2 ? 0 : 11 - rest;
-  };
-  const w1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
-  const w2 = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
-  if (parseInt(cnpj[12]) !== calcDigit(cnpj, w1)) return false;
-  if (parseInt(cnpj[13]) !== calcDigit(cnpj, w2)) return false;
-  return true;
-}
-
-function validCPF(cpf) {
-  cpf = cleanCPF(cpf);
-  if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
-  let soma = 0, resto;
-  for (let i = 1; i <= 9; i++) soma += parseInt(cpf.substring(i-1, i)) * (11 - i);
-  resto = (soma * 10) % 11;
-  if ((resto == 10) || (resto == 11)) resto = 0;
-  if (resto != parseInt(cpf.substring(9, 10))) return false;
-  soma = 0;
-  for (let i = 1; i <= 10; i++) soma += parseInt(cpf.substring(i-1, i)) * (12 - i);
-  resto = (soma * 10) % 11;
-  if ((resto == 10) || (resto == 11)) resto = 0;
-  if (resto != parseInt(cpf.substring(10, 11))) return false;
-  return true;
-}
-
-// -------------------------------------------------------------
-// MOTOR DE TRIAGEM R-4010 E R-4020
-// -------------------------------------------------------------
-function classificarLinha(row) {
-  const is4010 = state.ug.tipoEvento === '4010';
-  const cpfCnpj = is4010 ? cleanCPF(row['CPF/CNPJ']) : cleanCNPJ(row['CPF/CNPJ']); 
-  const raiz8 = cpfCnpj.slice(0,8);
-  const nome = (row['Nome do Credor']||'').trim().toUpperCase(); 
-  const elemento = (row['Elemento']||'').trim();
-  const hist = (row['Hist']||row['Hist;']||'').trim().toUpperCase();
-  const vlBruto = parseBRL(row['Vl Bruto']); 
-  const irrf = parseBRL(row['IRRF']); 
-  const dtPag = (row['Dt Pag']||'').trim();
-
-  // Regras Gerais
-  if(vlBruto <= 0) return{cls:'erro',motivo:'Valor bruto zero'};
-  if(!dtPag) return{cls:'confirmar',motivo:'Data de pagamento ausente'};
-  if(/VALE TRANSPORTE|VTE|VALE-TRANSPORTE/.test(hist)||/VALE TRANSPORTE|VTE/.test(nome)) return{cls:'excluido',motivo:'Vale transporte (isento de Reinf)'};
-
-  if (is4010) {
-    if(cpfCnpj.length !== 11) return{cls:'erro',motivo:'Tamanho inválido (Não é um CPF)'};
-    if(!validCPF(cpfCnpj)) return{cls:'erro',motivo:'CPF com dígito verificador inválido'};
-    
-    const elNum = elemento.replace(/\D/g,'').slice(0,6);
-    if(elNum === '319011') return{cls:'confirmar',motivo:'Vencimentos/Folha (Verificar se é Reinf)'};
-    if(irrf <= 0) return{cls:'confirmar',motivo:'Sem retenção / Isento (Confirme se deve enviar)'};
-    
-    return{cls:'incluir',motivo:'Pessoa Física com retenção',avisos:[]};
-
-  } else {
-    if(cpfCnpj.length !== 14) return{cls:'erro',motivo:'Tamanho inválido (Não é um CNPJ)'};
-    if(!validCNPJ(cpfCnpj)) return{cls:'erro',motivo:'CNPJ com dígito verificador inválido'};
-    
-    if(CNPJS_EXCLUIR.some(c=>cpfCnpj.startsWith(cleanCNPJ(c)))) return{cls:'confirmar',motivo:'Atenção: CNPJ de Folha de Pagamento. Enviar?'};
-    const elNum = elemento.replace(/\D/g,'').slice(0,6);
-    if(ELEMENTOS_EXCLUIR.some(e=>elNum.startsWith(e))) return{cls:'confirmar',motivo:`Elemento ${elemento} suspeito. Enviar?`};
-    if(/FOLHA DE PAGAMENTO|EMPENHO GERADO AUTOMATICAMENTE.*PESSOAL/.test(hist)) return{cls:'confirmar',motivo:'Possível Folha no histórico. Enviar?'};
-    
-    if(CNPJS_CONFIRMAR.includes(raiz8) || NOMES_CONFIRMAR.some(n=>nome.includes(n))){
-      if(irrf<=0) return{cls:'confirmar',motivo:'Concessionária sem IRRF (Imune/Isenta?)'};
-      return{cls:'confirmar',motivo:`Concessionária com retenção (R$ ${fmtBRL(irrf)})`};
-    }
-
-    if(irrf <= 0) return{cls:'confirmar',motivo:'Sem retenção de IRRF (Imune/Isenta?)'};
-    
-    return{cls:'incluir',motivo:'Serviço PJ com IRRF',avisos:[]};
-  }
-}
-
-function buildNatOpts(selected=''){
-  const lista = state.ug.tipoEvento === '4010' ? NATUREZAS_4010 : NATUREZAS_4020;
-  return `<optgroup label="Naturezas Frequentes">`+
-    lista.map(n=>`<option value="${n.cod}" ${selected===n.cod?'selected':''}>${n.cod} – ${n.desc}</option>`).join('')+
-    `</optgroup>`;
-}
-
-function sugerirNatureza(row){
-  const hist=(row['Hist']||'').toUpperCase(); const nome=(row['Nome do Credor']||'').toUpperCase();
-  const cpfCnpj = state.ug.tipoEvento === '4010' ? cleanCPF(row['CPF/CNPJ']) : cleanCNPJ(row['CPF/CNPJ']);
-  const raiz8 = cpfCnpj.slice(0,8);
-  const is4010 = state.ug.tipoEvento === '4010';
-  const lista = is4010 ? NATUREZAS_4010 : NATUREZAS_4020;
-  
-  function nat(cod,conf,f){const n=lista.find(x=>x.cod===cod);return n?{cod,desc:n.desc,confianca:conf,fonte:f}:null;}
-  
-  if (is4010) {
-    if(/SORTEIO|NOTA FORTALEZA|PREMIO/.test(hist)) return nat('14001','alta','Sorteio / Premiação');
-    if(/PROCESSO JUDICIAL|RPV|HONOR/.test(hist) || row['Elemento'] === '319091' || row['Elemento'] === '339091') return nat('18001','alta','Decisão Judicial');
-    if(/MEDICO|RPA|AUTONOMO|PRESTADOR/.test(hist) || row['Elemento'] === '339036') return nat('10014','media','Trabalhador Autônomo');
-    if(/ALUGUEL|LOCACAO/.test(hist)) return nat('13009','alta','Locação de Imóvel PF');
-    if(/BOLSA DE ESTUDO|RESIDENTE/.test(hist) || row['Elemento'] === '339018') return nat('15001','alta','Bolsas de Estudo');
-  } else {
-    if(['07047251','00360305'].includes(raiz8) || /ENERGIA ELETRICA/.test(hist)) return nat('17002','alta','Energia elétrica');
-    if(raiz8==='07040108' || /AGUA E ESGO/.test(hist)) return nat('17028','alta','Abastecimento de água');
-    if(/TELEFON|INTERNET/.test(hist)) return nat('17029','alta','Telecomunicações');
-    if(/LIMPEZA|HIGIENIZACAO/.test(hist)) return nat('17032','alta','Limpeza');
-    if(/VIGILAN/.test(hist)) return nat('17031','alta','Vigilância');
-    if(/LOCACAO DE MAO/.test(hist)) return nat('17033','alta','Locação de mão de obra');
-    if(/LOCACAO/.test(hist) && /(IMOVEL|VEICULO|EQUIPAMENTO)/.test(hist)) return nat('17035','alta','Locação de bens');
-    if(/MEDICAMENT|FARMACEUT|MATERIAL HOSPITALAR/.test(hist)) return nat('17008','alta','Produtos farmacêuticos / hospitalares');
-    if(/MATERIAL|MERCADORIA/.test(hist)) return nat('17009','media','Mercadorias em geral');
-  }
-  return nat(is4010?'10014':'17099','baixa','Verificar manualmente');
-}
-
-// -------------------------------------------------------------
-// FLUXO DE NAVEGAÇÃO E UI
-// -------------------------------------------------------------
-function goStep(n){
-  if(n===3&&state.allRows.length===0){alert('Importe a planilha.');return;}
-  if(n===4){filterReview();}
-  state.step=n;
-  document.querySelectorAll('.section').forEach((s,i)=>s.classList.toggle('active',i===n-1));
-  document.querySelectorAll('.step').forEach((s,i)=>{
-    s.classList.remove('active','done');
-    if(i<n-1)s.classList.add('done'); else if(i===n-1)s.classList.add('active');
-  });
-  if(n===3)renderTriagem();
-}
-
-function validateStep1(){
-  const req=['cnpjRaiz','competencia','razaoSocial','naturezaJuridica','nomeContato','cpfContato']; let ok=true;
-  req.forEach(id=>{const el=document.getElementById(id);if(!el.value.trim()){el.classList.add('error');ok=false;}else el.classList.remove('error');});
-  if(!ok){alert('Preencha os campos obrigatórios.');return;}
-  state.ug={
-    tipoEvento:document.querySelector('input[name="tipoEvento"]:checked').value,
-    cnpjRaiz:cleanCNPJ(document.getElementById('cnpjRaiz').value).slice(0,8),
-    cnpjCompleto:cleanCNPJ(document.getElementById('cnpjRaiz').value),
-    competencia:document.getElementById('competencia').value,
-    razaoSocial:document.getElementById('razaoSocial').value,
-    naturezaJuridica:document.getElementById('naturezaJuridica').value,
-    classifTrib:document.getElementById('classifTrib').value,
-    indPertIRRF:document.getElementById('indPertIRRF').value,
-    nomeContato:document.getElementById('nomeContato').value,
-    cpfContato:document.getElementById('cpfContato').value.replace(/\D/g,''),
-    telefoneContato:document.getElementById('telefoneContato').value.replace(/\D/g,''),
-    emailContato:document.getElementById('emailContato').value,
-    ambiente:document.getElementById('ambiente').value,
-    versaoLeiaute:'2.01.02',
-  };
-  try{ sessionStorage.setItem('reinf_ug', JSON.stringify(state.ug)); }catch(e){}
-  goStep(2);
-}
-
-function dragOver(e){e.preventDefault();document.getElementById('dropzone').classList.add('drag');}
-function dragLeave(){document.getElementById('dropzone').classList.remove('drag');}
-function dropFile(e){e.preventDefault();dragLeave();if(e.dataTransfer.files[0])processFile(e.dataTransfer.files[0]);}
-function loadFile(e){if(e.target.files[0])processFile(e.target.files[0]);}
-
-function processFile(file){
-  const zone = document.getElementById('dropzone');
-  zone.innerHTML = `<p style="color:var(--brand-dark-light);font-weight:600;">⏳ Lendo arquivo: <strong>${file.name}</strong>...</p>`;
-  const reader = new FileReader();
-  reader.onload = e => {
-    try {
-      const text = e.target.result;
-      if(!text){ zone.innerHTML = `<p style="color:var(--red-600);">❌ Arquivo vazio.</p>`; return; }
-      const delim = text.split('\n')[0].includes(';') ? ';' : ',';
-      Papa.parse(text, { delimiter: delim, header: true, skipEmptyLines: true,
-        complete: r => {
-          if(!r.data || r.data.length === 0){ zone.innerHTML = `<p style="color:var(--red-600);">❌ Nenhuma linha encontrada.</p>`; return; }
-          zone.innerHTML = `<p style="color:var(--teal-600);font-weight:600;">✅ Arquivo lido: <strong>${r.data.length}</strong> linhas</p>`;
-          parseRows(r.data);
-        }
-      });
-    } catch(err){ zone.innerHTML = `<p style="color:var(--red-600);">❌ Erro: ${err.message}</p>`; }
-  };
-  reader.readAsText(file, 'latin1');
-}
-
-function parseRows(data){
-  state.allRows=data.map((row,i)=>{
-    const doc=state.ug.tipoEvento==='4010'?cleanCPF(row['CPF/CNPJ']):cleanCNPJ(row['CPF/CNPJ']); 
-    const vlBruto=parseBRL(row['Vl Bruto']); const irrf=parseBRL(row['IRRF']);
-    const class_=classificarLinha(row); const sugestao=class_.cls==='incluir'?sugerirNatureza(row):null;
-    return{idx:i,doc:doc,nome:(row['Nome do Credor']||'').trim(),vlBruto,irrf,dtPag:(row['Dt Pag']||'').trim(),
-      hist:(row['Hist']||'').trim(),elemento:(row['Elemento']||'').trim(),cls:class_.cls,motivo:class_.motivo,avisos:class_.avisos||[],
-      natureza:sugestao?sugestao.cod:'',sugestao,selected:class_.cls==='incluir',raw:row};
-  });
-  document.getElementById('nat-global').innerHTML='<option value="">Selecionar global...</option>'+buildNatOpts();
-  buildPreviewMetrics(); document.getElementById('preview-area').style.display='block';
-}
-
-function buildPreviewMetrics(){
-  const inc=state.allRows.filter(r=>r.cls==='incluir').length; const conf=state.allRows.filter(r=>r.cls==='confirmar').length;
-  document.getElementById('preview-metrics').innerHTML=`
-    <div class="metric blue"><div class="metric-label">Total</div><div class="metric-value">${state.allRows.length}</div></div>
-    <div class="metric teal"><div class="metric-label">✅ Para R-${state.ug.tipoEvento}</div><div class="metric-value">${inc}</div></div>
-    <div class="metric amber"><div class="metric-label">⚠ Confirmar</div><div class="metric-value">${conf}</div></div>`;
-}
-
-function setTab(tab){ state.tabAtiva=tab; document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',['todos','incluir','confirmar','excluido','erro'][i]===tab)); renderTriagem(); }
-
-function renderTriagem(){
-  const inc=state.allRows.filter(r=>r.cls==='incluir'); const conf=state.allRows.filter(r=>r.cls==='confirmar');
-  document.getElementById('triagem-resumo').innerHTML=`
-    <div class="metric teal"><div class="metric-label">✅ Incluir</div><div class="metric-value">${inc.length}</div><div class="metric-sub">R$ ${fmtBRL(inc.reduce((a,r)=>a+r.vlBruto,0))}</div></div>
-    <div class="metric amber"><div class="metric-label">⚠ Confirmar</div><div class="metric-value">${conf.length}</div></div>`;
-  const t=state.tabAtiva; const rows=t==='todos'?state.allRows:t==='incluir'?inc:t==='confirmar'?conf:t==='excluido'?state.allRows.filter(r=>r.cls==='excluido'):state.allRows.filter(r=>r.cls==='erro');
-  
-  document.getElementById('triagem-tbody').innerHTML=rows.map(r=>`
-    <tr class="${r.cls==='confirmar'?'row-confirmar':r.cls==='excluido'?'row-excluido':r.cls==='erro'?'row-erro':''}">
-      <td>${r.cls==='incluir'?'✅':r.cls==='confirmar'?'⚠':r.cls==='excluido'?'🚫':'❌'}</td>
-      <td><div style="font-weight:600;font-size:12px;">${r.nome}</div></td><td class="td-mono">${fmtDoc(r.doc)}</td>
-      <td class="td-mono">${r.elemento}</td><td class="td-num">R$ ${fmtBRL(r.vlBruto)}</td><td class="td-num">${r.irrf>0?'R$ '+fmtBRL(r.irrf):'—'}</td>
-      <td class="td-mono">${r.dtPag}</td><td><span title="${r.motivo}" style="font-weight:600;">${r.cls}</span></td>
-      <td>${r.cls==='confirmar'?`<button class="btn btn-sm btn-primary" onclick="reclassificar(${r.idx},'incluir')">✅ Incluir</button> <button class="btn btn-sm" onclick="reclassificar(${r.idx},'excluido')">🚫 Excluir</button>`
-        :r.cls==='excluido'||r.cls==='incluir'?`<button class="btn btn-sm" onclick="reclassificar(${r.idx},${r.cls==='excluido'?`'incluir'`:`'excluido'`})">↩ Trocar</button>`:''}</td>
-    </tr>`).join('');
-}
-
-function reclassificar(idx,novaCls){ state.allRows[idx].cls=novaCls; state.allRows[idx].selected=novaCls==='incluir'; renderTriagem(); }
-
-function getFiltrados() {
-  const txt=(document.getElementById('filter-credor').value||'').toLowerCase();
-  const status=(document.getElementById('filter-status') ? document.getElementById('filter-status').value : ''); 
-  let filtrados = state.allRows.filter(r=>r.cls==='incluir');
-  if(txt) filtrados = filtrados.filter(r=>r.nome.toLowerCase().includes(txt)||r.doc.includes(txt));
-  if(status === 'pendente') filtrados = filtrados.filter(r=>!r.natureza);
-  if(status === 'ok') filtrados = filtrados.filter(r=>r.natureza);
-  return filtrados;
-}
-
-function filterReview(){
-  const filtrados = getFiltrados();
-  document.getElementById('review-tbody').innerHTML=filtrados.map(r=>`
-    <tr>
-      <td><input type="checkbox" class="row-chk" ${r.selected?'checked':''} onchange="toggleRow(${r.idx},this.checked)" style="accent-color: var(--brand-primary);"></td>
-      <td><div style="font-weight:600;font-size:12px;">${r.nome}</div><div style="font-size:10px;color:var(--text-muted);">${r.elemento} · ${r.hist.slice(0,50)}</div></td>
-      <td class="td-mono">${fmtDoc(r.doc)}</td><td class="td-num">R$ ${fmtBRL(r.vlBruto)}</td><td class="td-num">${r.irrf>0?'R$ '+fmtBRL(r.irrf):'—'}</td>
-      <td class="td-mono">${r.dtPag}</td>
-      <td><select class="nat-sel" style="width:100%;min-width:200px;" onchange="setNatureza(${r.idx},this.value)"><option value="">Selecionar...</option>${buildNatOpts(r.natureza)}</select></td>
-      <td>${r.natureza?'<span class="badge badge-ok">OK</span>':'<span class="badge badge-err">Falta Nat.</span>'}</td>
-    </tr>`).join('');
-    
-  const master = document.getElementById('sel-all');
-  if(master) master.checked = filtrados.length > 0 && filtrados.every(r => r.selected);
-  
-  updateReviewSummary();
-}
-
-function toggleRow(idx,checked){
-  state.allRows[idx].selected=checked;
-  const filtrados = getFiltrados();
-  const master = document.getElementById('sel-all');
-  if(master) master.checked = filtrados.length > 0 && filtrados.every(r => r.selected);
-  updateReviewSummary();
-}
-
-function setNatureza(idx,val){state.allRows[idx].natureza=val;filterReview();}
-
-function selAll(el){
-  getFiltrados().forEach(r=>r.selected=el.checked);
-  filterReview();
-}
-
-function applyNatToAll(){ 
-  const val=document.getElementById('nat-global').value; 
-  if(!val) { alert('Selecione uma natureza na caixa ao lado antes de aplicar.'); return; }
-  const filtrados = getFiltrados();
-  let afetados = 0;
-  filtrados.forEach(r => { 
-    if(r.selected) { r.natureza=val; afetados++; } 
-  });
-  if(afetados === 0) alert('Nenhum credor selecionado (caixinha marcada) na lista atual.');
-  filterReview(); 
-}
-
-function updateReviewSummary(){
-  const valid=state.allRows.filter(r=>r.selected&&r.cls==='incluir');
-  const semNat=valid.filter(r=>!r.natureza).length;
-  document.getElementById('review-summary').innerHTML=`<strong>${valid.length}</strong> credores selecionados globalmente`;
-  document.getElementById('btn-gerar').disabled=valid.length===0||semNat>0;
-}
-
-// -------------------------------------------------------------
-// RELATÓRIO DE AUDITORIA E COMPLIANCE
-// -------------------------------------------------------------
-function baixarRelatorioAuditoria() {
-  const is4010 = state.ug.tipoEvento === '4010';
-  let csv = "Nome do Credor;CPF/CNPJ;Elemento;Vl Bruto;IRRF;Dt Pag;Status Final;Natureza de Rendimento;Justificativa do Sistema\n";
-  
-  state.allRows.forEach(r => {
-    let nat = r.natureza ? r.natureza : "N/A";
-    let statusFinal = (r.selected && r.cls === 'incluir') ? 'Enviado no Lote' : 'Não Enviado';
-    let docFmt = is4010 ? cleanCPF(r.doc) : cleanCNPJ(r.doc);
-    let histLimpo = r.hist.replace(/(\r\n|\n|\r)/gm, " ");
-    
-    csv += `"${r.nome}";"${docFmt}";"${r.elemento}";"${fmtDec(r.vlBruto)}";"${fmtDec(r.irrf)}";"${r.dtPag}";"${statusFinal}";"${nat}";"${r.motivo}"\n`;
-  });
-  
-  const blob = new Blob(["\uFEFF"+csv], { type: 'text/csv;charset=utf-8;' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `Relatorio_Auditoria_R${state.ug.tipoEvento}_${state.ug.competencia.replace('/','_')}.csv`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-}
-
-// -------------------------------------------------------------
-// GERAÇÃO DOS XMLS (R-4010 OU R-4020)
-// -------------------------------------------------------------
-function gerarXML(){
-  const ug=state.ug;
-  if(!ug||!ug.cnpjRaiz){ alert('Configure os dados da Unidade Gestora no Passo 1.'); goStep(1); return; }
-  const is4010 = ug.tipoEvento === '4010';
-
-  const valid=state.allRows.filter(r=>r.selected&&r.cls==='incluir'&&r.natureza);
-  if(!valid.length)return;
-
-  const nrInsc=String(ug.cnpjRaiz).padEnd(8,'0');
-  const cnpjCompleto14 = String(ug.cnpjCompleto||'');
-  const nrInscEstab = cnpjCompleto14.length===14 ? cnpjCompleto14 : nrInsc+'000100';
-  const perApur=getPerApur();
-  
-  let vlIrTotal=0, vlBrutoTotal=0;
-  const benefs=new Map();
-  for(const p of valid){
-    vlIrTotal+=p.irrf; vlBrutoTotal+=p.vlBruto;
-    const documento = is4010 ? cleanCPF(p.doc) : cleanCNPJ(p.doc);
-    if(!benefs.has(documento)) benefs.set(documento, new Map());
-    const pgtos=benefs.get(documento);
-    if(!pgtos.has(p.natureza)) pgtos.set(p.natureza,[]);
-    pgtos.get(p.natureza).push(p);
-  }
-
-  state.arquivosGerados = [];
-  let ultimoXmlGerado = '';
-
-  for (const [documento, pgtosByNat] of benefs) {
-    let ideBenefInner = '';
-    
-    for (const [natRend, pagamentos] of pgtosByNat) {
-      ideBenefInner += `<idePgto><natRend>${natRend}</natRend>`;
-      
-      const pgtosByDate = new Map();
-      for (const p of pagamentos) {
-        const dataFmt = fmtDate(p.dtPag);
-        if (!pgtosByDate.has(dataFmt)) pgtosByDate.set(dataFmt, { vlrBruto: 0, irrf: 0 });
-        const agrupado = pgtosByDate.get(dataFmt);
-        agrupado.vlrBruto += p.vlBruto;
-        agrupado.irrf += p.irrf;
-      }
-      
-      for (const [dataFG, valores] of pgtosByDate) {
-        const ret = valores.irrf > 0 ? `<retencoes><vlrBaseIR>${fmtDec(valores.vlrBruto)}</vlrBaseIR><vlrIR>${fmtDec(valores.irrf)}</vlrIR></retencoes>` : '';
-        ideBenefInner += `<infoPgto><dtFG>${dataFG}</dtFG><vlrBruto>${fmtDec(valores.vlrBruto)}</vlrBruto>${ret}</infoPgto>`;
-      }
-      ideBenefInner += `</idePgto>`;
-    }
-    
-    const agora = new Date();
-    const nrInsc14 = String(nrInsc).padEnd(14,'0');
-    const tsEvt = agora.getFullYear().toString()+String(agora.getMonth()+1).padStart(2,'0')+String(agora.getDate()).padStart(2,'0')+String(agora.getHours()).padStart(2,'0')+String(agora.getMinutes()).padStart(2,'0')+String(agora.getSeconds()).padStart(2,'0');
-    const rnd = Math.floor(Math.random() * 90000) + 10000;
-    const evId = `ID1${nrInsc14}${tsEvt}${rnd}`;
-
-    const evtName = is4010 ? 'evt4010PagtoBeneficiarioPF' : 'evt4020PagtoBeneficiarioPJ';
-    const evtRoot = is4010 ? 'evtRetPF' : 'evtRetPJ';
-    const tagBenef = is4010 ? 'cpfBenef' : 'cnpjBenef';
-
-    const xmlContent = `<?xml version="1.0" encoding="UTF-8"?>
-<Reinf xmlns="http://www.reinf.esocial.gov.br/schemas/${evtName}/v2_01_02">
-  <${evtRoot} id="${evId}">
-    <ideEvento>
-      <indRetif>1</indRetif>
-      <perApur>${perApur}</perApur>
-      <tpAmb>${ug.ambiente}</tpAmb>
-      <procEmi>1</procEmi>
-      <verProc>${ug.versaoLeiaute}</verProc>
-    </ideEvento>
-    <ideContri>
-      <tpInsc>1</tpInsc>
-      <nrInsc>${nrInsc}</nrInsc>
-    </ideContri>
-    <ideEstab>
-      <tpInscEstab>1</tpInscEstab>
-      <nrInscEstab>${nrInscEstab}</nrInscEstab>
-      <ideBenef>
-        <${tagBenef}>${documento}</${tagBenef}>
-        ${ideBenefInner}
-      </ideBenef>
-    </ideEstab>
-  </${evtRoot}>
-</Reinf>`;
-
-    ultimoXmlGerado = xmlContent;
-    const tipoArq = is4010 ? 'R4010' : 'R4020';
-    const nomeArquivo = `${tipoArq}_Credor_${documento}_${perApur.replace('-','_')}.xml`;
-    state.arquivosGerados.push({ nome: nomeArquivo, conteudo: xmlContent });
-  }
-
-  state.xmlContent = ultimoXmlGerado;
-  document.getElementById('xml-output').innerHTML = colorXML(ultimoXmlGerado);
-
-  document.getElementById('lista-arquivos-xml').innerHTML = state.arquivosGerados.map((arq, i) => `
-    <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 14px; background:var(--bg-secondary); border-radius:var(--radius-md); border:1px solid var(--border);">
-      <div style="font-family:'Cascadia Code', monospace; font-size:12px; color:var(--text-primary); font-weight:700;">📄 ${arq.nome}</div>
-      <button class="btn btn-sm btn-success" onclick="downloadXMLIndice(${i})">⬇ Baixar</button>
-    </div>
-  `).join('');
-
-  document.getElementById('xml-metrics').innerHTML=`
-    <div class="metric blue"><div class="metric-label">Arquivos Gerados</div><div class="metric-value">${benefs.size}</div></div>
-    <div class="metric teal"><div class="metric-label">Vl. Bruto total</div><div class="metric-value">R$ ${fmtBRL(vlBrutoTotal)}</div></div>
-    <div class="metric amber"><div class="metric-label">IRRF retido</div><div class="metric-value">R$ ${fmtBRL(vlIrTotal)}</div></div>`;
-
-  document.getElementById('totalizador-table').innerHTML=`
-    <thead><tr><th style="padding:10px 14px;background:var(--bg-secondary);font-size:11px;">Tributo</th><th style="padding:10px 14px;background:var(--bg-secondary);font-size:11px;text-align:right;">Retenção</th></tr></thead>
-    <tbody><tr><td style="padding:10px 14px;font-size:12px;border-bottom:1px solid var(--border);font-weight:600;">IRRF (${is4010?'PF':'PJ'})</td><td style="padding:10px 14px;font-size:12px;text-align:right;border-bottom:1px solid var(--border);font-weight:700;color:var(--brand-primary);">R$ ${fmtBRL(vlIrTotal)}</td></tr></tbody>`;
-
-  document.getElementById('xml-ok-msg').innerHTML = `Foram gerados <b>${benefs.size} arquivos ${ug.tipoEvento}</b>. Se o navegador bloqueou o download múltiplo, baixe os arquivos manualmente na lista abaixo.`;
-  document.getElementById('banner-producao').style.display = ug.ambiente === '1' ? 'flex' : 'none';
-  
-  goStep(5);
-  downloadTodosXML();
-}
-
-function colorXML(xml){ return xml.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/&lt;\/?[\w:]+/g,m=>`<span class="xml-tag">${m}</span>`).replace(/\/?&gt;/g,m=>`<span class="xml-tag">${m}</span>`); }
-
-function copyXML(){ 
-  if(state.arquivosGerados.length > 0) {
-    navigator.clipboard.writeText(state.arquivosGerados[state.arquivosGerados.length-1].conteudo).then(()=>alert('XML copiado!')); 
-  }
-}
-
-function downloadTodosXML() {
-  let delay = 0;
-  state.arquivosGerados.forEach(arq => {
-    setTimeout(() => {
-      const blob = new Blob([arq.conteudo], { type: "text/xml" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = arq.nome; 
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }, delay);
-    delay += 400; 
-  });
-}
-
-function downloadXMLIndice(i) {
-  const arq = state.arquivosGerados[i];
-  const blob = new Blob([arq.conteudo], { type: "text/xml" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = arq.nome;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}
-</script>
-</body>
-</html>
+  <div class="section-header"><div><div class="section-title">Importar planilha do GRPFOR-FC</div></div><button class="btn" onclick="goStep(1)">← Voltar<
