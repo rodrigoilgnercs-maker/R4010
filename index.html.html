@@ -58,14 +58,11 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
     --bg-page: #0f172a;
     --bg-primary: #1e293b;
     --bg-secondary: #334155;
-
     --text-primary: #f8fafc;
     --text-secondary: #cbd5e1;
     --text-muted: #94a3b8;
-
     --border: rgba(255, 255, 255, 0.1);
     --border-md: rgba(255, 255, 255, 0.2);
-
     --blue-50: rgba(50, 85, 101, 0.25);
     --amber-50: rgba(241, 90, 34, 0.15);
     --teal-50: rgba(15, 118, 110, 0.2);
@@ -74,60 +71,15 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: var(--font);
-    background: var(--bg-page);
-    color: var(--text-primary);
-    font-size: 14px;
-    line-height: 1.6;
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
+  body { font-family: var(--font); background: var(--bg-page); color: var(--text-primary); font-size: 14px; line-height: 1.6; transition: background-color 0.3s ease, color 0.3s ease; }
 
-  .header {
-    background: linear-gradient(135deg, var(--brand-dark) 0%, var(--brand-dark-light) 100%);
-    padding: 1.25rem 2rem;
-    display: flex;
-    align-items: center;
-    gap: 1.25rem;
-    box-shadow: var(--shadow-md);
-    border-bottom: 3px solid var(--brand-primary);
-  }
-  .header-logo {
-    width: 40px;
-    height: 40px;
-    background: var(--brand-primary);
-    border-radius: var(--radius-md);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+  .header { background: linear-gradient(135deg, var(--brand-dark) 0%, var(--brand-dark-light) 100%); padding: 1.25rem 2rem; display: flex; align-items: center; gap: 1.25rem; box-shadow: var(--shadow-md); border-bottom: 3px solid var(--brand-primary); }
+  .header-logo { width: 40px; height: 40px; background: var(--brand-primary); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; }
   .header-logo svg { width: 22px; height: 22px; fill: white; }
   .header h1 { color: #ffffff; font-size: 17px; font-weight: 700; }
   .header p { color: #cbd5e1; font-size: 12px; margin-top: 2px; }
-  .header-badge {
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: #ffffff;
-    font-size: 11px;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-weight: 600;
-  }
-  .theme-toggle {
-    margin-left: auto;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: #ffffff;
-    padding: 6px 14px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 12px;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    transition: all 0.2s ease;
-  }
+  .header-badge { background: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.2); color: #ffffff; font-size: 11px; padding: 4px 12px; border-radius: 20px; font-weight: 600; }
+  .theme-toggle { margin-left: auto; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: #ffffff; padding: 6px 14px; border-radius: 20px; cursor: pointer; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 6px; transition: all 0.2s ease; }
   .theme-toggle:hover { background: rgba(255, 255, 255, 0.2); }
 
   .container { max-width: 1180px; margin: 0 auto; padding: 1.5rem 2rem; }
@@ -135,24 +87,8 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
   .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
   .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; }
 
-  .card {
-    background: var(--bg-primary);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 1.5rem;
-    box-shadow: var(--shadow-sm);
-  }
-  .card-title {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
+  .card { background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: var(--shadow-sm); }
+  .card-title { font-size: 12px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px; }
 
   .metric { background: var(--bg-secondary); border-radius: var(--radius-md); padding: 1rem 1.25rem; border: 1px solid var(--border); }
   .metric-label { font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
@@ -177,42 +113,10 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
   label { font-size: 12px; font-weight: 600; color: var(--text-secondary); display: block; margin-bottom: 4px; }
   label .req { color: var(--brand-primary); margin-left: 2px; }
 
-  input[type="text"], input[type="email"], select {
-    width: 100%;
-    height: 38px;
-    padding: 0 12px;
-    border: 1px solid var(--border-md);
-    border-radius: var(--radius-md);
-    font-size: 13px;
-    font-family: var(--font);
-    color: var(--text-primary);
-    background: var(--bg-primary);
-    outline: none;
-    transition: all 0.2s ease;
-  }
-  input[type="text"]:focus, input[type="email"]:focus, select:focus {
-    border-color: var(--brand-primary);
-    box-shadow: 0 0 0 3px rgba(241, 90, 34, 0.15);
-  }
+  input[type="text"], input[type="email"], select { width: 100%; height: 38px; padding: 0 12px; border: 1px solid var(--border-md); border-radius: var(--radius-md); font-size: 13px; font-family: var(--font); color: var(--text-primary); background: var(--bg-primary); outline: none; transition: all 0.2s ease; }
+  input[type="text"]:focus, input[type="email"]:focus, select:focus { border-color: var(--brand-primary); box-shadow: 0 0 0 3px rgba(241, 90, 34, 0.15); }
 
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 0 16px;
-    height: 38px;
-    border-radius: var(--radius-md);
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    border: 1px solid var(--border-md);
-    background: var(--bg-primary);
-    color: var(--text-primary);
-    transition: all 0.2s ease;
-    font-family: var(--font);
-    box-shadow: var(--shadow-sm);
-  }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; height: 38px; border-radius: var(--radius-md); font-size: 13px; font-weight: 600; cursor: pointer; border: 1px solid var(--border-md); background: var(--bg-primary); color: var(--text-primary); transition: all 0.2s ease; font-family: var(--font); box-shadow: var(--shadow-sm); }
   .btn:hover { background: var(--bg-secondary); }
   .btn:active { transform: scale(0.98); }
   .btn-primary { background: var(--brand-primary); color: #ffffff; border-color: transparent; }
@@ -222,41 +126,16 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
   .btn-sm { height: 30px; padding: 0 12px; font-size: 12px; border-radius: var(--radius-sm); }
   .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-  .upload-zone {
-    border: 2px dashed var(--border-md);
-    border-radius: var(--radius-lg);
-    padding: 3.5rem 2rem;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    background: var(--bg-primary);
-  }
+  .upload-zone { border: 2px dashed var(--border-md); border-radius: var(--radius-lg); padding: 3.5rem 2rem; text-align: center; cursor: pointer; transition: all 0.3s ease; background: var(--bg-primary); }
   .upload-zone:hover { border-color: var(--brand-primary); background: var(--amber-50); }
   .upload-zone svg { width: 48px; height: 48px; color: var(--brand-dark-light); margin-bottom: 1rem; opacity: 0.8; }
   .upload-zone h3 { font-size: 15px; font-weight: 700; color: var(--text-primary); }
   .upload-zone p { font-size: 12px; color: var(--text-muted); margin-top: 6px; }
   #file-input { display: none; }
 
-  .table-wrap {
-    overflow-x: auto;
-    border-radius: var(--radius-md);
-    border: 1px solid var(--border);
-    box-shadow: var(--shadow-sm);
-    background: var(--bg-primary);
-  }
+  .table-wrap { overflow-x: auto; border-radius: var(--radius-md); border: 1px solid var(--border); box-shadow: var(--shadow-sm); background: var(--bg-primary); }
   table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  th {
-    background: var(--bg-secondary);
-    padding: 12px;
-    text-align: left;
-    font-weight: 700;
-    color: var(--text-secondary);
-    border-bottom: 1px solid var(--border);
-    white-space: nowrap;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
+  th { background: var(--bg-secondary); padding: 12px; text-align: left; font-weight: 700; color: var(--text-secondary); border-bottom: 1px solid var(--border); white-space: nowrap; position: sticky; top: 0; z-index: 10; }
   td { padding: 10px 12px; border-bottom: 1px solid var(--border); color: var(--text-primary); white-space: nowrap; }
   tr:last-child td { border-bottom: none; }
   tr:hover td { background: var(--bg-secondary); }
@@ -267,59 +146,14 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
   .badge-ok { background: var(--green-50); color: var(--green-800); }
   .badge-err { background: var(--red-50); color: var(--red-800); }
 
-  .alert {
-    padding: 14px 16px;
-    border-radius: var(--radius-md);
-    font-size: 13px;
-    font-weight: 500;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    border: 1px solid;
-    background: var(--bg-primary);
-  }
+  .alert { padding: 14px 16px; border-radius: var(--radius-md); font-size: 13px; font-weight: 500; margin-bottom: 1rem; display: flex; align-items: flex-start; gap: 12px; border: 1px solid; background: var(--bg-primary); }
   .alert svg { width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; }
   .alert-warn { background: var(--amber-50); color: var(--amber-800); border-color: rgba(241, 90, 34, 0.3); }
   .alert-ok { background: var(--green-50); color: var(--green-800); border-color: rgba(22, 163, 74, 0.3); }
 
-  .steps {
-    display: flex;
-    gap: 4px;
-    margin-bottom: 2rem;
-    background: var(--bg-primary);
-    border-radius: var(--radius-lg);
-    padding: 6px;
-    box-shadow: var(--shadow-sm);
-    border: 1px solid var(--border);
-  }
-  .step {
-    flex: 1;
-    padding: 12px 16px;
-    border-radius: var(--radius-md);
-    color: var(--text-muted);
-    font-size: 12px;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-  .step .num {
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    background: var(--gray-100);
-    color: var(--gray-600);
-    font-size: 11px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
+  .steps { display: flex; gap: 4px; margin-bottom: 1.5rem; background: var(--bg-primary); border-radius: var(--radius-lg); padding: 6px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); }
+  .step { flex: 1; padding: 12px 16px; border-radius: var(--radius-md); color: var(--text-muted); font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; transition: all 0.2s ease; }
+  .step .num { width: 22px; height: 22px; border-radius: 50%; background: var(--gray-100); color: var(--gray-600); font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .step.active { background: var(--amber-50); color: var(--brand-primary); }
   .step.active .num { background: var(--brand-primary); color: #ffffff; }
   .step.done { color: var(--brand-dark-light); }
@@ -332,30 +166,13 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
   .section-title { font-size: 18px; font-weight: 700; color: var(--text-primary); }
   .section-sub { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
 
-  .xml-box {
-    background: #0f172a;
-    border-radius: var(--radius-md);
-    padding: 1.25rem;
-    overflow-x: auto;
-    max-height: 420px;
-    overflow-y: auto;
-    border: 1px solid #1e293b;
-  }
+  .xml-box { background: #0f172a; border-radius: var(--radius-md); padding: 1.25rem; overflow-x: auto; max-height: 420px; overflow-y: auto; border: 1px solid #1e293b; }
   .xml-box pre { font-family: 'Cascadia Code', 'Fira Code', monospace; font-size: 12px; color: #e2e8f0; white-space: pre; }
   .xml-tag { color: #fdba74; } .xml-val { color: #a7f3d0; }
 
   select.nat-sel { height: 32px; font-size: 11px; padding: 0 8px; border-radius: var(--radius-sm); }
   .tabs { display: flex; gap: 8px; margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
-  .tab {
-    padding: 8px 16px;
-    border-radius: var(--radius-md);
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    background: transparent;
-    color: var(--text-secondary);
-    transition: 0.2s ease;
-  }
+  .tab { padding: 8px 16px; border-radius: var(--radius-md); font-size: 13px; font-weight: 600; cursor: pointer; background: transparent; color: var(--text-secondary); transition: 0.2s ease; }
   .tab:hover { background: var(--bg-secondary); color: var(--text-primary); }
   .tab.active { background: var(--brand-dark-light); color: #ffffff; }
 
@@ -363,18 +180,10 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
   tr.row-excluido td { background: var(--gray-50) !important; color: var(--text-muted); opacity: 0.8; }
   tr.row-erro td { background: var(--red-50) !important; color: var(--red-800); }
 
-  /* Módulo de Busca Inteligente (Modal) */
-  .modal-overlay {
-    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(3px);
-    display: none; align-items: center; justify-content: center; z-index: 9999;
-  }
+  /* Modal Módulo de Busca Inteligente */
+  .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(3px); display: none; align-items: center; justify-content: center; z-index: 9999; }
   .modal-overlay.active { display: flex; animation: fadeIn 0.2s ease; }
-  .modal-content {
-    background: var(--bg-primary); width: 92%; max-width: 600px;
-    border-radius: var(--radius-lg); padding: 1.5rem;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.25); border: 1px solid var(--border);
-  }
+  .modal-content { background: var(--bg-primary); width: 92%; max-width: 600px; border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: 0 10px 25px rgba(0,0,0,0.25); border: 1px solid var(--border); }
   .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; }
   .modal-title { font-size: 16px; font-weight: 700; color: var(--text-primary); }
   .modal-close { cursor: pointer; color: var(--text-muted); font-size: 1.5rem; line-height: 1; border:none; background:none; transition:0.2s; }
@@ -385,8 +194,16 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
   .modal-item { padding: 12px 14px; cursor: pointer; border-bottom: 1px solid var(--border); transition: 0.2s ease; display:flex; flex-direction: column; gap: 4px; }
   .modal-item:hover { background: var(--blue-50); }
   .modal-item .cod { font-weight: 700; color: var(--brand-dark-light); font-size: 13px; }
-  .modal-item .desc { font-size: 11px; color: var(--text-secondary); line-height: 1.4; }
+  .modal-item .desc { font-size: 12px; color: var(--text-secondary); line-height: 1.4; }
 
+  /* Draft Alert Box */
+  #draft-alert {
+    display: none;
+    background: var(--green-50); border: 1px solid var(--green-600); color: var(--green-800);
+    padding: 12px 16px; border-radius: var(--radius-md); margin-bottom: 1.5rem;
+    align-items: center; justify-content: space-between; font-weight: 600; font-size: 13px;
+  }
+  
   @keyframes spin { 100% { transform: rotate(360deg); } }
   .spinner { animation: spin 1s linear infinite; }
 </style>
@@ -396,11 +213,19 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
 <div class="header">
   <div class="header-logo"><svg viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zm-7 3l5 4-5-4-5-4 5-4zm0 10l-5-4h10l-5 4z"/></svg></div>
   <div><h1 id="header-title">EFD-Reinf — Gerador R-4020 e R-4010</h1><p>Prefeitura de Fortaleza · Administração pública municipal descentralizada</p></div>
-  <div class="header-badge">v8.2 Corporate c/ Catálogo Completo</div>
+  <div class="header-badge">v9.0 Enterprise UI</div>
   <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">🌙 Modo Escuro</button>
 </div>
 
 <div class="container">
+<div id="draft-alert">
+  <div><span style="font-size:16px;">💾</span> Encontramos um trabalho salvo. Deseja restaurar a última sessão e os itens classificados?</div>
+  <div style="display:flex; gap:8px;">
+    <button class="btn btn-sm" style="background:var(--bg-primary);border-color:var(--border-md);" onclick="clearDraft()">Descartar</button>
+    <button class="btn btn-sm btn-success" onclick="restoreDraft()">Recuperar Sessão</button>
+  </div>
+</div>
+
 <div class="steps" id="steps">
   <div class="step active" onclick="goStep(1)"><span class="num">1</span> Configuração da UG</div>
   <div class="step" onclick="goStep(2)"><span class="num">2</span> Importar planilha</div>
@@ -477,7 +302,7 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
     <div class="upload-zone" id="dropzone" onclick="document.getElementById('file-input').click()" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropFile(event)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
       <h3>Arraste o CSV aqui ou clique para selecionar</h3>
-      <p>O sistema agora lê colunas como "Código de Receita" ou "Natureza de Rendimento" automaticamente.</p>
+      <p>O sistema lê as colunas automaticamente e ativa o Auto-Save a partir da triagem.</p>
     </div>
     <input type="file" id="file-input" accept=".csv" onchange="loadFile(event)">
   </div>
@@ -492,7 +317,7 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
 
 <!-- STEP 3 -->
 <div class="section" id="step3">
-  <div class="section-header"><div><div class="section-title">Triagem automática</div></div><button class="btn" onclick="goStep(2)">← Voltar</button></div>
+  <div class="section-header"><div><div class="section-title">Triagem automática</div><div class="section-sub" id="autosave-stamp3">Sessão salva automaticamente no navegador.</div></div><button class="btn" onclick="goStep(2)">← Voltar</button></div>
   <div id="triagem-resumo" class="grid-5" style="margin-bottom:1.5rem;"></div>
   <div class="tabs">
     <div class="tab active" onclick="setTab('todos')">Todos</div>
@@ -507,7 +332,7 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
 
 <!-- STEP 4 -->
 <div class="section" id="step4">
-  <div class="section-header"><div><div class="section-title">Revisar lançamentos e atribuir natureza do rendimento</div></div><button class="btn" onclick="goStep(3)">← Voltar</button></div>
+  <div class="section-header"><div><div class="section-title">Revisar lançamentos e atribuir natureza do rendimento</div><div class="section-sub" id="autosave-stamp4">Sessão salva automaticamente no navegador.</div></div><button class="btn" onclick="goStep(3)">← Voltar</button></div>
   <div class="card">
     <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap;">
       <input type="text" id="filter-credor" placeholder="Filtrar por credor..." style="width:220px;" oninput="filterReview()">
@@ -519,7 +344,6 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
       <select id="nat-global" style="width:260px;"><option value="">Selecionar natureza global...</option></select>
       <button class="btn btn-sm btn-primary" onclick="applyNatToAll()" style="height: 38px; padding: 0 16px;">Aplicar na seleção</button>
     </div>
-    <div id="sugestao-metrics" style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:14px;"></div>
   </div>
   <div class="table-wrap" style="max-height:420px; margin-top: 1.5rem;"><table><thead><tr><th style="width:32px;"><input type="checkbox" id="sel-all" onchange="selAll(this)"></th><th>Credor</th><th>CPF/CNPJ</th><th class="td-num">Vl. Bruto</th><th class="td-num">IRRF</th><th>Dt. Pag</th><th>Natureza do rendimento<span class="req">*</span></th><th>Status</th></tr></thead><tbody id="review-tbody"></tbody></table></div>
   <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><div id="review-summary" style="font-size:13px;color:var(--text-secondary);font-weight:600;"></div><button class="btn btn-primary" id="btn-gerar" onclick="gerarXML_Visual()" disabled>Gerar Lote →</button></div>
@@ -582,7 +406,7 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
       <div class="modal-title">Tabela Completa EFD-Reinf (Anexo I)</div>
       <button class="modal-close" onclick="closeModalNat()">×</button>
     </div>
-    <input type="text" id="busca-nat" class="modal-search" placeholder="🔍 Digite a palavra-chave (ex: advogado) ou código..." oninput="renderModalList(this.value)">
+    <input type="text" id="busca-nat" class="modal-search" placeholder="🔍 Buscar por código, palavra ou apelido (ex: advogado, rpa, limpeza)..." oninput="renderModalList(this.value)">
     <div class="modal-list" id="modal-list"></div>
   </div>
 </div>
@@ -597,8 +421,86 @@ function toggleTheme() {
   localStorage.setItem("reinf_theme", newTheme);
 }
 
+// -------------------------------------------------------------
+// TABELA HÍBRIDA EFD-REINF (OFICIAL + TAGS) - VERSÃO 9.0
+// -------------------------------------------------------------
+const TABELA_COMPLETA_NATUREZAS = [
+  { cod: "10001", tags: "servidor público, folha", desc: "Remuneração do trabalho assalariado - Servidores ou empregados do setor público" },
+  { cod: "10002", tags: "clt, setor privado, empregado", desc: "Remuneração do trabalho assalariado - Setor privado" },
+  { cod: "10003", tags: "não assalariado", desc: "Remuneração de trabalho não assalariado" },
+  { cod: "10004", tags: "plr, participação", desc: "Participação nos lucros ou resultados (PLR)" },
+  { cod: "10012", tags: "profissional, rpa", desc: "Remuneração de serviços de natureza profissional, sem vínculo empregatício" },
+  { cod: "10014", tags: "rpa, cooperativa, médico, prestador, autônomo", desc: "Trabalhador Autônomo / Remuneração por prestação de serviços, sem vínculo empregatício e outras do mesmo grupo" },
+  { cod: "11001", tags: "renda fixa", desc: "Aplicações financeiras - Renda fixa" },
+  { cod: "11002", tags: "justiça, rpv, precatório, banco", desc: "Cumprimento de decisão judicial (RPV/Precatórios) - Instituição Financeira" },
+  { cod: "12001", tags: "fundo imobiliário", desc: "Rendimentos de fundos de investimento imobiliário" },
+  { cod: "13001", tags: "aluguel, pf", desc: "Aluguéis e royalties - Pessoa Física" },
+  { cod: "13009", tags: "aluguel, pj, locação", desc: "Aluguéis e royalties pagos a Pessoa Jurídica" },
+  { cod: "14001", tags: "prêmio, sorteio, nota fortaleza", desc: "Prêmios obtidos em concursos, sorteios e loterias" },
+  { cod: "15001", tags: "bolsa de estudo, pesquisa, doação", desc: "Bolsas de estudo e de pesquisa" },
+  { cod: "17001", tags: "alimentação", desc: "Importâncias pagas ou creditadas por órgãos da administração pública a título de fornecimento de alimentação" },
+  { cod: "17002", tags: "energia elétrica, luz, enel", desc: "Importâncias pagas ou creditadas por órgãos da administração pública a título de fornecimento de energia elétrica" },
+  { cod: "17003", tags: "serviço com material", desc: "Importâncias pagas ou creditadas por órgãos da administração pública a título de prestação de serviços com emprego de materiais" },
+  { cod: "17004", tags: "obra, construção civil", desc: "Importâncias pagas ou creditadas por órgãos da administração pública a título de construção civil por empreitada com materiais" },
+  { cod: "17005", tags: "hospitalar, médico, saúde", desc: "Importâncias pagas ou creditadas por órgãos da administração pública a título de prestação de serviços hospitalares e demais serviços em saúde" },
+  { cod: "17006", tags: "frete, transporte", desc: "Importâncias pagas ou creditadas por órgãos da administração pública a título de transporte de cargas" },
+  { cod: "17008", tags: "remédio, farmácia, higiene", desc: "Importâncias pagas ou creditadas por órgãos da administração pública a título de aquisição de produtos farmacêuticos e higiene" },
+  { cod: "17009", tags: "material, bens, geral", desc: "Importâncias pagas ou creditadas por órgãos da administração pública a título de aquisição de mercadorias e bens em geral" },
+  { cod: "17011", tags: "marketing, mídia, propaganda", desc: "Importâncias pagas ou creditadas por órgãos da administração pública a título de serviços de propaganda e publicidade" },
+  { cod: "17019", tags: "gasolina, combustível", desc: "Importâncias pagas ou creditadas por órgãos da administração pública a título de aquisição de combustíveis" },
+  { cod: "17026", tags: "comissão, corretagem", desc: "Importâncias pagas ou creditadas por órgãos da administração pública a título de comissões, corretagens e representação comercial" },
+  { cod: "17028", tags: "água, esgoto, cagece", desc: "Importâncias pagas ou creditadas por órgãos da administração pública a título de prestação de serviços de abastecimento de água" },
+  { cod: "17029", tags: "telefone, internet, telecom", desc: "Importâncias pagas ou creditadas por órgãos da administração pública a título de prestação de serviços de telefonia e internet" },
+  { cod: "17031", tags: "vigilância, segurança", desc: "Importâncias pagas ou creditadas por órgãos da administração pública a título de prestação de serviços de vigilância e segurança" },
+  { cod: "17032", tags: "limpeza, conservação, dedetização, terceirizado", desc: "Importâncias pagas ou creditadas por órgãos da administração pública a título de prestação de serviços de limpeza, conservação, manutenção, segurança e locação de mão-de-obra" },
+  { cod: "17033", tags: "locação de mão de obra", desc: "Importâncias pagas ou creditadas por órgãos da administração pública a título de locação de mão de obra" },
+  { cod: "17035", tags: "locação de bens, aluguel, equipamento", desc: "Importâncias pagas ou creditadas por órgãos da administração pública a título de administração, locação ou cessão de bens" },
+  { cod: "17039", tags: "advogado, jurídico, honorários", desc: "Importâncias pagas ou creditadas por órgãos da administração pública a título de honorários advocatícios" },
+  { cod: "17099", desc: "Importâncias pagas ou creditadas por órgãos da administração pública a título de demais serviços retidos pela alíquota global" },
+  { cod: "18001", tags: "rpv, precatório, justiça federal", desc: "Cumprimento de decisão da Justiça Federal (RPV/Precatórios)" },
+  { cod: "18003", tags: "tj, tjce, justiça estadual", desc: "Cumprimento de decisão da Justiça Estadual e do Distrito Federal" },
+  { cod: "18005", tags: "rra, acumuladamente", desc: "Rendimentos Recebidos Acumuladamente - RRA PF" }
+];
+
+// AUTO-SAVE LOGIC
+function saveDraft() {
+  if (state.allRows.length > 0) {
+    try {
+      localStorage.setItem('reinf_draft_rows', JSON.stringify(state.allRows));
+      const t = new Date();
+      const timeStr = String(t.getHours()).padStart(2, '0') + ':' + String(t.getMinutes()).padStart(2, '0');
+      const stamps = document.querySelectorAll('[id^="autosave-stamp"]');
+      stamps.forEach(s => s.innerHTML = `Sessão salva automaticamente às ${timeStr}.`);
+    } catch(e) {}
+  }
+}
+
+function restoreDraft() {
+  try {
+    const draft = localStorage.getItem('reinf_draft_rows');
+    if (draft) {
+      state.allRows = JSON.parse(draft);
+      document.getElementById('draft-alert').style.display = 'none';
+      document.getElementById('nat-global').innerHTML='<option value="">Selecionar natureza global...</option>'+buildNatOpts();
+      buildPreviewMetrics(); 
+      document.getElementById('preview-area').style.display='block';
+      goStep(3);
+    }
+  } catch(e) {}
+}
+
+function clearDraft() {
+  localStorage.removeItem('reinf_draft_rows');
+  document.getElementById('draft-alert').style.display = 'none';
+}
+
 window.addEventListener('DOMContentLoaded', () => {
   try {
+    const draft = localStorage.getItem('reinf_draft_rows');
+    if (draft && draft.length > 50) {
+      document.getElementById('draft-alert').style.display = 'flex';
+    }
+
     const savedTheme = localStorage.getItem("reinf_theme");
     const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
     if (savedTheme === "dark" || (!savedTheme && prefersDark)) {
@@ -610,7 +512,6 @@ window.addEventListener('DOMContentLoaded', () => {
     if(saved){
       state.ug = JSON.parse(saved);
       if(!state.ug.tipoEvento) state.ug.tipoEvento = '4020';
-      
       const radio = document.querySelector(`input[name="tipoEvento"][value="${state.ug.tipoEvento}"]`);
       if(radio) radio.checked = true;
       mudarEvento();
@@ -631,7 +532,7 @@ window.addEventListener('DOMContentLoaded', () => {
       if(state.ug.emailContato && document.getElementById('emailContato')) document.getElementById('emailContato').value = state.ug.emailContato;
       if(state.ug.ambiente && document.getElementById('ambiente')) document.getElementById('ambiente').value = state.ug.ambiente;
     }
-  } catch(e) { console.warn("Erro silencioso ao restaurar dados salvos.", e); }
+  } catch(e) {}
 });
 
 function gerarXML_Visual() {
@@ -643,128 +544,6 @@ function gerarXML_Visual() {
 }
 
 // -------------------------------------------------------------
-// TABELA COMPLETA EFD-REINF (MÓDULO DE BUSCA INTELIGENTE)
-// -------------------------------------------------------------
-const TABELA_COMPLETA_NATUREZAS = [
-  { cod: "10001", desc: "Remuneração do trabalho assalariado - Servidor público" },
-  { cod: "10002", desc: "Remuneração do trabalho assalariado - Setor privado" },
-  { cod: "10003", desc: "Remuneração de trabalho não assalariado" },
-  { cod: "10004", desc: "Participação nos lucros ou resultados (PLR)" },
-  { cod: "10008", desc: "Remuneração de dirigentes sindicais" },
-  { cod: "10012", desc: "Remuneração de serviços de natureza profissional (PF)" },
-  { cod: "10014", desc: "Trabalhador Autônomo / Cooperativas de trabalho (RPA)" },
-  { cod: "11001", desc: "Aplicações financeiras - Renda fixa" },
-  { cod: "11002", desc: "Cumprimento de decisão judicial (RPV) - Instituição Financeira" },
-  { cod: "11003", desc: "Aplicações financeiras - Renda variável" },
-  { cod: "12001", desc: "Rendimentos de fundos de investimento imobiliário" },
-  { cod: "13001", desc: "Aluguéis e royalties - Pessoa Física" },
-  { cod: "13009", desc: "Aluguéis e royalties pagos a Pessoa Jurídica" },
-  { cod: "14001", desc: "Prêmios em concursos, sorteios e loterias" },
-  { cod: "15001", desc: "Bolsas de estudo e de pesquisa" },
-  { cod: "15002", desc: "Lucros e dividendos distribuídos" },
-  { cod: "15003", desc: "Conselheiro tutelar e assemelhados (Serviços Voluntários)" },
-  { cod: "17001", desc: "Órgãos da Administração Pública - Alimentação" },
-  { cod: "17002", desc: "Órgãos da Administração Pública - Energia elétrica" },
-  { cod: "17003", desc: "Órgãos da Administração Pública - Serviços com emprego de materiais" },
-  { cod: "17004", desc: "Órgãos da Administração Pública - Construção civil por empreitada" },
-  { cod: "17005", desc: "Órgãos da Administração Pública - Serviços hospitalares/médicos" },
-  { cod: "17006", desc: "Órgãos da Administração Pública - Transporte de cargas" },
-  { cod: "17007", desc: "Órgãos da Administração Pública - Serviços de diagnóstico e terapia" },
-  { cod: "17008", desc: "Órgãos da Administração Pública - Produtos farmacêuticos e higiene" },
-  { cod: "17009", desc: "Órgãos da Administração Pública - Mercadorias e bens em geral" },
-  { cod: "17010", desc: "Órgãos da Administração Pública - Passagens e transportes" },
-  { cod: "17011", desc: "Órgãos da Administração Pública - Propaganda e publicidade" },
-  { cod: "17012", desc: "Órgãos da Administração Pública - Seguros" },
-  { cod: "17013", desc: "Órgãos da Administração Pública - Serviços de rádio e TV" },
-  { cod: "17014", desc: "Órgãos da Administração Pública - Cartões de crédito" },
-  { cod: "17015", desc: "Órgãos da Administração Pública - Passagens aéreas" },
-  { cod: "17016", desc: "Órgãos da Administração Pública - Órgãos internacionais" },
-  { cod: "17017", desc: "Órgãos da Administração Pública - Associações" },
-  { cod: "17018", desc: "Órgãos da Administração Pública - Cooperativas" },
-  { cod: "17019", desc: "Órgãos da Administração Pública - Combustíveis" },
-  { cod: "17020", desc: "Órgãos da Administração Pública - Transporte passageiros" },
-  { cod: "17021", desc: "Órgãos da Administração Pública - Veículos e autopeças" },
-  { cod: "17022", desc: "Órgãos da Administração Pública - Pneus e câmaras de ar" },
-  { cod: "17023", desc: "Órgãos da Administração Pública - Máquinas e equipamentos" },
-  { cod: "17024", desc: "Órgãos da Administração Pública - Papel e celulose" },
-  { cod: "17025", desc: "Órgãos da Administração Pública - Informática" },
-  { cod: "17026", desc: "Órgãos da Administração Pública - Comissões e corretagens" },
-  { cod: "17027", desc: "Órgãos da Administração Pública - Agências de viagens" },
-  { cod: "17028", desc: "Órgãos da Administração Pública - Abastecimento de água" },
-  { cod: "17029", desc: "Órgãos da Administração Pública - Telefone e Internet" },
-  { cod: "17030", desc: "Órgãos da Administração Pública - Correios" },
-  { cod: "17031", desc: "Órgãos da Administração Pública - Vigilância e segurança" },
-  { cod: "17032", desc: "Órgãos da Administração Pública - Limpeza e conservação" },
-  { cod: "17033", desc: "Órgãos da Administração Pública - Locação de mão de obra" },
-  { cod: "17034", desc: "Órgãos da Administração Pública - Fomento Mercantil (Factoring)" },
-  { cod: "17035", desc: "Órgãos da Administração Pública - Locação de bens imóveis/móveis" },
-  { cod: "17036", desc: "Órgãos da Administração Pública - Ensino e educação" },
-  { cod: "17037", desc: "Órgãos da Administração Pública - Eventos e congressos" },
-  { cod: "17038", desc: "Órgãos da Administração Pública - Obras de arte" },
-  { cod: "17039", desc: "Órgãos da Administração Pública - Honorários advocatícios" },
-  { cod: "17099", desc: "Órgãos da Administração Pública - Demais serviços retidos pela alíquota global" },
-  { cod: "18001", desc: "Cumprimento de decisão da Justiça Federal (RPV/Precatórios)" },
-  { cod: "18002", desc: "Cumprimento de decisão da Justiça do Trabalho" },
-  { cod: "18003", desc: "Cumprimento de decisão da Justiça Estadual e do Distrito Federal" },
-  { cod: "18004", desc: "Cumprimento de decisão judicial - Pessoa Jurídica" },
-  { cod: "18005", desc: "Rendimentos Recebidos Acumuladamente - RRA PF" },
-  { cod: "19001", desc: "Aposentadorias e pensões" },
-  { cod: "20001", desc: "Remessa ao Exterior - Pagamentos, créditos, entregas" }
-];
-
-let natTargetIdx = null;
-
-function openModalNat(idx) {
-  natTargetIdx = idx;
-  document.getElementById('modal-nat').classList.add('active');
-  document.getElementById('busca-nat').value = '';
-  renderModalList('');
-  setTimeout(() => document.getElementById('busca-nat').focus(), 100);
-}
-
-function closeModalNat() {
-  document.getElementById('modal-nat').classList.remove('active');
-  if(natTargetIdx === 'global') {
-    document.getElementById('nat-global').value = '';
-  } else {
-    filterReview(); 
-  }
-}
-
-function renderModalList(query) {
-  const q = query.toLowerCase();
-  const filtrado = TABELA_COMPLETA_NATUREZAS.filter(n => n.cod.includes(q) || n.desc.toLowerCase().includes(q));
-  
-  if (filtrado.length === 0) {
-     document.getElementById('modal-list').innerHTML = `<div style="padding:1rem; text-align:center; color:var(--text-muted);">Nenhum código encontrado para "${query}"</div>`;
-     return;
-  }
-  
-  document.getElementById('modal-list').innerHTML = filtrado.map(n => `
-    <div class="modal-item" onclick="confirmarNat('${n.cod}')">
-      <div class="cod">${n.cod}</div>
-      <div class="desc">${n.desc}</div>
-    </div>
-  `).join('');
-}
-
-function confirmarNat(cod) {
-  if (natTargetIdx === 'global') {
-    const filtrados = getFiltrados();
-    let afetados = 0;
-    filtrados.forEach(r => { 
-      if(r.selected) { r.natureza = cod; afetados++; } 
-    });
-    if(afetados === 0) alert('Nenhum credor selecionado (caixinha marcada) na lista atual.');
-    document.getElementById('nat-global').value = '';
-  } else {
-    state.allRows[natTargetIdx].natureza = cod;
-  }
-  closeModalNat();
-  filterReview();
-}
-
-// -------------------------------------------------------------
 // DADOS BASE E TRIAGEM R-4020 / R-4010
 // -------------------------------------------------------------
 const ELEMENTOS_EXCLUIR = ['319011','319012','319013','319016','319092','319096','319113','339046','339049','311'];
@@ -773,21 +552,19 @@ const CNPJS_CONFIRMAR = ['07040108','07047251','15139629','09444530','07354939',
 const NOMES_CONFIRMAR = ['TRIBUNAL','JUDICI','PREVFOR','IPM ','INSS','COELCE','ENEL','CAGECE','EMBASA','SABESP','COPASA','COGERH','ELETROBRAS','CHESF','CORREIOS','BANCO DO BRASIL','CAIXA ECONOM','SINDIONIBUS','SIND '];
 
 const NATUREZAS_4020 = [
-  {grp:'Administração Pública', cod:'17002', desc:'Energia elétrica'},
-  {grp:'Administração Pública', cod:'17028', desc:'Abastecimento de água'},
-  {grp:'Administração Pública', cod:'17029', desc:'Telefone e Internet'},
-  {grp:'Administração Pública', cod:'17032', desc:'Limpeza, conservação e dedetização'},
-  {grp:'Administração Pública', cod:'17031', desc:'Vigilância e segurança'},
+  {grp:'Administração Pública', cod:'17002', desc:'Fornecimento de energia elétrica'},
+  {grp:'Administração Pública', cod:'17028', desc:'Serviços de abastecimento de água'},
+  {grp:'Administração Pública', cod:'17029', desc:'Serviços de telefonia e internet'},
+  {grp:'Administração Pública', cod:'17032', desc:'Serviços de limpeza e conservação'},
+  {grp:'Administração Pública', cod:'17031', desc:'Serviços de vigilância e segurança'},
   {grp:'Administração Pública', cod:'17033', desc:'Locação de mão de obra'},
-  {grp:'Administração Pública', cod:'17099', desc:'Demais serviços retidos pela alíquota global'},
-  {grp:'Aplicações e Decisões Judiciais', cod:'11002', desc:'Decisões Judiciais / RPV'}
+  {grp:'Administração Pública', cod:'17099', desc:'Demais serviços retidos pela alíquota global'}
 ];
 
 const NATUREZAS_4010 = [
-  {grp:'Rendimentos do Trabalho', cod:'10014', desc:'Trabalhador Autônomo (RPA)'},
-  {grp:'Aluguéis e Royalties', cod:'13009', desc:'Aluguéis e royalties pagos a residente'},
-  {grp:'Outros Rendimentos', cod:'14001', desc:'Prêmios em concursos e sorteios'},
-  {grp:'Decisões Judiciais', cod:'18001', desc:'Cumprimento de decisão da Justiça (RPV)'}
+  {grp:'Rendimentos do Trabalho', cod:'10014', desc:'Remuneração por prestação de serviços - Autônomo'},
+  {grp:'Aluguéis e Royalties', cod:'13009', desc:'Aluguéis e royalties pagos a Pessoa Jurídica'},
+  {grp:'Decisões Judiciais', cod:'18001', desc:'Cumprimento de decisão da Justiça Federal (RPV)'}
 ];
 
 let state = { step:1, ug:{tipoEvento:'4020'}, allRows:[], tabAtiva:'todos', xmlContent:'', arquivosGerados:[] };
@@ -987,6 +764,7 @@ function dropFile(e){e.preventDefault();dragLeave();if(e.dataTransfer.files[0])p
 function loadFile(e){if(e.target.files[0])processFile(e.target.files[0]);}
 
 function processFile(file){
+  document.getElementById('draft-alert').style.display = 'none'; // Esconde draft antigo se importar um novo
   const zone = document.getElementById('dropzone');
   zone.innerHTML = `<p style="color:var(--brand-dark-light);font-weight:600;">⏳ Lendo arquivo: <strong>${file.name}</strong>...</p>`;
   const reader = new FileReader();
@@ -1028,7 +806,9 @@ function parseRows(data){
       natureza:sugestao?sugestao.cod:'',sugestao,selected:class_.cls==='incluir',raw:row};
   });
   document.getElementById('nat-global').innerHTML='<option value="">Selecionar natureza global...</option>'+buildNatOpts();
-  buildPreviewMetrics(); document.getElementById('preview-area').style.display='block';
+  buildPreviewMetrics(); 
+  document.getElementById('preview-area').style.display='block';
+  saveDraft(); // Auto-save after import
 }
 
 function buildPreviewMetrics(){
@@ -1057,6 +837,7 @@ function renderTriagem(){
       <td>${r.cls==='confirmar'?`<button class="btn btn-sm btn-success" onclick="reclassificar(${r.idx},'incluir')">✅ Incluir</button> <button class="btn btn-sm" onclick="reclassificar(${r.idx},'excluido')">🚫 Excluir</button>`
         :r.cls==='excluido'||r.cls==='incluir'?`<button class="btn btn-sm" onclick="reclassificar(${r.idx},${r.cls==='excluido'?`'incluir'`:`'excluido'`})">↩ Trocar</button>`:''}</td>
     </tr>`).join('');
+  saveDraft();
 }
 
 function reclassificar(idx,novaCls){ state.allRows[idx].cls=novaCls; state.allRows[idx].selected=novaCls==='incluir'; renderTriagem(); }
@@ -1087,6 +868,7 @@ function filterReview(){
   if(master) master.checked = filtrados.length > 0 && filtrados.every(r => r.selected);
   
   updateReviewSummary();
+  saveDraft();
 }
 
 function toggleRow(idx,checked){
@@ -1095,6 +877,7 @@ function toggleRow(idx,checked){
   const master = document.getElementById('sel-all');
   if(master) master.checked = filtrados.length > 0 && filtrados.every(r => r.selected);
   updateReviewSummary();
+  saveDraft();
 }
 
 function setNatureza(idx,val,el){
@@ -1279,6 +1062,7 @@ function gerarXML(){
   
   goStep(5);
   downloadTodosXML();
+  clearDraft(); // Limpa o rascunho após gerar com sucesso
 }
 
 function colorXML(xml){ return xml.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/&lt;\/?[\w:]+/g,m=>`<span class="xml-tag">${m}</span>`).replace(/\/?&gt;/g,m=>`<span class="xml-tag">${m}</span>`); }
@@ -1319,6 +1103,13 @@ function downloadXMLIndice(i) {
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
 }
+
+// Intercepta fechamento da aba para garantir salvamento
+window.addEventListener('beforeunload', function (e) {
+  if (state.allRows && state.allRows.length > 0 && state.step > 2 && state.step < 5) {
+    saveDraft();
+  }
+});
 </script>
 </body>
 </html>
