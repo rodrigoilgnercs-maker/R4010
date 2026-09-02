@@ -27,12 +27,12 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
     --brand-dark: #1e3644;
     --brand-dark-light: #325565;
     
-    --blue-50:#e8f1f5;--blue-100:#c5dce7;--blue-600:#325565;--blue-800:#1e3644;--blue-900:#13242e;
-    --teal-50:#e6f7f2;--teal-600:#0f766e;--teal-800:#115e59;
-    --amber-50:#fff5ea;--amber-100:#ffe6cb;--amber-600:#c2410c;--amber-800:#9a3412;
-    --red-50:#fef2f2;--red-600:#dc2626;--red-800:#991b1b;
-    --green-50:#f0fdf4;--green-600:#16a34a;--green-800:#15803d;
-    --gray-50:#f8fafc;--gray-100:#e2e8f0;--gray-600:#64748b;--gray-800:#334155;
+    --blue-50:#e8f1f5; --blue-800:#1e3644;
+    --teal-50:#e6f7f2; --teal-600:#0f766e; --teal-800:#115e59;
+    --amber-50:#fff5ea; --amber-600:#c2410c; --amber-800:#9a3412;
+    --red-50:#fef2f2; --red-600:#dc2626; --red-800:#991b1b;
+    --green-50:#f0fdf4; --green-600:#16a34a; --green-800:#15803d;
+    --gray-50:#f8fafc; --gray-100:#e2e8f0; --gray-600:#64748b;
 
     --radius-sm: 6px;
     --radius-md: 8px;
@@ -46,8 +46,8 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
     --bg-secondary: #f8fafc;
     --bg-page: #f1f5f9;
 
-    --border: rgba(50, 85, 101, 0.15);
-    --border-md: rgba(50, 85, 101, 0.25);
+    --border: #e2e8f0;
+    --border-md: #cbd5e1;
     --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.06);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
 
@@ -55,26 +55,39 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
   }
 
   [data-theme="dark"] {
-    --bg-page: #0f172a;
-    --bg-primary: #1e293b;
-    --bg-secondary: #334155;
-    --text-primary: #f8fafc;
-    --text-secondary: #cbd5e1;
-    --text-muted: #94a3b8;
-    --border: rgba(255, 255, 255, 0.1);
-    --border-md: rgba(255, 255, 255, 0.2);
-    --blue-50: rgba(50, 85, 101, 0.25);
-    --amber-50: rgba(241, 90, 34, 0.15);
-    --teal-50: rgba(15, 118, 110, 0.2);
-    --red-50: rgba(220, 38, 38, 0.15);
-    --green-50: rgba(22, 163, 74, 0.15);
+    /* MODO ESCURO DE ALTO CONTRASTE */
+    --bg-page: #121212;
+    --bg-primary: #1e1e1e;
+    --bg-secondary: #2c2c2c;
+
+    --text-primary: #ffffff;
+    --text-secondary: #d4d4d8;
+    --text-muted: #a1a1aa;
+
+    --border: #3f3f46;
+    --border-md: #52525b;
+
+    --brand-primary: #fb923c; 
+    --brand-primary-hover: #fdba74;
+    --brand-dark-light: #7dd3fc;
+
+    --blue-50: rgba(14, 165, 233, 0.15); --blue-800: #7dd3fc;
+    --amber-50: rgba(245, 158, 11, 0.15); --amber-800: #fcd34d;
+    --teal-50: rgba(20, 184, 166, 0.15); --teal-800: #5eead4;
+    --red-50: rgba(239, 68, 68, 0.15); --red-800: #fca5a5;
+    --green-50: rgba(34, 197, 94, 0.15); --green-800: #86efac;
+    --gray-50: #27272a; --gray-100: #3f3f46; --gray-600: #d4d4d8;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: var(--font); background: var(--bg-page); color: var(--text-primary); font-size: 14px; line-height: 1.6; transition: background-color 0.3s ease, color 0.3s ease; }
 
+  /* Ajuste para <select> e inputs no modo escuro */
+  select, input { color: var(--text-primary); background-color: var(--bg-primary); }
+  select option { background-color: var(--bg-primary); color: var(--text-primary); }
+
   .header { background: linear-gradient(135deg, var(--brand-dark) 0%, var(--brand-dark-light) 100%); padding: 1.25rem 2rem; display: flex; align-items: center; gap: 1.25rem; box-shadow: var(--shadow-md); border-bottom: 3px solid var(--brand-primary); }
-  .header-logo { width: 40px; height: 40px; background: var(--brand-primary); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; }
+  .header-logo { width: 40px; height: 40px; background: #f15a22; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; }
   .header-logo svg { width: 22px; height: 22px; fill: white; }
   .header h1 { color: #ffffff; font-size: 17px; font-weight: 700; }
   .header p { color: #cbd5e1; font-size: 12px; margin-top: 2px; }
@@ -97,12 +110,11 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
 
   .metric.blue { background: var(--blue-50); border-color: var(--border-md); }
   .metric.blue .metric-value { color: var(--brand-dark-light); }
-  [data-theme="dark"] .metric.blue .metric-value { color: #93c5fd; }
-  .metric.teal { background: var(--teal-50); border-color: rgba(15, 118, 110, 0.2); }
+  .metric.teal { background: var(--teal-50); border-color: rgba(20, 184, 166, 0.3); }
   .metric.teal .metric-value { color: var(--teal-800); }
-  .metric.amber { background: var(--amber-50); border-color: rgba(241, 90, 34, 0.2); }
+  .metric.amber { background: var(--amber-50); border-color: rgba(245, 158, 11, 0.3); }
   .metric.amber .metric-value { color: var(--brand-primary); }
-  .metric.red { background: var(--red-50); border-color: rgba(220, 38, 38, 0.2); }
+  .metric.red { background: var(--red-50); border-color: rgba(239, 68, 68, 0.3); }
   .metric.red .metric-value { color: var(--red-800); }
 
   .form-row { display: grid; gap: 1rem; margin-bottom: 1rem; }
@@ -119,10 +131,14 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
   .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; height: 38px; border-radius: var(--radius-md); font-size: 13px; font-weight: 600; cursor: pointer; border: 1px solid var(--border-md); background: var(--bg-primary); color: var(--text-primary); transition: all 0.2s ease; font-family: var(--font); box-shadow: var(--shadow-sm); }
   .btn:hover { background: var(--bg-secondary); }
   .btn:active { transform: scale(0.98); }
-  .btn-primary { background: var(--brand-primary); color: #ffffff; border-color: transparent; }
-  .btn-primary:hover { background: var(--brand-primary-hover); }
-  .btn-success { background: var(--teal-600); color: #ffffff; border-color: transparent; }
-  .btn-success:hover { background: var(--teal-800); }
+  
+  /* Botões primários sempre laranjas e visíveis */
+  .btn-primary { background: #f15a22; color: #ffffff; border-color: transparent; }
+  .btn-primary:hover { background: #d94812; }
+  
+  .btn-success { background: #0f766e; color: #ffffff; border-color: transparent; }
+  .btn-success:hover { background: #115e59; }
+  
   .btn-sm { height: 30px; padding: 0 12px; font-size: 12px; border-radius: var(--radius-sm); }
   .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
@@ -146,10 +162,10 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
   .badge-ok { background: var(--green-50); color: var(--green-800); }
   .badge-err { background: var(--red-50); color: var(--red-800); }
 
-  .alert { padding: 14px 16px; border-radius: var(--radius-md); font-size: 13px; font-weight: 500; margin-bottom: 1rem; display: flex; align-items: flex-start; gap: 12px; border: 1px solid; background: var(--bg-primary); }
+  .alert { padding: 14px 16px; border-radius: var(--radius-md); font-size: 13px; font-weight: 500; margin-bottom: 1rem; display: flex; align-items: flex-start; gap: 12px; border: 1px solid var(--border-md); background: var(--bg-secondary); }
   .alert svg { width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; }
-  .alert-warn { background: var(--amber-50); color: var(--amber-800); border-color: rgba(241, 90, 34, 0.3); }
-  .alert-ok { background: var(--green-50); color: var(--green-800); border-color: rgba(22, 163, 74, 0.3); }
+  .alert-warn { border-left: 4px solid var(--amber-600); color: var(--text-primary); }
+  .alert-ok { border-left: 4px solid var(--green-600); color: var(--text-primary); }
 
   .steps { display: flex; gap: 4px; margin-bottom: 1.5rem; background: var(--bg-primary); border-radius: var(--radius-lg); padding: 6px; box-shadow: var(--shadow-sm); border: 1px solid var(--border); }
   .step { flex: 1; padding: 12px 16px; border-radius: var(--radius-md); color: var(--text-muted); font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; transition: all 0.2s ease; }
@@ -157,7 +173,7 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
   .step.active { background: var(--amber-50); color: var(--brand-primary); }
   .step.active .num { background: var(--brand-primary); color: #ffffff; }
   .step.done { color: var(--brand-dark-light); }
-  .step.done .num { background: var(--brand-dark-light); color: #ffffff; }
+  .step.done .num { background: var(--brand-dark-light); color: #121212; }
 
   .section { display: none; animation: fadeIn 0.3s ease; }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
@@ -166,11 +182,14 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
   .section-title { font-size: 18px; font-weight: 700; color: var(--text-primary); }
   .section-sub { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
 
-  .xml-box { background: #0f172a; border-radius: var(--radius-md); padding: 1.25rem; overflow-x: auto; max-height: 420px; overflow-y: auto; border: 1px solid #1e293b; }
-  .xml-box pre { font-family: 'Cascadia Code', 'Fira Code', monospace; font-size: 12px; color: #e2e8f0; white-space: pre; }
-  .xml-tag { color: #fdba74; } .xml-val { color: #a7f3d0; }
+  .xml-box { background: var(--bg-secondary); border-radius: var(--radius-md); padding: 1.25rem; overflow-x: auto; max-height: 420px; overflow-y: auto; border: 1px solid var(--border); }
+  .xml-box pre { font-family: 'Cascadia Code', 'Fira Code', monospace; font-size: 12px; color: var(--text-secondary); white-space: pre; }
+  .xml-tag { color: var(--brand-primary); } .xml-val { color: var(--brand-dark-light); font-weight:bold; }
 
-  select.nat-sel { height: 32px; font-size: 11px; padding: 0 8px; border-radius: var(--radius-sm); }
+  select.nat-sel { height: 32px; font-size: 11px; padding: 0 8px; border-radius: var(--radius-sm); max-width: 320px; }
+  select.nat-sel optgroup { font-weight: bold; color: var(--brand-primary); background: var(--bg-secondary); }
+  select.nat-sel option { color: var(--text-primary); font-weight: normal; background: var(--bg-primary); }
+
   .tabs { display: flex; gap: 8px; margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
   .tab { padding: 8px 16px; border-radius: var(--radius-md); font-size: 13px; font-weight: 600; cursor: pointer; background: transparent; color: var(--text-secondary); transition: 0.2s ease; }
   .tab:hover { background: var(--bg-secondary); color: var(--text-primary); }
@@ -179,22 +198,6 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
   tr.row-confirmar td { background: var(--amber-50) !important; color: var(--brand-primary); font-weight: 500;}
   tr.row-excluido td { background: var(--gray-50) !important; color: var(--text-muted); opacity: 0.8; }
   tr.row-erro td { background: var(--red-50) !important; color: var(--red-800); }
-
-  /* Modal Módulo de Busca Inteligente */
-  .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(3px); display: none; align-items: center; justify-content: center; z-index: 9999; }
-  .modal-overlay.active { display: flex; animation: fadeIn 0.2s ease; }
-  .modal-content { background: var(--bg-primary); width: 92%; max-width: 600px; border-radius: var(--radius-lg); padding: 1.5rem; box-shadow: 0 10px 25px rgba(0,0,0,0.25); border: 1px solid var(--border); }
-  .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; }
-  .modal-title { font-size: 16px; font-weight: 700; color: var(--text-primary); }
-  .modal-close { cursor: pointer; color: var(--text-muted); font-size: 1.5rem; line-height: 1; border:none; background:none; transition:0.2s; }
-  .modal-close:hover { color: var(--red-600); transform: scale(1.1); }
-  .modal-search { width: 100%; height: 44px; margin-bottom: 1rem; border: 2px solid var(--border-md); font-size: 14px; border-radius: var(--radius-md); padding: 0 16px;}
-  .modal-search:focus { border-color: var(--brand-primary); }
-  .modal-list { max-height: 320px; overflow-y: auto; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--bg-secondary); }
-  .modal-item { padding: 12px 14px; cursor: pointer; border-bottom: 1px solid var(--border); transition: 0.2s ease; display:flex; flex-direction: column; gap: 4px; }
-  .modal-item:hover { background: var(--blue-50); }
-  .modal-item .cod { font-weight: 700; color: var(--brand-dark-light); font-size: 13px; }
-  .modal-item .desc { font-size: 12px; color: var(--text-secondary); line-height: 1.4; }
 
   /* Draft Alert Box */
   #draft-alert {
@@ -213,7 +216,7 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
 <div class="header">
   <div class="header-logo"><svg viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zm-7 3l5 4-5-4-5-4 5-4zm0 10l-5-4h10l-5 4z"/></svg></div>
   <div><h1 id="header-title">EFD-Reinf — Gerador R-4020 e R-4010</h1><p>Prefeitura de Fortaleza · Administração pública municipal descentralizada</p></div>
-  <div class="header-badge">v10.0 Enterprise UI</div>
+  <div class="header-badge">v11.0 Enterprise UI</div>
   <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">🌙 Modo Escuro</button>
 </div>
 
@@ -342,11 +345,8 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
         <option value="ok">✅ Natureza OK</option>
       </select>
       
-      <!-- BOTÃO DEDICADO PARA BUSCA GLOBAL (SOLUÇÃO DE CONFLITO COM O SELECT) -->
-      <div style="display:flex; align-items:center; gap: 4px;">
-        <select id="nat-global" style="width:260px;"><option value="">Selecionar natureza global...</option></select>
-        <button class="btn btn-sm" onclick="openModalNat('global')" style="height: 38px; padding: 0 12px; border-color:var(--border-md); background:var(--bg-secondary);" title="Buscar Tabela Completa">🔍</button>
-      </div>
+      <!-- DROPDOWN NATIVO GLOBAL COM TODAS AS OPÇÕES -->
+      <select id="nat-global" style="width:280px;"></select>
 
       <button class="btn btn-sm btn-primary" onclick="applyNatToAll()" style="height: 38px; padding: 0 16px;">Aplicar na seleção</button>
     </div>
@@ -359,7 +359,7 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
 <div class="section" id="step5">
   <div class="section-header"><div><div class="section-title">Lote de Arquivos Gerados</div><div class="section-sub">Assine com o Transmissor Java e envie à Receita. Faça o fechamento e a DCTFWeb diretamente no e-CAC.</div></div><button class="btn" onclick="goStep(4)">← Voltar</button></div>
   <div class="alert alert-ok" id="xml-ok-alert"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><div id="xml-ok-msg"></div></div>
-  <div id="banner-producao" style="display:none;background:var(--red-50);color:var(--red-800);border-radius:var(--radius-md);padding:14px 18px;margin-bottom:1.5rem;font-size:14px;font-weight:600;display:flex;align-items:center;gap:12px; border: 1px solid rgba(220, 38, 38, 0.3);"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>⚠ AMBIENTE DE PRODUÇÃO — Envio oficial à Receita Federal.</div>
+  <div id="banner-producao" style="display:none;" class="alert alert-warn"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>⚠ AMBIENTE DE PRODUÇÃO — Envio oficial à Receita Federal.</div>
   
   <div class="grid-4" id="xml-metrics" style="margin-bottom:1.5rem;"></div>
   
@@ -388,7 +388,7 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
         </ol>
       </div>
       
-      <div class="card" style="margin-top:1.25rem; background: var(--amber-50); border-color: rgba(241, 90, 34, 0.3);">
+      <div class="card" style="margin-top:1.25rem;">
         <div class="card-title" style="color: var(--brand-primary);">Auditoria e Compliance</div>
         <p style="font-size:12px; color: var(--text-secondary); margin-bottom: 12px; font-weight: 500;">
           Gere o relatório detalhando as justificativas de inclusão e exclusão de todos os pagamentos processados neste lote.
@@ -403,18 +403,6 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
     </div>
   </div>
 </div>
-</div>
-
-<!-- Modal Catálogo EFD-Reinf -->
-<div class="modal-overlay" id="modal-nat">
-  <div class="modal-content">
-    <div class="modal-header">
-      <div class="modal-title">Tabela Completa EFD-Reinf (Anexo I)</div>
-      <button class="modal-close" onclick="closeModalNat()">×</button>
-    </div>
-    <input type="text" id="busca-nat" class="modal-search" placeholder="🔍 Buscar por código, palavra ou apelido (ex: advogado, rpa, limpeza)..." oninput="renderModalList(this.value)">
-    <div class="modal-list" id="modal-list"></div>
-  </div>
 </div>
 
 <script>
@@ -434,45 +422,107 @@ function toggleTheme() {
 }
 
 // -------------------------------------------------------------
-// TABELA HÍBRIDA EFD-REINF (OFICIAL + TAGS) - VERSÃO 10.0
+// TODAS AS NATUREZAS NATIVAS - VERSÃO 11.0
 // -------------------------------------------------------------
-const TABELA_COMPLETA_NATUREZAS = [
-  { cod: "10001", tags: "servidor público, folha", desc: "Remuneração do trabalho assalariado - Servidores ou empregados do setor público" },
-  { cod: "10002", tags: "clt, setor privado, empregado", desc: "Remuneração do trabalho assalariado - Setor privado" },
-  { cod: "10003", tags: "não assalariado", desc: "Remuneração de trabalho não assalariado" },
-  { cod: "10004", tags: "plr, participação", desc: "Participação nos lucros ou resultados (PLR)" },
-  { cod: "10012", tags: "profissional, rpa", desc: "Remuneração de serviços de natureza profissional, sem vínculo empregatício" },
-  { cod: "10014", tags: "rpa, cooperativa, médico, prestador, autônomo", desc: "Trabalhador Autônomo / Remuneração por prestação de serviços, sem vínculo empregatício e outras do mesmo grupo" },
-  { cod: "11001", tags: "renda fixa", desc: "Aplicações financeiras - Renda fixa" },
-  { cod: "11002", tags: "justiça, rpv, precatório, banco", desc: "Cumprimento de decisão judicial (RPV/Precatórios) - Instituição Financeira" },
-  { cod: "12001", tags: "fundo imobiliário", desc: "Rendimentos de fundos de investimento imobiliário" },
-  { cod: "13001", tags: "aluguel, pf", desc: "Aluguéis e royalties - Pessoa Física" },
-  { cod: "13009", tags: "aluguel, pj, locação", desc: "Aluguéis e royalties pagos a Pessoa Jurídica" },
-  { cod: "14001", tags: "prêmio, sorteio, nota fortaleza", desc: "Prêmios obtidos em concursos, sorteios e loterias" },
-  { cod: "15001", tags: "bolsa de estudo, pesquisa, doação", desc: "Bolsas de estudo e de pesquisa" },
-  { cod: "17001", tags: "alimentação", desc: "Importâncias pagas ou creditadas por órgãos da administração pública a título de fornecimento de alimentação" },
-  { cod: "17002", tags: "energia elétrica, luz, enel", desc: "Importâncias pagas ou creditadas por órgãos da administração pública a título de fornecimento de energia elétrica" },
-  { cod: "17003", tags: "serviço com material", desc: "Importâncias pagas ou creditadas por órgãos da administração pública a título de prestação de serviços com emprego de materiais" },
-  { cod: "17004", tags: "obra, construção civil", desc: "Importâncias pagas ou creditadas por órgãos da administração pública a título de construção civil por empreitada com materiais" },
-  { cod: "17005", tags: "hospitalar, médico, saúde", desc: "Importâncias pagas ou creditadas por órgãos da administração pública a título de prestação de serviços hospitalares e demais serviços em saúde" },
-  { cod: "17006", tags: "frete, transporte", desc: "Importâncias pagas ou creditadas por órgãos da administração pública a título de transporte de cargas" },
-  { cod: "17008", tags: "remédio, farmácia, higiene", desc: "Importâncias pagas ou creditadas por órgãos da administração pública a título de aquisição de produtos farmacêuticos e higiene" },
-  { cod: "17009", tags: "material, bens, geral", desc: "Importâncias pagas ou creditadas por órgãos da administração pública a título de aquisição de mercadorias e bens em geral" },
-  { cod: "17011", tags: "marketing, mídia, propaganda", desc: "Importâncias pagas ou creditadas por órgãos da administração pública a título de serviços de propaganda e publicidade" },
-  { cod: "17019", tags: "gasolina, combustível", desc: "Importâncias pagas ou creditadas por órgãos da administração pública a título de aquisição de combustíveis" },
-  { cod: "17026", tags: "comissão, corretagem", desc: "Importâncias pagas ou creditadas por órgãos da administração pública a título de comissões, corretagens e representação comercial" },
-  { cod: "17028", tags: "água, esgoto, cagece", desc: "Importâncias pagas ou creditadas por órgãos da administração pública a título de prestação de serviços de abastecimento de água" },
-  { cod: "17029", tags: "telefone, internet, telecom", desc: "Importâncias pagas ou creditadas por órgãos da administração pública a título de prestação de serviços de telefonia e internet" },
-  { cod: "17031", tags: "vigilância, segurança", desc: "Importâncias pagas ou creditadas por órgãos da administração pública a título de prestação de serviços de vigilância e segurança" },
-  { cod: "17032", tags: "limpeza, conservação, dedetização, terceirizado", desc: "Importâncias pagas ou creditadas por órgãos da administração pública a título de prestação de serviços de limpeza, conservação, manutenção, segurança e locação de mão-de-obra" },
-  { cod: "17033", tags: "locação de mão de obra", desc: "Importâncias pagas ou creditadas por órgãos da administração pública a título de locação de mão de obra" },
-  { cod: "17035", tags: "locação de bens, aluguel, equipamento", desc: "Importâncias pagas ou creditadas por órgãos da administração pública a título de administração, locação ou cessão de bens" },
-  { cod: "17039", tags: "advogado, jurídico, honorários", desc: "Importâncias pagas ou creditadas por órgãos da administração pública a título de honorários advocatícios" },
-  { cod: "17099", desc: "Importâncias pagas ou creditadas por órgãos da administração pública a título de demais serviços retidos pela alíquota global" },
-  { cod: "18001", tags: "rpv, precatório, justiça federal", desc: "Cumprimento de decisão da Justiça Federal (RPV/Precatórios)" },
-  { cod: "18003", tags: "tj, tjce, justiça estadual", desc: "Cumprimento de decisão da Justiça Estadual e do Distrito Federal" },
-  { cod: "18005", tags: "rra, acumuladamente", desc: "Rendimentos Recebidos Acumuladamente - RRA PF" }
-];
+const NATUREZAS_REINF = {
+  'Mais Utilizadas (Saúde, Serviços, RPA)': [
+    { cod: "10014", desc: "Trabalhador Autônomo / RPA" },
+    { cod: "17005", desc: "Serviços hospitalares, médicos e em saúde" },
+    { cod: "17032", desc: "Limpeza, conservação, manutenção e segurança" },
+    { cod: "17033", desc: "Locação de mão de obra" },
+    { cod: "17039", desc: "Honorários advocatícios" },
+    { cod: "11002", desc: "Decisões Judiciais / RPV (Instituição Financeira)" },
+    { cod: "18001", desc: "Cumprimento de decisão da Justiça Federal (RPV)" }
+  ],
+  'Administração Pública (Série 17000)': [
+    { cod: "17001", desc: "Fornecimento de alimentação" },
+    { cod: "17002", desc: "Fornecimento de energia elétrica" },
+    { cod: "17003", desc: "Serviços com emprego de materiais" },
+    { cod: "17004", desc: "Construção civil por empreitada com materiais" },
+    { cod: "17006", desc: "Transporte de cargas" },
+    { cod: "17007", desc: "Serviços de auxílio diagnóstico e terapia" },
+    { cod: "17008", desc: "Produtos farmacêuticos e higiene" },
+    { cod: "17009", desc: "Mercadorias e bens em geral" },
+    { cod: "17011", desc: "Propaganda e publicidade" },
+    { cod: "17019", desc: "Aquisição de combustíveis" },
+    { cod: "17026", desc: "Comissões, corretagens e representação comercial" },
+    { cod: "17028", desc: "Serviços de abastecimento de água" },
+    { cod: "17029", desc: "Serviços de telefonia e internet" },
+    { cod: "17031", desc: "Vigilância e segurança" },
+    { cod: "17035", desc: "Administração, locação ou cessão de bens" },
+    { cod: "17099", desc: "Demais serviços retidos pela alíquota global" }
+  ],
+  'Rendimentos do Trabalho (Série 10000)': [
+    { cod: "10001", desc: "Trabalho assalariado - Servidor público" },
+    { cod: "10002", desc: "Trabalho assalariado - Setor privado" },
+    { cod: "10003", desc: "Remuneração de trabalho não assalariado" },
+    { cod: "10004", desc: "Participação nos lucros ou resultados (PLR)" },
+    { cod: "10012", desc: "Serviços de natureza profissional, sem vínculo" }
+  ],
+  'Aluguéis, Prêmios e Bolsas (Série 13k/14k/15k)': [
+    { cod: "13001", desc: "Aluguéis e royalties - Pessoa Física" },
+    { cod: "13009", desc: "Aluguéis e royalties pagos a Pessoa Jurídica" },
+    { cod: "14001", desc: "Prêmios em concursos, sorteios e loterias" },
+    { cod: "15001", desc: "Bolsas de estudo e de pesquisa" },
+    { cod: "15002", desc: "Lucros e dividendos distribuídos" },
+    { cod: "15003", desc: "Conselheiro tutelar e assemelhados" }
+  ],
+  'Aplicações e Decisões Judiciais (Série 11k/12k/18k)': [
+    { cod: "11001", desc: "Aplicações financeiras - Renda fixa" },
+    { cod: "12001", desc: "Rendimentos de fundos de investimento imobiliário" },
+    { cod: "18002", desc: "Cumprimento de decisão da Justiça do Trabalho" },
+    { cod: "18003", desc: "Cumprimento de decisão da Justiça Estadual e do DF" },
+    { cod: "18004", desc: "Cumprimento de decisão judicial - Pessoa Jurídica" },
+    { cod: "18005", desc: "Rendimentos Recebidos Acumuladamente - RRA PF" },
+    { cod: "20001", desc: "Remessa ao Exterior - Pagamentos, créditos" }
+  ]
+};
+
+function buildNatOpts(selected=''){
+  let opts = '<option value="">Selecionar natureza de rendimento...</option>';
+  for (const [group, items] of Object.entries(NATUREZAS_REINF)) {
+    opts += `<optgroup label="${group}">`;
+    items.forEach(n => {
+      opts += `<option value="${n.cod}" ${selected===n.cod?'selected':''}>${n.cod} – ${n.desc}</option>`;
+    });
+    opts += `</optgroup>`;
+  }
+  return opts;
+}
+
+function sugerirNatureza(row){
+  const hist=(row['Hist']||'').toUpperCase(); const nome=(row['Nome do Credor']||'').toUpperCase();
+  const cpfCnpj = state.ug.tipoEvento === '4010' ? cleanCPF(row['CPF/CNPJ']) : cleanCNPJ(row['CPF/CNPJ']);
+  const raiz8 = cpfCnpj.slice(0,8);
+  const is4010 = state.ug.tipoEvento === '4010';
+  
+  function getCod(cod, conf, fonte) {
+    for (const items of Object.values(NATUREZAS_REINF)) {
+      const n = items.find(x => x.cod === cod);
+      if (n) return { cod, desc: n.desc, confianca: conf, fonte: fonte };
+    }
+    return null;
+  }
+  
+  if (is4010) {
+    if(/SORTEIO|NOTA FORTALEZA|PREMIO/.test(hist)) return getCod('14001','alta','Sorteio / Premiação');
+    if(/PROCESSO JUDICIAL|RPV|HONOR/.test(hist) || row['Elemento'] === '319091' || row['Elemento'] === '339091') return getCod('18001','alta','Decisão Judicial');
+    if(/MEDICO|RPA|AUTONOMO|PRESTADOR/.test(hist) || row['Elemento'] === '339036') return getCod('10014','media','Trabalhador Autônomo');
+    if(/ALUGUEL|LOCACAO/.test(hist)) return getCod('13009','alta','Locação de Imóvel PF');
+    if(/BOLSA DE ESTUDO|RESIDENTE/.test(hist) || row['Elemento'] === '339018') return getCod('15001','alta','Bolsas de Estudo');
+  } else {
+    if(['07047251','00360305'].includes(raiz8) || /ENERGIA ELETRICA/.test(hist)) return getCod('17002','alta','Energia elétrica');
+    if(raiz8==='07040108' || /AGUA E ESGO/.test(hist)) return getCod('17028','alta','Abastecimento de água');
+    if(/TELEFON|INTERNET/.test(hist)) return getCod('17029','alta','Telecomunicações');
+    if(/LIMPEZA|HIGIENIZACAO/.test(hist)) return getCod('17032','alta','Limpeza');
+    if(/VIGILAN/.test(hist)) return getCod('17031','alta','Vigilância');
+    if(/LOCACAO DE MAO/.test(hist)) return getCod('17033','alta','Locação de mão de obra');
+    if(/LOCACAO/.test(hist) && /(IMOVEL|VEICULO|EQUIPAMENTO)/.test(hist)) return getCod('17035','alta','Locação de bens');
+    if(/MEDICAMENT|FARMACEUT|MATERIAL HOSPITALAR/.test(hist)) return getCod('17008','alta','Produtos farmacêuticos / hospitalares');
+    if(/MATERIAL|MERCADORIA/.test(hist)) return getCod('17009','media','Mercadorias em geral');
+  }
+  return getCod(is4010?'10014':'17099','baixa','Verificar manualmente');
+}
 
 // AUTO-SAVE LOGIC
 function saveDraft() {
@@ -493,7 +543,7 @@ function restoreDraft() {
     if (draft) {
       state.allRows = JSON.parse(draft);
       document.getElementById('draft-alert').style.display = 'none';
-      document.getElementById('nat-global').innerHTML='<option value="">Selecionar natureza global...</option>'+buildNatOpts();
+      document.getElementById('nat-global').innerHTML = buildNatOpts();
       buildPreviewMetrics(); 
       document.getElementById('preview-area').style.display='block';
       goStep(3);
@@ -555,29 +605,10 @@ function gerarXML_Visual() {
   setTimeout(() => { try { gerarXML(); } finally { btn.innerHTML = txtOriginal; btn.disabled = false; } }, 400);
 }
 
-// -------------------------------------------------------------
-// DADOS BASE E TRIAGEM R-4020 / R-4010
-// -------------------------------------------------------------
 const ELEMENTOS_EXCLUIR = ['319011','319012','319013','319016','319092','319096','319113','339046','339049','311'];
 const CNPJS_EXCLUIR = ['66666666666','29979036'];
 const CNPJS_CONFIRMAR = ['07040108','07047251','15139629','09444530','07354939','07965184','00000000'];
 const NOMES_CONFIRMAR = ['TRIBUNAL','JUDICI','PREVFOR','IPM ','INSS','COELCE','ENEL','CAGECE','EMBASA','SABESP','COPASA','COGERH','ELETROBRAS','CHESF','CORREIOS','BANCO DO BRASIL','CAIXA ECONOM','SINDIONIBUS','SIND '];
-
-const NATUREZAS_4020 = [
-  {grp:'Administração Pública', cod:'17002', desc:'Fornecimento de energia elétrica'},
-  {grp:'Administração Pública', cod:'17028', desc:'Serviços de abastecimento de água'},
-  {grp:'Administração Pública', cod:'17029', desc:'Serviços de telefonia e internet'},
-  {grp:'Administração Pública', cod:'17032', desc:'Serviços de limpeza e conservação'},
-  {grp:'Administração Pública', cod:'17031', desc:'Serviços de vigilância e segurança'},
-  {grp:'Administração Pública', cod:'17033', desc:'Locação de mão de obra'},
-  {grp:'Administração Pública', cod:'17099', desc:'Demais serviços retidos pela alíquota global'}
-];
-
-const NATUREZAS_4010 = [
-  {grp:'Rendimentos do Trabalho', cod:'10014', desc:'Remuneração por prestação de serviços - Autônomo'},
-  {grp:'Aluguéis e Royalties', cod:'13009', desc:'Aluguéis e royalties pagos a Pessoa Jurídica'},
-  {grp:'Decisões Judiciais', cod:'18001', desc:'Cumprimento de decisão da Justiça Federal (RPV)'}
-];
 
 let state = { step:1, ug:{tipoEvento:'4020'}, allRows:[], tabAtiva:'todos', xmlContent:'', arquivosGerados:[] };
 
@@ -626,7 +657,7 @@ function validCNPJ(cnpj) {
 }
 function validCPF(cpf) {
   cpf = cleanCPF(cpf);
-  if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
+  if (cpf.length !== 11 || /^(\d) +$/.test(cpf)) return false;
   let soma = 0, resto;
   for (let i = 1; i <= 9; i++) soma += parseInt(cpf.substring(i-1, i)) * (11 - i);
   resto = (soma * 10) % 11;
@@ -685,55 +716,8 @@ function classificarLinha(row) {
   }
 }
 
-function buildNatOpts(selected=''){
-  const lista = state.ug.tipoEvento === '4010' ? NATUREZAS_4010 : NATUREZAS_4020;
-  let opts = `<optgroup label="Naturezas Frequentes">`;
-  let found = false;
-  lista.forEach(n => {
-     if(selected === n.cod) found = true;
-     opts += `<option value="${n.cod}" ${selected===n.cod?'selected':''}>${n.cod} – ${n.desc}</option>`;
-  });
-  opts += `</optgroup>`;
-  
-  if(selected && !found) {
-     const fullNat = TABELA_COMPLETA_NATUREZAS.find(x => x.cod === selected);
-     const descText = fullNat ? fullNat.desc : "(Informado via Planilha / Busca)";
-     opts = `<option value="${selected}" selected>${selected} – ${descText}</option>` + opts;
-  }
-  return opts;
-}
-
-function sugerirNatureza(row){
-  const hist=(row['Hist']||'').toUpperCase(); const nome=(row['Nome do Credor']||'').toUpperCase();
-  const cpfCnpj = state.ug.tipoEvento === '4010' ? cleanCPF(row['CPF/CNPJ']) : cleanCNPJ(row['CPF/CNPJ']);
-  const raiz8 = cpfCnpj.slice(0,8);
-  const is4010 = state.ug.tipoEvento === '4010';
-  const lista = is4010 ? NATUREZAS_4010 : NATUREZAS_4020;
-  
-  function nat(cod,conf,f){const n=lista.find(x=>x.cod===cod);return n?{cod,desc:n.desc,confianca:conf,fonte:f}:null;}
-  
-  if (is4010) {
-    if(/SORTEIO|NOTA FORTALEZA|PREMIO/.test(hist)) return nat('14001','alta','Sorteio / Premiação');
-    if(/PROCESSO JUDICIAL|RPV|HONOR/.test(hist) || row['Elemento'] === '319091' || row['Elemento'] === '339091') return nat('18001','alta','Decisão Judicial');
-    if(/MEDICO|RPA|AUTONOMO|PRESTADOR/.test(hist) || row['Elemento'] === '339036') return nat('10014','media','Trabalhador Autônomo');
-    if(/ALUGUEL|LOCACAO/.test(hist)) return nat('13009','alta','Locação de Imóvel PF');
-    if(/BOLSA DE ESTUDO|RESIDENTE/.test(hist) || row['Elemento'] === '339018') return nat('15001','alta','Bolsas de Estudo');
-  } else {
-    if(['07047251','00360305'].includes(raiz8) || /ENERGIA ELETRICA/.test(hist)) return nat('17002','alta','Energia elétrica');
-    if(raiz8==='07040108' || /AGUA E ESGO/.test(hist)) return nat('17028','alta','Abastecimento de água');
-    if(/TELEFON|INTERNET/.test(hist)) return nat('17029','alta','Telecomunicações');
-    if(/LIMPEZA|HIGIENIZACAO/.test(hist)) return nat('17032','alta','Limpeza');
-    if(/VIGILAN/.test(hist)) return nat('17031','alta','Vigilância');
-    if(/LOCACAO DE MAO/.test(hist)) return nat('17033','alta','Locação de mão de obra');
-    if(/LOCACAO/.test(hist) && /(IMOVEL|VEICULO|EQUIPAMENTO)/.test(hist)) return nat('17035','alta','Locação de bens');
-    if(/MEDICAMENT|FARMACEUT|MATERIAL HOSPITALAR/.test(hist)) return nat('17008','alta','Produtos farmacêuticos / hospitalares');
-    if(/MATERIAL|MERCADORIA/.test(hist)) return nat('17009','media','Mercadorias em geral');
-  }
-  return nat(is4010?'10014':'17099','baixa','Verificar manualmente');
-}
-
 function goStep(n){
-  if(n===3&&state.allRows.length===0){alert('Importe a planilha primeiro.');return;}
+  if(n===3&&state.allRows.length===0){alert('Importe a planilha.');return;}
   if(n===4){filterReview();}
   state.step=n;
   document.querySelectorAll('.section').forEach((s,i)=>s.classList.toggle('active',i===n-1));
@@ -815,7 +799,7 @@ function parseRows(data){
       hist:(row['Hist']||'').trim(),elemento:(row['Elemento']||'').trim(),cls:class_.cls,motivo:class_.motivo,avisos:class_.avisos||[],
       natureza:sugestao?sugestao.cod:'',sugestao,selected:class_.cls==='incluir',raw:row};
   });
-  document.getElementById('nat-global').innerHTML='<option value="">Selecionar natureza global...</option>'+buildNatOpts();
+  document.getElementById('nat-global').innerHTML = buildNatOpts();
   buildPreviewMetrics(); 
   document.getElementById('preview-area').style.display='block';
   saveDraft(); 
@@ -870,16 +854,8 @@ function filterReview(){
       <td><div style="font-weight:600;font-size:12px;">${r.nome}</div><div style="font-size:10px;color:var(--text-muted);">${r.elemento} · ${r.hist.slice(0,50)}</div></td>
       <td class="td-mono">${fmtDoc(r.doc)}</td><td class="td-num">R$ ${fmtBRL(r.vlBruto)}</td><td class="td-num">${r.irrf>0?'R$ '+fmtBRL(r.irrf):'—'}</td>
       <td class="td-mono">${r.dtPag}</td>
-      <td style="min-width: 240px;">
-        <div style="display: flex; gap: 4px;">
-          <select class="nat-sel" style="flex: 1;" onchange="setNatureza(${r.idx},this.value)">
-            <option value="">Selecionar...</option>
-            ${buildNatOpts(r.natureza)}
-          </select>
-          <button class="btn btn-sm" onclick="openModalNat(${r.idx})" style="padding: 0 8px; font-size: 14px;" title="Buscar na Tabela Oficial">🔍</button>
-        </div>
-      </td>
-      <td>${r.natureza?'<span class="badge badge-ok">OK</span>':'<span class="badge badge-err">Falta</span>'}</td>
+      <td><select class="nat-sel" style="width:100%;min-width:260px;" onchange="setNatureza(${r.idx},this.value)">${buildNatOpts(r.natureza)}</select></td>
+      <td>${r.natureza?'<span class="badge badge-ok">OK</span>':'<span class="badge badge-err">Falta Nat.</span>'}</td>
     </tr>`).join('');
     
   const master = document.getElementById('sel-all');
@@ -910,7 +886,7 @@ function selAll(el){
 
 function applyNatToAll(){ 
   const val=document.getElementById('nat-global').value; 
-  if(!val) { alert('Selecione uma natureza global na caixa ao lado antes de aplicar em massa.'); return; }
+  if(!val) { alert('Selecione uma natureza na lista acima antes de aplicar.'); return; }
   
   const filtrados = getFiltrados();
   let afetados = 0;
@@ -928,63 +904,6 @@ function updateReviewSummary(){
   const semNat=valid.filter(r=>!r.natureza).length;
   document.getElementById('review-summary').innerHTML=`<strong>${valid.length}</strong> credores selecionados globalmente`;
   document.getElementById('btn-gerar').disabled=valid.length===0||semNat>0;
-}
-
-// -------------------------------------------------------------
-// MODAL DE BUSCA (A PROVA DE BLOQUEIO DE NAVEGADOR)
-// -------------------------------------------------------------
-function openModalNat(idx) {
-  natTargetIdx = idx;
-  document.getElementById('modal-nat').classList.add('active');
-  document.getElementById('busca-nat').value = '';
-  renderModalList('');
-  setTimeout(() => document.getElementById('busca-nat').focus(), 100);
-}
-
-function closeModalNat() {
-  document.getElementById('modal-nat').classList.remove('active');
-}
-
-function renderModalList(query) {
-  const q = query.toLowerCase();
-  const filtrado = TABELA_COMPLETA_NATUREZAS.filter(n => 
-    n.cod.includes(q) || 
-    n.desc.toLowerCase().includes(q) || 
-    (n.tags && n.tags.toLowerCase().includes(q))
-  );
-  
-  if (filtrado.length === 0) {
-     document.getElementById('modal-list').innerHTML = `<div style="padding:1rem; text-align:center; color:var(--text-muted);">Nenhum código encontrado para "${query}"</div>`;
-     return;
-  }
-  
-  document.getElementById('modal-list').innerHTML = filtrado.map(n => `
-    <div class="modal-item" onclick="confirmarNat('${n.cod}')">
-      <div class="cod">${n.cod}</div>
-      <div class="desc">${n.desc}</div>
-    </div>
-  `).join('');
-}
-
-function confirmarNat(cod) {
-  if (natTargetIdx === 'global') {
-    const select = document.getElementById('nat-global');
-    let exists = false;
-    for(let i=0; i<select.options.length; i++) {
-        if(select.options[i].value === cod) exists = true;
-    }
-    if(!exists) {
-        const fullNat = TABELA_COMPLETA_NATUREZAS.find(x => x.cod === cod);
-        const newOpt = new Option(`${cod} - ${fullNat.desc}`, cod, true, true);
-        select.add(newOpt);
-    } else {
-        select.value = cod;
-    }
-  } else {
-    state.allRows[natTargetIdx].natureza = cod;
-    filterReview();
-  }
-  closeModalNat();
 }
 
 // -------------------------------------------------------------
