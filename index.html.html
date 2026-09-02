@@ -58,14 +58,11 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
     --bg-page: #0f172a;
     --bg-primary: #1e293b;
     --bg-secondary: #334155;
-
     --text-primary: #f8fafc;
     --text-secondary: #cbd5e1;
     --text-muted: #94a3b8;
-
     --border: rgba(255, 255, 255, 0.1);
     --border-md: rgba(255, 255, 255, 0.2);
-
     --blue-50: rgba(50, 85, 101, 0.25);
     --amber-50: rgba(241, 90, 34, 0.15);
     --teal-50: rgba(15, 118, 110, 0.2);
@@ -154,12 +151,7 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
     gap: 8px;
   }
 
-  .metric {
-    background: var(--bg-secondary);
-    border-radius: var(--radius-md);
-    padding: 1rem 1.25rem;
-    border: 1px solid var(--border);
-  }
+  .metric { background: var(--bg-secondary); border-radius: var(--radius-md); padding: 1rem 1.25rem; border: 1px solid var(--border); }
   .metric-label { font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
   .metric-value { font-size: 20px; font-weight: 700; color: var(--text-primary); margin-top: 4px; }
   .metric-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
@@ -220,17 +212,10 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
   }
   .btn:hover { background: var(--bg-secondary); }
   .btn:active { transform: scale(0.98); }
-
-  .btn-primary {
-    background: var(--brand-primary);
-    color: #ffffff;
-    border-color: transparent;
-  }
+  .btn-primary { background: var(--brand-primary); color: #ffffff; border-color: transparent; }
   .btn-primary:hover { background: var(--brand-primary-hover); }
-
   .btn-success { background: var(--teal-600); color: #ffffff; border-color: transparent; }
   .btn-success:hover { background: var(--teal-800); }
-
   .btn-sm { height: 30px; padding: 0 12px; font-size: 12px; border-radius: var(--radius-sm); }
   .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
@@ -357,7 +342,6 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
   .xml-tag { color: #fdba74; } .xml-val { color: #a7f3d0; }
 
   select.nat-sel { height: 32px; font-size: 11px; padding: 0 8px; border-radius: var(--radius-sm); }
-  
   .tabs { display: flex; gap: 8px; margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
   .tab {
     padding: 8px 16px;
@@ -376,6 +360,30 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
   tr.row-excluido td { background: var(--gray-50) !important; color: var(--text-muted); opacity: 0.8; }
   tr.row-erro td { background: var(--red-50) !important; color: var(--red-800); }
 
+  /* Módulo de Busca Inteligente (Modal) */
+  .modal-overlay {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(3px);
+    display: none; align-items: center; justify-content: center; z-index: 9999;
+  }
+  .modal-overlay.active { display: flex; animation: fadeIn 0.2s ease; }
+  .modal-content {
+    background: var(--bg-primary); width: 92%; max-width: 550px;
+    border-radius: var(--radius-lg); padding: 1.5rem;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.25); border: 1px solid var(--border);
+  }
+  .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; }
+  .modal-title { font-size: 16px; font-weight: 700; color: var(--text-primary); }
+  .modal-close { cursor: pointer; color: var(--text-muted); font-size: 1.5rem; line-height: 1; border:none; background:none; transition:0.2s; }
+  .modal-close:hover { color: var(--red-600); transform: scale(1.1); }
+  .modal-search { width: 100%; height: 44px; margin-bottom: 1rem; border: 2px solid var(--border-md); }
+  .modal-search:focus { border-color: var(--brand-primary); }
+  .modal-list { max-height: 320px; overflow-y: auto; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--bg-secondary); }
+  .modal-item { padding: 12px 14px; cursor: pointer; border-bottom: 1px solid var(--border); transition: 0.2s ease; display:flex; flex-direction: column; gap: 4px; }
+  .modal-item:hover { background: var(--blue-50); }
+  .modal-item .cod { font-weight: 700; color: var(--brand-dark-light); font-size: 13px; }
+  .modal-item .desc { font-size: 11px; color: var(--text-secondary); line-height: 1.4; }
+
   @keyframes spin { 100% { transform: rotate(360deg); } }
   .spinner { animation: spin 1s linear infinite; }
 </style>
@@ -385,7 +393,7 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
 <div class="header">
   <div class="header-logo"><svg viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zm-7 3l5 4-5-4-5-4 5-4zm0 10l-5-4h10l-5 4z"/></svg></div>
   <div><h1 id="header-title">EFD-Reinf — Gerador R-4020 e R-4010</h1><p>Prefeitura de Fortaleza · Administração pública municipal descentralizada</p></div>
-  <div class="header-badge">v8.0 Corporate UI</div>
+  <div class="header-badge">v8.1 Catálogo Inteligente</div>
   <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">🌙 Modo Escuro</button>
 </div>
 
@@ -564,6 +572,18 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
 </div>
 </div>
 
+<!-- Modal Catálogo EFD-Reinf -->
+<div class="modal-overlay" id="modal-nat">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-title">Tabela EFD-Reinf (Anexo I)</div>
+      <button class="modal-close" onclick="closeModalNat()">×</button>
+    </div>
+    <input type="text" id="busca-nat" class="modal-search" placeholder="🔍 Digite a palavra-chave ou código (ex: honorários, 17032)..." oninput="renderModalList(this.value)">
+    <div class="modal-list" id="modal-list"></div>
+  </div>
+</div>
+
 <script>
 function toggleTheme() {
   const currentTheme = document.documentElement.getAttribute("data-theme");
@@ -574,7 +594,6 @@ function toggleTheme() {
   localStorage.setItem("reinf_theme", newTheme);
 }
 
-// 100% SECURE DOM LOAD - Prevents UI freezing if values are missing
 window.addEventListener('DOMContentLoaded', () => {
   try {
     const savedTheme = localStorage.getItem("reinf_theme");
@@ -609,9 +628,7 @@ window.addEventListener('DOMContentLoaded', () => {
       if(state.ug.emailContato && document.getElementById('emailContato')) document.getElementById('emailContato').value = state.ug.emailContato;
       if(state.ug.ambiente && document.getElementById('ambiente')) document.getElementById('ambiente').value = state.ug.ambiente;
     }
-  } catch(e) {
-    console.warn("Erro silencioso ao restaurar dados salvos. UI liberada.", e);
-  }
+  } catch(e) { console.warn("Erro silencioso ao restaurar dados salvos.", e); }
 });
 
 function gerarXML_Visual() {
@@ -623,7 +640,101 @@ function gerarXML_Visual() {
 }
 
 // -------------------------------------------------------------
-// DADOS BASE (R-4020 E R-4010) - ATUALIZADOS V7.0
+// TABELA COMPLETA EFD-REINF (MÓDULO DE BUSCA INTELIGENTE)
+// -------------------------------------------------------------
+const TABELA_COMPLETA_NATUREZAS = [
+  { cod: "10001", desc: "Remuneração do trabalho assalariado - Servidor público" },
+  { cod: "10002", desc: "Remuneração do trabalho assalariado - Setor privado" },
+  { cod: "10012", desc: "Remuneração de serviços de natureza profissional (RPA)" },
+  { cod: "10014", desc: "Trabalhador Autônomo / Cooperativas de trabalho" },
+  { cod: "11001", desc: "Aplicações financeiras - Renda fixa" },
+  { cod: "11002", desc: "Cumprimento de decisão judicial (RPV/Precatórios) - Instituição Financeira" },
+  { cod: "12001", desc: "Rendimentos de fundos de investimento imobiliário" },
+  { cod: "13001", desc: "Aluguéis e royalties - Pessoa Física" },
+  { cod: "13009", desc: "Aluguéis e royalties pagos a pessoa jurídica" },
+  { cod: "14001", desc: "Prêmios em concursos, sorteios e loterias" },
+  { cod: "15001", desc: "Bolsas de estudo e de pesquisa" },
+  { cod: "15002", desc: "Lucros e dividendos distribuídos" },
+  { cod: "15003", desc: "Conselheiro tutelar e assemelhados (Serviços Voluntários remunerados)" },
+  { cod: "17001", desc: "Órgãos da Administração Pública - Alimentação" },
+  { cod: "17002", desc: "Órgãos da Administração Pública - Energia elétrica" },
+  { cod: "17003", desc: "Órgãos da Administração Pública - Serviços prestados com emprego de materiais" },
+  { cod: "17004", desc: "Órgãos da Administração Pública - Construção civil por empreitada com materiais" },
+  { cod: "17005", desc: "Órgãos da Administração Pública - Serviços hospitalares/médicos" },
+  { cod: "17006", desc: "Órgãos da Administração Pública - Transporte de cargas" },
+  { cod: "17007", desc: "Órgãos da Administração Pública - Serviços de auxílio diagnóstico e terapia" },
+  { cod: "17008", desc: "Órgãos da Administração Pública - Produtos farmacêuticos, higiene e limpeza" },
+  { cod: "17009", desc: "Órgãos da Administração Pública - Mercadorias e bens em geral" },
+  { cod: "17026", desc: "Órgãos da Administração Pública - Comissões, corretagens, assessoria, representação" },
+  { cod: "17028", desc: "Órgãos da Administração Pública - Abastecimento de água" },
+  { cod: "17029", desc: "Órgãos da Administração Pública - Telefone e Internet" },
+  { cod: "17031", desc: "Órgãos da Administração Pública - Vigilância e segurança" },
+  { cod: "17032", desc: "Órgãos da Administração Pública - Limpeza, conservação e dedetização" },
+  { cod: "17033", desc: "Órgãos da Administração Pública - Locação de mão de obra" },
+  { cod: "17035", desc: "Órgãos da Administração Pública - Administração, locação ou cessão de bens" },
+  { cod: "17039", desc: "Órgãos da Administração Pública - Honorários advocatícios" },
+  { cod: "17099", desc: "Órgãos da Administração Pública - Demais serviços retidos pela alíquota global" },
+  { cod: "18001", desc: "Cumprimento de decisão da Justiça Federal (RPV/Precatórios)" },
+  { cod: "18002", desc: "Cumprimento de decisão da Justiça do Trabalho" },
+  { cod: "18003", desc: "Cumprimento de decisão da Justiça Estadual e do Distrito Federal" },
+  { cod: "18005", desc: "Rendimentos Recebidos Acumuladamente - RRA" },
+  { cod: "20001", desc: "Remessa ao Exterior - Pagamentos, créditos, entregas, empregos" }
+];
+
+let natTargetIdx = null;
+
+function openModalNat(idx) {
+  natTargetIdx = idx;
+  document.getElementById('modal-nat').classList.add('active');
+  document.getElementById('busca-nat').value = '';
+  renderModalList('');
+  setTimeout(() => document.getElementById('busca-nat').focus(), 100);
+}
+
+function closeModalNat() {
+  document.getElementById('modal-nat').classList.remove('active');
+  if(natTargetIdx === 'global') {
+    document.getElementById('nat-global').value = '';
+  } else {
+    filterReview(); 
+  }
+}
+
+function renderModalList(query) {
+  const q = query.toLowerCase();
+  const filtrado = TABELA_COMPLETA_NATUREZAS.filter(n => n.cod.includes(q) || n.desc.toLowerCase().includes(q));
+  
+  if (filtrado.length === 0) {
+     document.getElementById('modal-list').innerHTML = `<div style="padding:1rem; text-align:center; color:var(--text-muted);">Nenhum código encontrado para "${query}"</div>`;
+     return;
+  }
+  
+  document.getElementById('modal-list').innerHTML = filtrado.map(n => `
+    <div class="modal-item" onclick="confirmarNat('${n.cod}')">
+      <div class="cod">${n.cod}</div>
+      <div class="desc">${n.desc}</div>
+    </div>
+  `).join('');
+}
+
+function confirmarNat(cod) {
+  if (natTargetIdx === 'global') {
+    const filtrados = getFiltrados();
+    let afetados = 0;
+    filtrados.forEach(r => { 
+      if(r.selected) { r.natureza = cod; afetados++; } 
+    });
+    if(afetados === 0) alert('Nenhum credor selecionado (caixinha marcada) na lista atual.');
+    document.getElementById('nat-global').value = '';
+  } else {
+    state.allRows[natTargetIdx].natureza = cod;
+  }
+  closeModalNat();
+  filterReview();
+}
+
+// -------------------------------------------------------------
+// DADOS BASE (R-4020 E R-4010) - ATUALIZADOS V8.1
 // -------------------------------------------------------------
 const ELEMENTOS_EXCLUIR = ['319011','319012','319013','319016','319092','319096','319113','339046','339049','311'];
 const CNPJS_EXCLUIR = ['66666666666','29979036'];
@@ -631,19 +742,21 @@ const CNPJS_CONFIRMAR = ['07040108','07047251','15139629','09444530','07354939',
 const NOMES_CONFIRMAR = ['TRIBUNAL','JUDICI','PREVFOR','IPM ','INSS','COELCE','ENEL','CAGECE','EMBASA','SABESP','COPASA','COGERH','ELETROBRAS','CHESF','CORREIOS','BANCO DO BRASIL','CAIXA ECONOM','SINDIONIBUS','SIND '];
 
 const NATUREZAS_4020 = [
-  {grp:'Aplicações e Decisões Judiciais', cod:'11001', desc:'Aplicações Financeiras - Renda Fixa'},
-  {grp:'Aplicações e Decisões Judiciais', cod:'11002', desc:'Decisões Judiciais / RPV'},
-  {grp:'Administração Pública', cod:'17001', desc:'Alimentação'},{grp:'Administração Pública', cod:'17002', desc:'Energia elétrica'},{grp:'Administração Pública', cod:'17003', desc:'Serviços prestados com emprego de materiais'},{grp:'Administração Pública', cod:'17004', desc:'Construção civil por empreitada com emprego de materiais'},{grp:'Administração Pública', cod:'17005', desc:'Serviços hospitalares'},{grp:'Administração Pública', cod:'17006', desc:'Transporte de cargas'},{grp:'Administração Pública', cod:'17007', desc:'Serviços de auxílio diagnóstico e terapia'},{grp:'Administração Pública', cod:'17008', desc:'Produtos farmacêuticos e higiene'},{grp:'Administração Pública', cod:'17009', desc:'Mercadorias e bens em geral'},{grp:'Administração Pública', cod:'17026', desc:'Comissões e Corretagens (Representação)'},{grp:'Administração Pública', cod:'17028', desc:'Abastecimento de água'},{grp:'Administração Pública', cod:'17029', desc:'Telefone'},{grp:'Administração Pública', cod:'17031', desc:'Vigilância'},{grp:'Administração Pública', cod:'17032', desc:'Limpeza'},{grp:'Administração Pública', cod:'17033', desc:'Locação de mão de obra'},{grp:'Administração Pública', cod:'17035', desc:'Administração, locação ou cessão de bens imóveis e móveis'},{grp:'Administração Pública', cod:'17099', desc:'Demais serviços'}
+  {grp:'Administração Pública', cod:'17002', desc:'Energia elétrica'},
+  {grp:'Administração Pública', cod:'17028', desc:'Abastecimento de água'},
+  {grp:'Administração Pública', cod:'17029', desc:'Telefone e Internet'},
+  {grp:'Administração Pública', cod:'17032', desc:'Limpeza, conservação e dedetização'},
+  {grp:'Administração Pública', cod:'17031', desc:'Vigilância e segurança'},
+  {grp:'Administração Pública', cod:'17033', desc:'Locação de mão de obra'},
+  {grp:'Administração Pública', cod:'17099', desc:'Demais serviços retidos pela alíquota global'},
+  {grp:'Aplicações e Decisões Judiciais', cod:'11002', desc:'Decisões Judiciais / RPV'}
 ];
 
 const NATUREZAS_4010 = [
   {grp:'Rendimentos do Trabalho', cod:'10014', desc:'Trabalhador Autônomo (RPA)'},
-  {grp:'Rendimentos do Trabalho', cod:'10012', desc:'Remuneração de serviços de natureza profissional'},
   {grp:'Aluguéis e Royalties', cod:'13009', desc:'Aluguéis e royalties pagos a residente'},
   {grp:'Outros Rendimentos', cod:'14001', desc:'Prêmios em concursos e sorteios'},
-  {grp:'Outros Rendimentos', cod:'15001', desc:'Bolsas de estudo e pesquisa (doação)'},
-  {grp:'Decisões Judiciais', cod:'18001', desc:'Cumprimento de decisão da Justiça (RPV)'},
-  {grp:'Decisões Judiciais', cod:'18005', desc:'Rendimentos Recebidos Acumuladamente - RRA'}
+  {grp:'Decisões Judiciais', cod:'18001', desc:'Cumprimento de decisão da Justiça (RPV)'}
 ];
 
 let state = { step:1, ug:{tipoEvento:'4020'}, allRows:[], tabAtiva:'todos', xmlContent:'', arquivosGerados:[] };
@@ -763,10 +876,12 @@ function buildNatOpts(selected=''){
   opts += `</optgroup>`;
   
   if(selected && !found) {
-     opts = `<option value="${selected}" selected>${selected} – (Informado manualmente / Planilha)</option>` + opts;
+     const fullNat = TABELA_COMPLETA_NATUREZAS.find(x => x.cod === selected);
+     const descText = fullNat ? fullNat.desc : "(Informado manualmente / Planilha)";
+     opts = `<option value="${selected}" selected>${selected} – ${descText}</option>` + opts;
   }
   
-  opts += `<option value="custom" style="font-weight:bold; color:var(--brand-primary);">+ Outro código (Digitar manual)...</option>`;
+  opts += `<option value="search" style="font-weight:bold; color:var(--brand-primary);">🔍 Tabela Completa (Buscar)...</option>`;
   return opts;
 }
 
@@ -847,16 +962,16 @@ function processFile(file){
   reader.onload = e => {
     try {
       const text = e.target.result;
-      if(!text){ zone.innerHTML = `<p style="color:var(--color-red);font-weight:700;">❌ Arquivo vazio.</p>`; return; }
+      if(!text){ zone.innerHTML = `<p style="color:var(--red-600);font-weight:700;">❌ Arquivo vazio.</p>`; return; }
       const delim = text.split('\n')[0].includes(';') ? ';' : ',';
       Papa.parse(text, { delimiter: delim, header: true, skipEmptyLines: true,
         complete: r => {
-          if(!r.data || r.data.length === 0){ zone.innerHTML = `<p style="color:var(--color-red);font-weight:700;">❌ Nenhuma linha encontrada.</p>`; return; }
-          zone.innerHTML = `<p style="color:var(--color-green);font-weight:700;">✅ Arquivo lido: <strong>${r.data.length}</strong> linhas</p>`;
+          if(!r.data || r.data.length === 0){ zone.innerHTML = `<p style="color:var(--red-600);font-weight:700;">❌ Nenhuma linha encontrada.</p>`; return; }
+          zone.innerHTML = `<p style="color:var(--green-600);font-weight:700;">✅ Arquivo lido: <strong>${r.data.length}</strong> linhas</p>`;
           parseRows(r.data);
         }
       });
-    } catch(err){ zone.innerHTML = `<p style="color:var(--color-red);font-weight:700;">❌ Erro: ${err.message}</p>`; }
+    } catch(err){ zone.innerHTML = `<p style="color:var(--red-600);font-weight:700;">❌ Erro: ${err.message}</p>`; }
   };
   reader.readAsText(file, 'latin1');
 }
@@ -868,7 +983,6 @@ function parseRows(data){
     let class_=classificarLinha(row); 
     let sugestao=class_.cls==='incluir'?sugerirNatureza(row):null;
 
-    // Lógica V7 - Leitura automática da coluna do CSV
     const colKeys = Object.keys(row);
     const colNat = colKeys.find(k => /natureza.*rendimento|c[oó]digo.*receita|c[oó]digo.*origem/i.test(k));
     let natCsvVal = colNat ? String(row[colNat]).replace(/\D/g, '') : null;
@@ -953,18 +1067,12 @@ function toggleRow(idx,checked){
 }
 
 function setNatureza(idx,val,el){
-  if(val === 'custom') {
-      let manual = prompt("Digite o código da Natureza de Rendimento (apenas números):");
-      if(manual && manual.trim() !== '') {
-          state.allRows[idx].natureza = manual.trim().replace(/\D/g, '');
-      } else {
-          el.value = state.allRows[idx].natureza || ''; // Reverte pro valor anterior
-          return;
-      }
+  if(val === 'search') {
+      openModalNat(idx);
   } else {
       state.allRows[idx].natureza = val;
+      filterReview();
   }
-  filterReview();
 }
 
 function selAll(el){
@@ -976,23 +1084,18 @@ function applyNatToAll(){
   const val=document.getElementById('nat-global').value; 
   if(!val) { alert('Selecione uma natureza na caixa ao lado antes de aplicar.'); return; }
   
-  let finalVal = val;
-  if(val === 'custom') {
-     let manual = prompt("Digite o código global de Natureza de Rendimento (apenas números):");
-     if(manual && manual.trim() !== '') {
-         finalVal = manual.trim().replace(/\D/g, '');
-     } else {
-         return; // Cancela operação
-     }
+  if(val === 'search') {
+     openModalNat('global');
+  } else {
+     const filtrados = getFiltrados();
+     let afetados = 0;
+     filtrados.forEach(r => { 
+       if(r.selected) { r.natureza=val; afetados++; } 
+     });
+     if(afetados === 0) alert('Nenhum credor selecionado (caixinha marcada) na lista atual.');
+     filterReview(); 
+     document.getElementById('nat-global').value = '';
   }
-
-  const filtrados = getFiltrados();
-  let afetados = 0;
-  filtrados.forEach(r => { 
-    if(r.selected) { r.natureza=finalVal; afetados++; } 
-  });
-  if(afetados === 0) alert('Nenhum credor selecionado (caixinha marcada) na lista atual.');
-  filterReview(); 
 }
 
 function updateReviewSummary(){
