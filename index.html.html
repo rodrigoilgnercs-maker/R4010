@@ -188,7 +188,7 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
   .modal-title { font-size: 16px; font-weight: 700; color: var(--text-primary); }
   .modal-close { cursor: pointer; color: var(--text-muted); font-size: 1.5rem; line-height: 1; border:none; background:none; transition:0.2s; }
   .modal-close:hover { color: var(--red-600); transform: scale(1.1); }
-  .modal-search { width: 100%; height: 44px; margin-bottom: 1rem; border: 2px solid var(--border-md); font-size: 14px; }
+  .modal-search { width: 100%; height: 44px; margin-bottom: 1rem; border: 2px solid var(--border-md); font-size: 14px; border-radius: var(--radius-md); padding: 0 16px;}
   .modal-search:focus { border-color: var(--brand-primary); }
   .modal-list { max-height: 320px; overflow-y: auto; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--bg-secondary); }
   .modal-item { padding: 12px 14px; cursor: pointer; border-bottom: 1px solid var(--border); transition: 0.2s ease; display:flex; flex-direction: column; gap: 4px; }
@@ -213,7 +213,7 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
 <div class="header">
   <div class="header-logo"><svg viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zm-7 3l5 4-5-4-5-4 5-4zm0 10l-5-4h10l-5 4z"/></svg></div>
   <div><h1 id="header-title">EFD-Reinf — Gerador R-4020 e R-4010</h1><p>Prefeitura de Fortaleza · Administração pública municipal descentralizada</p></div>
-  <div class="header-badge">v9.1 Enterprise UI</div>
+  <div class="header-badge">v10.0 Enterprise UI</div>
   <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">🌙 Modo Escuro</button>
 </div>
 
@@ -341,7 +341,13 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
         <option value="pendente">❌ Faltando Natureza</option>
         <option value="ok">✅ Natureza OK</option>
       </select>
-      <select id="nat-global" style="width:260px;" onchange="if(this.value==='search'){ openModalNat('global'); this.value=''; }"><option value="">Selecionar natureza global...</option></select>
+      
+      <!-- BOTÃO DEDICADO PARA BUSCA GLOBAL (SOLUÇÃO DE CONFLITO COM O SELECT) -->
+      <div style="display:flex; align-items:center; gap: 4px;">
+        <select id="nat-global" style="width:260px;"><option value="">Selecionar natureza global...</option></select>
+        <button class="btn btn-sm" onclick="openModalNat('global')" style="height: 38px; padding: 0 12px; border-color:var(--border-md); background:var(--bg-secondary);" title="Buscar Tabela Completa">🔍</button>
+      </div>
+
       <button class="btn btn-sm btn-primary" onclick="applyNatToAll()" style="height: 38px; padding: 0 16px;">Aplicar na seleção</button>
     </div>
   </div>
@@ -412,17 +418,23 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
 </div>
 
 <script>
+// IMPEDE CONGELAMENTO DE ERROS SILENCIOSOS NO JAVASCRIPT
+window.onerror = function(message, source, lineno, colno, error) {
+  console.warn("Recovered Error:", message);
+  return true; 
+};
+
 function toggleTheme() {
   const currentTheme = document.documentElement.getAttribute("data-theme");
   const newTheme = currentTheme === "dark" ? "light" : "dark";
   document.documentElement.setAttribute("data-theme", newTheme);
   const btn = document.getElementById("theme-btn");
   btn.innerHTML = newTheme === "dark" ? "☀️ Modo Claro" : "🌙 Modo Escuro";
-  localStorage.setItem("reinf_theme", newTheme);
+  try { localStorage.setItem("reinf_theme", newTheme); } catch(e){}
 }
 
 // -------------------------------------------------------------
-// TABELA HÍBRIDA EFD-REINF (OFICIAL + TAGS) - VERSÃO 9.1
+// TABELA HÍBRIDA EFD-REINF (OFICIAL + TAGS) - VERSÃO 10.0
 // -------------------------------------------------------------
 const TABELA_COMPLETA_NATUREZAS = [
   { cod: "10001", tags: "servidor público, folha", desc: "Remuneração do trabalho assalariado - Servidores ou empregados do setor público" },
@@ -490,7 +502,7 @@ function restoreDraft() {
 }
 
 function clearDraft() {
-  localStorage.removeItem('reinf_draft_rows');
+  try { localStorage.removeItem('reinf_draft_rows'); } catch(e){}
   document.getElementById('draft-alert').style.display = 'none';
 }
 
@@ -685,11 +697,9 @@ function buildNatOpts(selected=''){
   
   if(selected && !found) {
      const fullNat = TABELA_COMPLETA_NATUREZAS.find(x => x.cod === selected);
-     const descText = fullNat ? fullNat.desc : "(Informado manualmente / Planilha)";
+     const descText = fullNat ? fullNat.desc : "(Informado via Planilha / Busca)";
      opts = `<option value="${selected}" selected>${selected} – ${descText}</option>` + opts;
   }
-  
-  opts += `<option value="search" style="font-weight:bold; color:var(--brand-primary);">🔍 Tabela Completa (Buscar)...</option>`;
   return opts;
 }
 
@@ -723,7 +733,7 @@ function sugerirNatureza(row){
 }
 
 function goStep(n){
-  if(n===3&&state.allRows.length===0){alert('Importe a planilha.');return;}
+  if(n===3&&state.allRows.length===0){alert('Importe a planilha primeiro.');return;}
   if(n===4){filterReview();}
   state.step=n;
   document.querySelectorAll('.section').forEach((s,i)=>s.classList.toggle('active',i===n-1));
@@ -860,8 +870,16 @@ function filterReview(){
       <td><div style="font-weight:600;font-size:12px;">${r.nome}</div><div style="font-size:10px;color:var(--text-muted);">${r.elemento} · ${r.hist.slice(0,50)}</div></td>
       <td class="td-mono">${fmtDoc(r.doc)}</td><td class="td-num">R$ ${fmtBRL(r.vlBruto)}</td><td class="td-num">${r.irrf>0?'R$ '+fmtBRL(r.irrf):'—'}</td>
       <td class="td-mono">${r.dtPag}</td>
-      <td><select class="nat-sel" style="width:100%;min-width:200px;" onchange="setNatureza(${r.idx},this.value, this)"><option value="">Selecionar...</option>${buildNatOpts(r.natureza)}</select></td>
-      <td>${r.natureza?'<span class="badge badge-ok">OK</span>':'<span class="badge badge-err">Falta Nat.</span>'}</td>
+      <td style="min-width: 240px;">
+        <div style="display: flex; gap: 4px;">
+          <select class="nat-sel" style="flex: 1;" onchange="setNatureza(${r.idx},this.value)">
+            <option value="">Selecionar...</option>
+            ${buildNatOpts(r.natureza)}
+          </select>
+          <button class="btn btn-sm" onclick="openModalNat(${r.idx})" style="padding: 0 8px; font-size: 14px;" title="Buscar na Tabela Oficial">🔍</button>
+        </div>
+      </td>
+      <td>${r.natureza?'<span class="badge badge-ok">OK</span>':'<span class="badge badge-err">Falta</span>'}</td>
     </tr>`).join('');
     
   const master = document.getElementById('sel-all');
@@ -880,13 +898,9 @@ function toggleRow(idx,checked){
   saveDraft();
 }
 
-function setNatureza(idx,val,el){
-  if(val === 'search') {
-      openModalNat(idx);
-  } else {
-      state.allRows[idx].natureza = val;
-      filterReview();
-  }
+function setNatureza(idx,val){
+  state.allRows[idx].natureza = val;
+  filterReview();
 }
 
 function selAll(el){
@@ -896,7 +910,7 @@ function selAll(el){
 
 function applyNatToAll(){ 
   const val=document.getElementById('nat-global').value; 
-  if(!val) { alert('Selecione uma natureza na caixa ao lado antes de aplicar.'); return; }
+  if(!val) { alert('Selecione uma natureza global na caixa ao lado antes de aplicar em massa.'); return; }
   
   const filtrados = getFiltrados();
   let afetados = 0;
@@ -904,6 +918,7 @@ function applyNatToAll(){
     if(r.selected) { r.natureza=val; afetados++; } 
   });
   if(afetados === 0) alert('Nenhum credor selecionado (caixinha marcada) na lista atual.');
+  
   document.getElementById('nat-global').value = '';
   filterReview(); 
 }
@@ -913,6 +928,63 @@ function updateReviewSummary(){
   const semNat=valid.filter(r=>!r.natureza).length;
   document.getElementById('review-summary').innerHTML=`<strong>${valid.length}</strong> credores selecionados globalmente`;
   document.getElementById('btn-gerar').disabled=valid.length===0||semNat>0;
+}
+
+// -------------------------------------------------------------
+// MODAL DE BUSCA (A PROVA DE BLOQUEIO DE NAVEGADOR)
+// -------------------------------------------------------------
+function openModalNat(idx) {
+  natTargetIdx = idx;
+  document.getElementById('modal-nat').classList.add('active');
+  document.getElementById('busca-nat').value = '';
+  renderModalList('');
+  setTimeout(() => document.getElementById('busca-nat').focus(), 100);
+}
+
+function closeModalNat() {
+  document.getElementById('modal-nat').classList.remove('active');
+}
+
+function renderModalList(query) {
+  const q = query.toLowerCase();
+  const filtrado = TABELA_COMPLETA_NATUREZAS.filter(n => 
+    n.cod.includes(q) || 
+    n.desc.toLowerCase().includes(q) || 
+    (n.tags && n.tags.toLowerCase().includes(q))
+  );
+  
+  if (filtrado.length === 0) {
+     document.getElementById('modal-list').innerHTML = `<div style="padding:1rem; text-align:center; color:var(--text-muted);">Nenhum código encontrado para "${query}"</div>`;
+     return;
+  }
+  
+  document.getElementById('modal-list').innerHTML = filtrado.map(n => `
+    <div class="modal-item" onclick="confirmarNat('${n.cod}')">
+      <div class="cod">${n.cod}</div>
+      <div class="desc">${n.desc}</div>
+    </div>
+  `).join('');
+}
+
+function confirmarNat(cod) {
+  if (natTargetIdx === 'global') {
+    const select = document.getElementById('nat-global');
+    let exists = false;
+    for(let i=0; i<select.options.length; i++) {
+        if(select.options[i].value === cod) exists = true;
+    }
+    if(!exists) {
+        const fullNat = TABELA_COMPLETA_NATUREZAS.find(x => x.cod === cod);
+        const newOpt = new Option(`${cod} - ${fullNat.desc}`, cod, true, true);
+        select.add(newOpt);
+    } else {
+        select.value = cod;
+    }
+  } else {
+    state.allRows[natTargetIdx].natureza = cod;
+    filterReview();
+  }
+  closeModalNat();
 }
 
 // -------------------------------------------------------------
@@ -1061,7 +1133,13 @@ function gerarXML(){
   clearDraft(); 
 }
 
-function colorXML(xml){ return xml.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/&lt;\/?[\w:]+/g,m=>`<span class="xml-tag">${m}</span>`).replace(/\/?&gt;/g,m=>`<span class="xml-tag">${m}</span>`); }
+function colorXML(xml){ 
+  return xml.replace(/&/g,'&amp;')
+            .replace(/</g,'&lt;')
+            .replace(/>/g,'&gt;')
+            .replace(/&lt;\/?[\w:]+/g, m => `<span class="xml-tag">${m}</span>`)
+            .replace(/\/?&gt;/g, m => `<span class="xml-tag">${m}</span>`); 
+}
 
 function copyXML(){ 
   if(state.arquivosGerados.length > 0) {
