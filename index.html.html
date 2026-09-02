@@ -58,11 +58,14 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
     --bg-page: #0f172a;
     --bg-primary: #1e293b;
     --bg-secondary: #334155;
+
     --text-primary: #f8fafc;
     --text-secondary: #cbd5e1;
     --text-muted: #94a3b8;
+
     --border: rgba(255, 255, 255, 0.1);
     --border-md: rgba(255, 255, 255, 0.2);
+
     --blue-50: rgba(50, 85, 101, 0.25);
     --amber-50: rgba(241, 90, 34, 0.15);
     --teal-50: rgba(15, 118, 110, 0.2);
@@ -368,7 +371,7 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
   }
   .modal-overlay.active { display: flex; animation: fadeIn 0.2s ease; }
   .modal-content {
-    background: var(--bg-primary); width: 92%; max-width: 550px;
+    background: var(--bg-primary); width: 92%; max-width: 600px;
     border-radius: var(--radius-lg); padding: 1.5rem;
     box-shadow: 0 10px 25px rgba(0,0,0,0.25); border: 1px solid var(--border);
   }
@@ -376,7 +379,7 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
   .modal-title { font-size: 16px; font-weight: 700; color: var(--text-primary); }
   .modal-close { cursor: pointer; color: var(--text-muted); font-size: 1.5rem; line-height: 1; border:none; background:none; transition:0.2s; }
   .modal-close:hover { color: var(--red-600); transform: scale(1.1); }
-  .modal-search { width: 100%; height: 44px; margin-bottom: 1rem; border: 2px solid var(--border-md); }
+  .modal-search { width: 100%; height: 44px; margin-bottom: 1rem; border: 2px solid var(--border-md); font-size: 14px; }
   .modal-search:focus { border-color: var(--brand-primary); }
   .modal-list { max-height: 320px; overflow-y: auto; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--bg-secondary); }
   .modal-item { padding: 12px 14px; cursor: pointer; border-bottom: 1px solid var(--border); transition: 0.2s ease; display:flex; flex-direction: column; gap: 4px; }
@@ -393,7 +396,7 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
 <div class="header">
   <div class="header-logo"><svg viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zm-7 3l5 4-5-4-5-4 5-4zm0 10l-5-4h10l-5 4z"/></svg></div>
   <div><h1 id="header-title">EFD-Reinf — Gerador R-4020 e R-4010</h1><p>Prefeitura de Fortaleza · Administração pública municipal descentralizada</p></div>
-  <div class="header-badge">v8.1 Catálogo Inteligente</div>
+  <div class="header-badge">v8.2 Corporate c/ Catálogo Completo</div>
   <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">🌙 Modo Escuro</button>
 </div>
 
@@ -576,10 +579,10 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
 <div class="modal-overlay" id="modal-nat">
   <div class="modal-content">
     <div class="modal-header">
-      <div class="modal-title">Tabela EFD-Reinf (Anexo I)</div>
+      <div class="modal-title">Tabela Completa EFD-Reinf (Anexo I)</div>
       <button class="modal-close" onclick="closeModalNat()">×</button>
     </div>
-    <input type="text" id="busca-nat" class="modal-search" placeholder="🔍 Digite a palavra-chave ou código (ex: honorários, 17032)..." oninput="renderModalList(this.value)">
+    <input type="text" id="busca-nat" class="modal-search" placeholder="🔍 Digite a palavra-chave (ex: advogado) ou código..." oninput="renderModalList(this.value)">
     <div class="modal-list" id="modal-list"></div>
   </div>
 </div>
@@ -645,40 +648,68 @@ function gerarXML_Visual() {
 const TABELA_COMPLETA_NATUREZAS = [
   { cod: "10001", desc: "Remuneração do trabalho assalariado - Servidor público" },
   { cod: "10002", desc: "Remuneração do trabalho assalariado - Setor privado" },
-  { cod: "10012", desc: "Remuneração de serviços de natureza profissional (RPA)" },
-  { cod: "10014", desc: "Trabalhador Autônomo / Cooperativas de trabalho" },
+  { cod: "10003", desc: "Remuneração de trabalho não assalariado" },
+  { cod: "10004", desc: "Participação nos lucros ou resultados (PLR)" },
+  { cod: "10008", desc: "Remuneração de dirigentes sindicais" },
+  { cod: "10012", desc: "Remuneração de serviços de natureza profissional (PF)" },
+  { cod: "10014", desc: "Trabalhador Autônomo / Cooperativas de trabalho (RPA)" },
   { cod: "11001", desc: "Aplicações financeiras - Renda fixa" },
-  { cod: "11002", desc: "Cumprimento de decisão judicial (RPV/Precatórios) - Instituição Financeira" },
+  { cod: "11002", desc: "Cumprimento de decisão judicial (RPV) - Instituição Financeira" },
+  { cod: "11003", desc: "Aplicações financeiras - Renda variável" },
   { cod: "12001", desc: "Rendimentos de fundos de investimento imobiliário" },
   { cod: "13001", desc: "Aluguéis e royalties - Pessoa Física" },
-  { cod: "13009", desc: "Aluguéis e royalties pagos a pessoa jurídica" },
+  { cod: "13009", desc: "Aluguéis e royalties pagos a Pessoa Jurídica" },
   { cod: "14001", desc: "Prêmios em concursos, sorteios e loterias" },
   { cod: "15001", desc: "Bolsas de estudo e de pesquisa" },
   { cod: "15002", desc: "Lucros e dividendos distribuídos" },
-  { cod: "15003", desc: "Conselheiro tutelar e assemelhados (Serviços Voluntários remunerados)" },
+  { cod: "15003", desc: "Conselheiro tutelar e assemelhados (Serviços Voluntários)" },
   { cod: "17001", desc: "Órgãos da Administração Pública - Alimentação" },
   { cod: "17002", desc: "Órgãos da Administração Pública - Energia elétrica" },
-  { cod: "17003", desc: "Órgãos da Administração Pública - Serviços prestados com emprego de materiais" },
-  { cod: "17004", desc: "Órgãos da Administração Pública - Construção civil por empreitada com materiais" },
+  { cod: "17003", desc: "Órgãos da Administração Pública - Serviços com emprego de materiais" },
+  { cod: "17004", desc: "Órgãos da Administração Pública - Construção civil por empreitada" },
   { cod: "17005", desc: "Órgãos da Administração Pública - Serviços hospitalares/médicos" },
   { cod: "17006", desc: "Órgãos da Administração Pública - Transporte de cargas" },
-  { cod: "17007", desc: "Órgãos da Administração Pública - Serviços de auxílio diagnóstico e terapia" },
-  { cod: "17008", desc: "Órgãos da Administração Pública - Produtos farmacêuticos, higiene e limpeza" },
+  { cod: "17007", desc: "Órgãos da Administração Pública - Serviços de diagnóstico e terapia" },
+  { cod: "17008", desc: "Órgãos da Administração Pública - Produtos farmacêuticos e higiene" },
   { cod: "17009", desc: "Órgãos da Administração Pública - Mercadorias e bens em geral" },
-  { cod: "17026", desc: "Órgãos da Administração Pública - Comissões, corretagens, assessoria, representação" },
+  { cod: "17010", desc: "Órgãos da Administração Pública - Passagens e transportes" },
+  { cod: "17011", desc: "Órgãos da Administração Pública - Propaganda e publicidade" },
+  { cod: "17012", desc: "Órgãos da Administração Pública - Seguros" },
+  { cod: "17013", desc: "Órgãos da Administração Pública - Serviços de rádio e TV" },
+  { cod: "17014", desc: "Órgãos da Administração Pública - Cartões de crédito" },
+  { cod: "17015", desc: "Órgãos da Administração Pública - Passagens aéreas" },
+  { cod: "17016", desc: "Órgãos da Administração Pública - Órgãos internacionais" },
+  { cod: "17017", desc: "Órgãos da Administração Pública - Associações" },
+  { cod: "17018", desc: "Órgãos da Administração Pública - Cooperativas" },
+  { cod: "17019", desc: "Órgãos da Administração Pública - Combustíveis" },
+  { cod: "17020", desc: "Órgãos da Administração Pública - Transporte passageiros" },
+  { cod: "17021", desc: "Órgãos da Administração Pública - Veículos e autopeças" },
+  { cod: "17022", desc: "Órgãos da Administração Pública - Pneus e câmaras de ar" },
+  { cod: "17023", desc: "Órgãos da Administração Pública - Máquinas e equipamentos" },
+  { cod: "17024", desc: "Órgãos da Administração Pública - Papel e celulose" },
+  { cod: "17025", desc: "Órgãos da Administração Pública - Informática" },
+  { cod: "17026", desc: "Órgãos da Administração Pública - Comissões e corretagens" },
+  { cod: "17027", desc: "Órgãos da Administração Pública - Agências de viagens" },
   { cod: "17028", desc: "Órgãos da Administração Pública - Abastecimento de água" },
   { cod: "17029", desc: "Órgãos da Administração Pública - Telefone e Internet" },
+  { cod: "17030", desc: "Órgãos da Administração Pública - Correios" },
   { cod: "17031", desc: "Órgãos da Administração Pública - Vigilância e segurança" },
-  { cod: "17032", desc: "Órgãos da Administração Pública - Limpeza, conservação e dedetização" },
+  { cod: "17032", desc: "Órgãos da Administração Pública - Limpeza e conservação" },
   { cod: "17033", desc: "Órgãos da Administração Pública - Locação de mão de obra" },
-  { cod: "17035", desc: "Órgãos da Administração Pública - Administração, locação ou cessão de bens" },
+  { cod: "17034", desc: "Órgãos da Administração Pública - Fomento Mercantil (Factoring)" },
+  { cod: "17035", desc: "Órgãos da Administração Pública - Locação de bens imóveis/móveis" },
+  { cod: "17036", desc: "Órgãos da Administração Pública - Ensino e educação" },
+  { cod: "17037", desc: "Órgãos da Administração Pública - Eventos e congressos" },
+  { cod: "17038", desc: "Órgãos da Administração Pública - Obras de arte" },
   { cod: "17039", desc: "Órgãos da Administração Pública - Honorários advocatícios" },
   { cod: "17099", desc: "Órgãos da Administração Pública - Demais serviços retidos pela alíquota global" },
   { cod: "18001", desc: "Cumprimento de decisão da Justiça Federal (RPV/Precatórios)" },
   { cod: "18002", desc: "Cumprimento de decisão da Justiça do Trabalho" },
   { cod: "18003", desc: "Cumprimento de decisão da Justiça Estadual e do Distrito Federal" },
-  { cod: "18005", desc: "Rendimentos Recebidos Acumuladamente - RRA" },
-  { cod: "20001", desc: "Remessa ao Exterior - Pagamentos, créditos, entregas, empregos" }
+  { cod: "18004", desc: "Cumprimento de decisão judicial - Pessoa Jurídica" },
+  { cod: "18005", desc: "Rendimentos Recebidos Acumuladamente - RRA PF" },
+  { cod: "19001", desc: "Aposentadorias e pensões" },
+  { cod: "20001", desc: "Remessa ao Exterior - Pagamentos, créditos, entregas" }
 ];
 
 let natTargetIdx = null;
@@ -734,7 +765,7 @@ function confirmarNat(cod) {
 }
 
 // -------------------------------------------------------------
-// DADOS BASE (R-4020 E R-4010) - ATUALIZADOS V8.1
+// DADOS BASE E TRIAGEM R-4020 / R-4010
 // -------------------------------------------------------------
 const ELEMENTOS_EXCLUIR = ['319011','319012','319013','319016','319092','319096','319113','339046','339049','311'];
 const CNPJS_EXCLUIR = ['66666666666','29979036'];
