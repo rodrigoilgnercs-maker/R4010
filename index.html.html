@@ -116,13 +116,37 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
   .form-row.c3 { grid-template-columns: 1fr 1fr 1fr; }
   .form-row.c4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
 
-  label { font-size: 12px; font-weight: 600; color: var(--text-secondary); display: flex; align-items: center; margin-bottom: 4px; }
+  .label-container { display: flex; align-items: center; margin-bottom: 4px; }
+  label { font-size: 12px; font-weight: 600; color: var(--text-secondary); }
   label .req { color: var(--brand-primary); margin-left: 2px; }
 
-  .help-icon { display: inline-flex; align-items: center; justify-content: center; width: 14px; height: 14px; border-radius: 50%; background: var(--border-md); color: var(--bg-primary); font-size: 10px; font-weight: 800; cursor: help; margin-left: 6px; transition: 0.2s; }
-  .help-icon:hover { background: var(--brand-primary); color: #fff; }
+  /* TOOLTIP (BALÕES DE AJUDA) CORRIGIDO */
+  .help-icon { 
+    position: relative; 
+    display: inline-flex; align-items: center; justify-content: center; 
+    width: 16px; height: 16px; border-radius: 50%; 
+    background: var(--brand-primary); color: #fff; 
+    font-size: 11px; font-weight: 800; cursor: help; 
+    margin-left: 6px; 
+  }
+  .help-icon .tooltip-text {
+    visibility: hidden; opacity: 0;
+    width: 240px; background-color: var(--bg-secondary); color: var(--text-primary);
+    text-align: left; border-radius: var(--radius-md); padding: 12px 14px;
+    position: absolute; z-index: 9999; bottom: 140%; left: 50%;
+    transform: translateX(-50%); border: 1px solid var(--border-md);
+    box-shadow: var(--shadow-md); font-weight: 500; font-size: 12px; line-height: 1.5;
+    transition: opacity 0.2s, visibility 0.2s; pointer-events: none;
+  }
+  .help-icon .tooltip-text::after {
+    content: ""; position: absolute; top: 100%; left: 50%; margin-left: -6px;
+    border-width: 6px; border-style: solid; border-color: var(--border-md) transparent transparent transparent;
+  }
+  .help-icon:hover .tooltip-text, .help-icon:active .tooltip-text {
+    visibility: visible; opacity: 1;
+  }
 
-  input[type="text"], input[type="email"], select { width: 100%; height: 38px; padding: 0 12px; border: 1px solid var(--border-md); border-radius: var(--radius-md); font-size: 13px; font-family: var(--font); color: var(--text-primary); background: var(--bg-primary); outline: none; transition: all 0.2s ease; }
+  input[type="text"], input[type="email"], select { width: 100%; height: 38px; padding: 0 12px; border: 1px solid var(--border-md); border-radius: var(--radius-md); font-size: 13px; font-family: var(--font); outline: none; transition: all 0.2s ease; }
   input[type="text"]:focus, input[type="email"]:focus, select:focus { border-color: var(--brand-primary); box-shadow: 0 0 0 3px rgba(241, 90, 34, 0.15); }
 
   .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 0 16px; height: 38px; border-radius: var(--radius-md); font-size: 13px; font-weight: 600; cursor: pointer; border: 1px solid var(--border-md); background: var(--bg-primary); color: var(--text-primary); transition: all 0.2s ease; font-family: var(--font); box-shadow: var(--shadow-sm); }
@@ -131,7 +155,6 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
   
   .btn-primary { background: #f15a22; color: #ffffff; border-color: transparent; }
   .btn-primary:hover { background: #d94812; }
-  
   .btn-success { background: #0f766e; color: #ffffff; border-color: transparent; }
   .btn-success:hover { background: #115e59; }
   
@@ -209,7 +232,7 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
 <div class="header">
   <div class="header-logo"><svg viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zm-7 3l5 4-5-4-5-4 5-4zm0 10l-5-4h10l-5 4z"/></svg></div>
   <div><h1 id="header-title">EFD-Reinf — Gerador R-4020 e R-4010</h1><p>Prefeitura de Fortaleza · Administração pública municipal descentralizada</p></div>
-  <div class="header-badge">v11.1 Enterprise UI</div>
+  <div class="header-badge">v11.2 Enterprise UI</div>
   <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">🌙 Modo Escuro</button>
 </div>
 
@@ -259,23 +282,47 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
       </div>
       <div class="form-row"><div><label>Razão Social da UG<span class="req">*</span></label><input type="text" id="razaoSocial" placeholder="SECRETARIA MUNICIPAL DE URBANISMO E MEIO AMBIENTE"></div></div>
       <div class="form-row c2">
-        <div><label>Natureza Jurídica<span class="req">*</span> <span class="help-icon" title="Para a maioria das secretarias e órgãos da administração direta da Prefeitura de Fortaleza, utilize '103-1'.">?</span></label><select id="naturezaJuridica">
-          <option value="">Selecione...</option>
-          <option value="103-1">103-1 - Órgão Público do Poder Executivo Municipal</option>
-          <option value="106-6">106-6 - Órgão Público do Poder Legislativo Municipal</option>
-          <option value="112-0">112-0 - Autarquia Municipal</option>
-          <option value="115-5">115-5 - Fundação Pública de Direito Público Municipal</option>
-          <option value="118-0">118-0 - Órgão Público Autônomo Municipal</option>
-          <option value="124-4">124-4 - Município</option>
-          <option value="127-9">127-9 - Fundação Pública de Direito Privado Municipal</option>
-          <option value="130-9">130-9 - Fundo Público da Administração Indireta Municipal</option>
-          <option value="133-3">133-3 - Fundo Público da Administração Direta Municipal</option>
-        </select></div>
-        <div><label>Classificação Tributária <span class="help-icon" title="Em regra, selecione '09 – Poder Executivo Municipal' para a Administração Direta.">?</span></label><select id="classifTrib"><option value="09">09 – Poder Executivo Municipal</option><option value="10">10 – Poder Legislativo Municipal</option><option value="11">11 – Autarquias e Fundações Municipais</option></select></div>
+        <div>
+          <div class="label-container">
+            <label>Natureza Jurídica<span class="req">*</span></label>
+            <div class="help-icon">?<span class="tooltip-text">Para a maioria das secretarias e órgãos da administração direta da Prefeitura de Fortaleza, utilize "103-1".</span></div>
+          </div>
+          <select id="naturezaJuridica">
+            <option value="">Selecione...</option>
+            <option value="103-1">103-1 - Órgão Público do Poder Executivo Municipal</option>
+            <option value="106-6">106-6 - Órgão Público do Poder Legislativo Municipal</option>
+            <option value="112-0">112-0 - Autarquia Municipal</option>
+            <option value="115-5">115-5 - Fundação Pública de Direito Público Municipal</option>
+            <option value="118-0">118-0 - Órgão Público Autônomo Municipal</option>
+            <option value="124-4">124-4 - Município</option>
+            <option value="127-9">127-9 - Fundação Pública de Direito Privado Municipal</option>
+            <option value="130-9">130-9 - Fundo Público da Administração Indireta Municipal</option>
+            <option value="133-3">133-3 - Fundo Público da Administração Direta Municipal</option>
+          </select>
+        </div>
+        <div>
+          <div class="label-container">
+            <label>Classificação Tributária</label>
+            <div class="help-icon">?<span class="tooltip-text">Em regra, selecione "09 – Poder Executivo Municipal" para a Administração Direta.</span></div>
+          </div>
+          <select id="classifTrib"><option value="09">09 – Poder Executivo Municipal</option><option value="10">10 – Poder Legislativo Municipal</option><option value="11">11 – Autarquias e Fundações Municipais</option></select>
+        </div>
       </div>
       <div class="form-row c2">
-        <div><label>Campo indPertIRRF <span class="help-icon" title="Deixe como 'Não se aplica' a não ser que o valor retido do imposto pertença integralmente aos cofres do próprio município.">?</span></label><select id="indPertIRRF"><option value="">Não se aplica (adm. direta)</option><option value="S">S – IRRF pertence ao município</option></select></div>
-        <div><label>Ambiente de transmissão<span class="req">*</span> <span class="help-icon" title="Sempre use 'Homologação' para testes. Mude para 'Produção' apenas no dia do envio oficial ao e-CAC.">?</span></label><select id="ambiente"><option value="2">2 – Homologação (testes)</option><option value="1">1 – Produção (envio real)</option></select></div>
+        <div>
+          <div class="label-container">
+            <label>Campo indPertIRRF</label>
+            <div class="help-icon">?<span class="tooltip-text">Deixe como "Não se aplica" a não ser que o valor retido do imposto pertença integralmente aos cofres do próprio município.</span></div>
+          </div>
+          <select id="indPertIRRF"><option value="">Não se aplica (adm. direta)</option><option value="S">S – IRRF pertence ao município</option></select>
+        </div>
+        <div>
+          <div class="label-container">
+            <label>Ambiente de transmissão<span class="req">*</span></label>
+            <div class="help-icon">?<span class="tooltip-text">Sempre use "Homologação" para testes seguros. Mude para "Produção" apenas no dia do envio oficial à Receita Federal.</span></div>
+          </div>
+          <select id="ambiente"><option value="2">2 – Homologação (testes)</option><option value="1">1 – Produção (envio real)</option></select>
+        </div>
       </div>
     </div>
     <div class="card">
@@ -341,11 +388,14 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
         <option value="pendente">❌ Faltando Natureza</option>
         <option value="ok">✅ Natureza OK</option>
       </select>
-      <select id="nat-global" style="width:280px;"></select>
+      
+      <!-- DROPDOWN NATIVO COM A TABELA OFICIAL COMPLETA -->
+      <select id="nat-global" style="width:320px;"></select>
+
       <button class="btn btn-sm btn-primary" onclick="applyNatToAll()" style="height: 38px; padding: 0 16px;">Aplicar na seleção</button>
     </div>
   </div>
-  <div class="table-wrap" style="max-height:420px; margin-top: 1.5rem;"><table><thead><tr><th style="width:32px;"><input type="checkbox" id="sel-all" onchange="selAll(this)"></th><th>Credor</th><th>CPF/CNPJ</th><th class="td-num">Vl. Bruto</th><th class="td-num">IRRF</th><th>Dt. Pag</th><th>Natureza do rendimento<span class="req">*</span></th><th>Status</th></tr></thead><tbody id="review-tbody"></tbody></table></div>
+  <div class="table-wrap" style="max-height:420px; margin-top: 1.5rem;"><table><thead><tr><th style="width:32px;"><input type="checkbox" id="sel-all" onchange="selAll(this)"></th><th>Credor</th><th>CPF/CNPJ</th><th class="td-num">Vl. Bruto</th><th class="td-num">IRRF</th><th>Dt. Pag</th><th>Natureza do rendimento (Catálogo RFB)<span class="req">*</span></th><th>Status</th></tr></thead><tbody id="review-tbody"></tbody></table></div>
   <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><div id="review-summary" style="font-size:13px;color:var(--text-secondary);font-weight:600;"></div><button class="btn btn-primary" id="btn-gerar" onclick="gerarXML_Visual()" disabled>Gerar Lote →</button></div>
 </div>
 
@@ -382,7 +432,7 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
         </ol>
       </div>
       
-      <div class="card" style="margin-top:1.25rem;">
+      <div class="card" style="margin-top:1.25rem; background: var(--amber-50); border-color: rgba(241, 90, 34, 0.3);">
         <div class="card-title" style="color: var(--brand-primary);">Auditoria e Compliance</div>
         <p style="font-size:12px; color: var(--text-secondary); margin-bottom: 12px; font-weight: 500;">
           Gere o relatório detalhando as justificativas de inclusão e exclusão de todos os pagamentos processados neste lote.
@@ -411,57 +461,102 @@ function toggleTheme() {
   try { localStorage.setItem("reinf_theme", newTheme); } catch(e){}
 }
 
+// -------------------------------------------------------------
+// TABELA OFICIAL COMPLETA (TODAS AS OPÇÕES DISPONIBILIZADAS)
+// -------------------------------------------------------------
 const NATUREZAS_REINF = {
-  'Mais Utilizadas (Saúde, Serviços, RPA)': [
-    { cod: "10014", desc: "Trabalhador Autônomo / RPA" },
-    { cod: "17005", desc: "Serviços hospitalares, médicos e em saúde" },
-    { cod: "17032", desc: "Limpeza, conservação, manutenção e segurança" },
-    { cod: "17033", desc: "Locação de mão de obra" },
-    { cod: "17039", desc: "Honorários advocatícios" },
-    { cod: "11002", desc: "Decisões Judiciais / RPV (Instituição Financeira)" },
-    { cod: "18001", desc: "Cumprimento de decisão da Justiça Federal (RPV)" }
-  ],
-  'Administração Pública (Série 17000)': [
+  'Órgãos da Administração Pública (Série 17000)': [
     { cod: "17001", desc: "Fornecimento de alimentação" },
     { cod: "17002", desc: "Fornecimento de energia elétrica" },
-    { cod: "17003", desc: "Serviços com emprego de materiais" },
-    { cod: "17004", desc: "Construção civil por empreitada com materiais" },
+    { cod: "17003", desc: "Serviços prestados com emprego de materiais" },
+    { cod: "17004", desc: "Construção civil por empreitada" },
+    { cod: "17005", desc: "Serviços hospitalares, médicos e congêneres" },
     { cod: "17006", desc: "Transporte de cargas" },
     { cod: "17007", desc: "Serviços de auxílio diagnóstico e terapia" },
-    { cod: "17008", desc: "Produtos farmacêuticos e higiene" },
-    { cod: "17009", desc: "Mercadorias e bens em geral" },
-    { cod: "17011", desc: "Propaganda e publicidade" },
+    { cod: "17008", desc: "Aquisição de produtos farmacêuticos, higiene e limpeza" },
+    { cod: "17009", desc: "Aquisição de mercadorias e bens em geral" },
+    { cod: "17010", desc: "Passagens e prestação de serviços de transporte" },
+    { cod: "17011", desc: "Serviços de propaganda e publicidade" },
+    { cod: "17012", desc: "Serviços de seguros" },
+    { cod: "17013", desc: "Serviços de radiodifusão e TV" },
+    { cod: "17014", desc: "Prestação de serviços de cartões de crédito" },
+    { cod: "17015", desc: "Aquisição de passagens aéreas" },
+    { cod: "17016", desc: "Pagamentos a organismos internacionais" },
+    { cod: "17017", desc: "Pagamentos a associações e sindicatos" },
+    { cod: "17018", desc: "Pagamentos a cooperativas" },
     { cod: "17019", desc: "Aquisição de combustíveis" },
+    { cod: "17020", desc: "Transporte de passageiros" },
+    { cod: "17021", desc: "Aquisição de veículos e autopeças" },
+    { cod: "17022", desc: "Aquisição de pneus e câmaras de ar" },
+    { cod: "17023", desc: "Aquisição de máquinas e equipamentos" },
+    { cod: "17024", desc: "Aquisição de papel e celulose" },
+    { cod: "17025", desc: "Aquisição de equipamentos de informática" },
     { cod: "17026", desc: "Comissões, corretagens e representação comercial" },
+    { cod: "17027", desc: "Pagamentos a agências de viagens" },
     { cod: "17028", desc: "Serviços de abastecimento de água" },
     { cod: "17029", desc: "Serviços de telefonia e internet" },
-    { cod: "17031", desc: "Vigilância e segurança" },
+    { cod: "17030", desc: "Serviços de correios" },
+    { cod: "17031", desc: "Serviços de vigilância e segurança" },
+    { cod: "17032", desc: "Limpeza, conservação, manutenção e segurança" },
+    { cod: "17033", desc: "Locação de mão de obra" },
+    { cod: "17034", desc: "Factoring (Fomento Mercantil)" },
     { cod: "17035", desc: "Administração, locação ou cessão de bens" },
+    { cod: "17036", desc: "Serviços de ensino e educação" },
+    { cod: "17037", desc: "Realização de eventos e congressos" },
+    { cod: "17038", desc: "Aquisição de obras de arte" },
+    { cod: "17039", desc: "Honorários advocatícios e sucumbência" },
     { cod: "17099", desc: "Demais serviços retidos pela alíquota global" }
   ],
   'Rendimentos do Trabalho (Série 10000)': [
     { cod: "10001", desc: "Trabalho assalariado - Servidor público" },
     { cod: "10002", desc: "Trabalho assalariado - Setor privado" },
-    { cod: "10003", desc: "Remuneração de trabalho não assalariado" },
+    { cod: "10003", desc: "Rendimento decorrente do trabalho avulso" },
     { cod: "10004", desc: "Participação nos lucros ou resultados (PLR)" },
-    { cod: "10012", desc: "Serviços de natureza profissional, sem vínculo" }
+    { cod: "10005", desc: "Remuneração de diretores, conselheiros e sócios" },
+    { cod: "10006", desc: "Remuneração de conselheiros fiscais e de administração" },
+    { cod: "10007", desc: "Remuneração de titular de empresa individual" },
+    { cod: "10008", desc: "Remuneração de dirigentes sindicais" },
+    { cod: "10009", desc: "Rendimentos pagos a ministros de confissão religiosa" },
+    { cod: "10010", desc: "Serviços de transporte de passageiros" },
+    { cod: "10011", desc: "Serviços de transporte de cargas" },
+    { cod: "10012", desc: "Remuneração de serviços de natureza profissional (PF)" },
+    { cod: "10013", desc: "Remuneração de serviços de corretagem (PF)" },
+    { cod: "10014", desc: "Trabalhador Autônomo / Cooperativas de trabalho (RPA)" }
   ],
-  'Aluguéis, Prêmios e Bolsas (Série 13k/14k/15k)': [
-    { cod: "13001", desc: "Aluguéis e royalties - Pessoa Física" },
-    { cod: "13009", desc: "Aluguéis e royalties pagos a Pessoa Jurídica" },
+  'Aplicações Financeiras e Fundos (Série 11k/12k)': [
+    { cod: "11001", desc: "Aplicações financeiras - Renda fixa" },
+    { cod: "11002", desc: "Aplicações financeiras - Renda variável" },
+    { cod: "11003", desc: "Aplicações em Fundos de Investimento" },
+    { cod: "12001", desc: "Rendimentos de fundos de investimento imobiliário" }
+  ],
+  'Aluguéis e Royalties (Série 13000)': [
+    { cod: "13001", desc: "Aluguéis de imóveis - PF" },
+    { cod: "13002", desc: "Aluguéis de bens móveis" },
+    { cod: "13003", desc: "Arrendamento ou Subarrendamento" },
+    { cod: "13004", desc: "Royalties e direitos autorais" },
+    { cod: "13009", desc: "Aluguéis e royalties pagos a Pessoa Jurídica" }
+  ],
+  'Prêmios, Bolsas e Diversos (Série 14k/15k)': [
     { cod: "14001", desc: "Prêmios em concursos, sorteios e loterias" },
+    { cod: "14002", desc: "Prêmios em bens e serviços" },
+    { cod: "14003", desc: "Títulos de capitalização" },
     { cod: "15001", desc: "Bolsas de estudo e de pesquisa" },
     { cod: "15002", desc: "Lucros e dividendos distribuídos" },
-    { cod: "15003", desc: "Conselheiro tutelar e assemelhados" }
+    { cod: "15003", desc: "Conselheiro tutelar e assemelhados (Voluntários)" },
+    { cod: "15004", desc: "Doações e patrocínios" },
+    { cod: "15005", desc: "Rendimentos pagos por fundações e associações" }
   ],
-  'Aplicações e Decisões Judiciais (Série 11k/12k/18k)': [
-    { cod: "11001", desc: "Aplicações financeiras - Renda fixa" },
-    { cod: "12001", desc: "Rendimentos de fundos de investimento imobiliário" },
+  'Decisões Judiciais (Série 18000)': [
+    { cod: "18001", desc: "Cumprimento de decisão da Justiça Federal (RPV/Precatórios)" },
     { cod: "18002", desc: "Cumprimento de decisão da Justiça do Trabalho" },
     { cod: "18003", desc: "Cumprimento de decisão da Justiça Estadual e do DF" },
     { cod: "18004", desc: "Cumprimento de decisão judicial - Pessoa Jurídica" },
-    { cod: "18005", desc: "Rendimentos Recebidos Acumuladamente - RRA PF" },
-    { cod: "20001", desc: "Remessa ao Exterior - Pagamentos, créditos" }
+    { cod: "18005", desc: "Rendimentos Recebidos Acumuladamente - RRA PF" }
+  ],
+  'Aposentadorias e Exterior (Série 19k/20k)': [
+    { cod: "19001", desc: "Aposentadorias e pensões pagas por RPPS" },
+    { cod: "19009", desc: "Previdência complementar" },
+    { cod: "20001", desc: "Remessa ao Exterior - Rendimentos e ganhos" }
   ]
 };
 
@@ -511,6 +606,7 @@ function sugerirNatureza(row){
   return getCod(is4010?'10014':'17099','baixa','Verificar manualmente');
 }
 
+// AUTO-SAVE LOGIC
 function saveDraft() {
   if (state.allRows.length > 0) {
     try {
@@ -860,7 +956,7 @@ function filterReview(){
       <td><div style="font-weight:600;font-size:12px;">${r.nome}</div><div style="font-size:10px;color:var(--text-muted);">${r.elemento} · ${r.hist.slice(0,50)}</div></td>
       <td class="td-mono">${fmtDoc(r.doc)}</td><td class="td-num">R$ ${fmtBRL(r.vlBruto)}</td><td class="td-num">${r.irrf>0?'R$ '+fmtBRL(r.irrf):'—'}</td>
       <td class="td-mono">${r.dtPag}</td>
-      <td><select class="nat-sel" style="width:100%;min-width:260px;" onchange="setNatureza(${r.idx},this.value)">${buildNatOpts(r.natureza)}</select></td>
+      <td><select class="nat-sel" style="width:100%;min-width:280px;" onchange="setNatureza(${r.idx},this.value)">${buildNatOpts(r.natureza)}</select></td>
       <td>${r.natureza?'<span class="badge badge-ok">OK</span>':'<span class="badge badge-err">Falta Nat.</span>'}</td>
     </tr>`).join('');
     
@@ -892,7 +988,7 @@ function selAll(el){
 
 function applyNatToAll(){ 
   const val=document.getElementById('nat-global').value; 
-  if(!val) { alert('Selecione uma natureza global na lista acima antes de aplicar em massa.'); return; }
+  if(!val) { alert('Selecione uma natureza global na lista ao lado antes de aplicar.'); return; }
   
   const filtrados = getFiltrados();
   let afetados = 0;
