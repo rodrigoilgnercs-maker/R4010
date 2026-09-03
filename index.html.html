@@ -55,22 +55,17 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
   }
 
   [data-theme="dark"] {
-    /* MODO ESCURO DE ALTO CONTRASTE */
     --bg-page: #121212;
     --bg-primary: #1e1e1e;
     --bg-secondary: #2c2c2c;
-
     --text-primary: #ffffff;
     --text-secondary: #d4d4d8;
     --text-muted: #a1a1aa;
-
     --border: #3f3f46;
     --border-md: #52525b;
-
     --brand-primary: #fb923c; 
     --brand-primary-hover: #fdba74;
     --brand-dark-light: #7dd3fc;
-
     --blue-50: rgba(14, 165, 233, 0.15); --blue-800: #7dd3fc;
     --amber-50: rgba(245, 158, 11, 0.15); --amber-800: #fcd34d;
     --teal-50: rgba(20, 184, 166, 0.15); --teal-800: #5eead4;
@@ -82,7 +77,6 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: var(--font); background: var(--bg-page); color: var(--text-primary); font-size: 14px; line-height: 1.6; transition: background-color 0.3s ease, color 0.3s ease; }
 
-  /* Ajuste para <select> e inputs no modo escuro */
   select, input { color: var(--text-primary); background-color: var(--bg-primary); }
   select option { background-color: var(--bg-primary); color: var(--text-primary); }
 
@@ -122,8 +116,11 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
   .form-row.c3 { grid-template-columns: 1fr 1fr 1fr; }
   .form-row.c4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
 
-  label { font-size: 12px; font-weight: 600; color: var(--text-secondary); display: block; margin-bottom: 4px; }
+  label { font-size: 12px; font-weight: 600; color: var(--text-secondary); display: flex; align-items: center; margin-bottom: 4px; }
   label .req { color: var(--brand-primary); margin-left: 2px; }
+
+  .help-icon { display: inline-flex; align-items: center; justify-content: center; width: 14px; height: 14px; border-radius: 50%; background: var(--border-md); color: var(--bg-primary); font-size: 10px; font-weight: 800; cursor: help; margin-left: 6px; transition: 0.2s; }
+  .help-icon:hover { background: var(--brand-primary); color: #fff; }
 
   input[type="text"], input[type="email"], select { width: 100%; height: 38px; padding: 0 12px; border: 1px solid var(--border-md); border-radius: var(--radius-md); font-size: 13px; font-family: var(--font); color: var(--text-primary); background: var(--bg-primary); outline: none; transition: all 0.2s ease; }
   input[type="text"]:focus, input[type="email"]:focus, select:focus { border-color: var(--brand-primary); box-shadow: 0 0 0 3px rgba(241, 90, 34, 0.15); }
@@ -132,7 +129,6 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
   .btn:hover { background: var(--bg-secondary); }
   .btn:active { transform: scale(0.98); }
   
-  /* Botões primários sempre laranjas e visíveis */
   .btn-primary { background: #f15a22; color: #ffffff; border-color: transparent; }
   .btn-primary:hover { background: #d94812; }
   
@@ -199,14 +195,11 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
   tr.row-excluido td { background: var(--gray-50) !important; color: var(--text-muted); opacity: 0.8; }
   tr.row-erro td { background: var(--red-50) !important; color: var(--red-800); }
 
-  /* Draft Alert Box */
   #draft-alert {
-    display: none;
-    background: var(--green-50); border: 1px solid var(--green-600); color: var(--green-800);
+    display: none; background: var(--green-50); border: 1px solid var(--green-600); color: var(--green-800);
     padding: 12px 16px; border-radius: var(--radius-md); margin-bottom: 1.5rem;
     align-items: center; justify-content: space-between; font-weight: 600; font-size: 13px;
   }
-  
   @keyframes spin { 100% { transform: rotate(360deg); } }
   .spinner { animation: spin 1s linear infinite; }
 </style>
@@ -216,7 +209,7 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
 <div class="header">
   <div class="header-logo"><svg viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zm-7 3l5 4-5-4-5-4 5-4zm0 10l-5-4h10l-5 4z"/></svg></div>
   <div><h1 id="header-title">EFD-Reinf — Gerador R-4020 e R-4010</h1><p>Prefeitura de Fortaleza · Administração pública municipal descentralizada</p></div>
-  <div class="header-badge">v11.0 Enterprise UI</div>
+  <div class="header-badge">v11.1 Enterprise UI</div>
   <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">🌙 Modo Escuro</button>
 </div>
 
@@ -266,7 +259,7 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
       </div>
       <div class="form-row"><div><label>Razão Social da UG<span class="req">*</span></label><input type="text" id="razaoSocial" placeholder="SECRETARIA MUNICIPAL DE URBANISMO E MEIO AMBIENTE"></div></div>
       <div class="form-row c2">
-        <div><label>Natureza Jurídica<span class="req">*</span></label><select id="naturezaJuridica">
+        <div><label>Natureza Jurídica<span class="req">*</span> <span class="help-icon" title="Para a maioria das secretarias e órgãos da administração direta da Prefeitura de Fortaleza, utilize '103-1'.">?</span></label><select id="naturezaJuridica">
           <option value="">Selecione...</option>
           <option value="103-1">103-1 - Órgão Público do Poder Executivo Municipal</option>
           <option value="106-6">106-6 - Órgão Público do Poder Legislativo Municipal</option>
@@ -278,11 +271,11 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
           <option value="130-9">130-9 - Fundo Público da Administração Indireta Municipal</option>
           <option value="133-3">133-3 - Fundo Público da Administração Direta Municipal</option>
         </select></div>
-        <div><label>Classificação Tributária</label><select id="classifTrib"><option value="09">09 – Poder Executivo Municipal</option><option value="10">10 – Poder Legislativo Municipal</option><option value="11">11 – Autarquias e Fundações Municipais</option></select></div>
+        <div><label>Classificação Tributária <span class="help-icon" title="Em regra, selecione '09 – Poder Executivo Municipal' para a Administração Direta.">?</span></label><select id="classifTrib"><option value="09">09 – Poder Executivo Municipal</option><option value="10">10 – Poder Legislativo Municipal</option><option value="11">11 – Autarquias e Fundações Municipais</option></select></div>
       </div>
       <div class="form-row c2">
-        <div><label>Campo indPertIRRF</label><select id="indPertIRRF"><option value="">Não se aplica (adm. direta)</option><option value="S">S – IRRF pertence ao município</option></select></div>
-        <div><label>Ambiente de transmissão<span class="req">*</span></label><select id="ambiente"><option value="2">2 – Homologação (testes)</option><option value="1">1 – Produção (envio real)</option></select></div>
+        <div><label>Campo indPertIRRF <span class="help-icon" title="Deixe como 'Não se aplica' a não ser que o valor retido do imposto pertença integralmente aos cofres do próprio município.">?</span></label><select id="indPertIRRF"><option value="">Não se aplica (adm. direta)</option><option value="S">S – IRRF pertence ao município</option></select></div>
+        <div><label>Ambiente de transmissão<span class="req">*</span> <span class="help-icon" title="Sempre use 'Homologação' para testes. Mude para 'Produção' apenas no dia do envio oficial ao e-CAC.">?</span></label><select id="ambiente"><option value="2">2 – Homologação (testes)</option><option value="1">1 – Produção (envio real)</option></select></div>
       </div>
     </div>
     <div class="card">
@@ -310,6 +303,10 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
     <input type="file" id="file-input" accept=".csv" onchange="loadFile(event)">
   </div>
   <div id="preview-area" style="display:none;">
+    <div id="comp-alert" class="alert alert-warn" style="display:none; margin-top:1.5rem;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <div id="comp-alert-msg"></div>
+    </div>
     <div class="grid-5" style="margin:2rem 0;" id="preview-metrics"></div>
     <div style="display:flex;justify-content:flex-end;gap:1rem;">
       <button class="btn" onclick="document.getElementById('file-input').click()">Trocar arquivo</button>
@@ -344,10 +341,7 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
         <option value="pendente">❌ Faltando Natureza</option>
         <option value="ok">✅ Natureza OK</option>
       </select>
-      
-      <!-- DROPDOWN NATIVO GLOBAL COM TODAS AS OPÇÕES -->
       <select id="nat-global" style="width:280px;"></select>
-
       <button class="btn btn-sm btn-primary" onclick="applyNatToAll()" style="height: 38px; padding: 0 16px;">Aplicar na seleção</button>
     </div>
   </div>
@@ -406,11 +400,7 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
 </div>
 
 <script>
-// IMPEDE CONGELAMENTO DE ERROS SILENCIOSOS NO JAVASCRIPT
-window.onerror = function(message, source, lineno, colno, error) {
-  console.warn("Recovered Error:", message);
-  return true; 
-};
+window.onerror = function(message, source, lineno, colno, error) { console.warn("Recovered Error:", message); return true; };
 
 function toggleTheme() {
   const currentTheme = document.documentElement.getAttribute("data-theme");
@@ -421,9 +411,6 @@ function toggleTheme() {
   try { localStorage.setItem("reinf_theme", newTheme); } catch(e){}
 }
 
-// -------------------------------------------------------------
-// TODAS AS NATUREZAS NATIVAS - VERSÃO 11.0
-// -------------------------------------------------------------
 const NATUREZAS_REINF = {
   'Mais Utilizadas (Saúde, Serviços, RPA)': [
     { cod: "10014", desc: "Trabalhador Autônomo / RPA" },
@@ -524,7 +511,6 @@ function sugerirNatureza(row){
   return getCod(is4010?'10014':'17099','baixa','Verificar manualmente');
 }
 
-// AUTO-SAVE LOGIC
 function saveDraft() {
   if (state.allRows.length > 0) {
     try {
@@ -657,7 +643,7 @@ function validCNPJ(cnpj) {
 }
 function validCPF(cpf) {
   cpf = cleanCPF(cpf);
-  if (cpf.length !== 11 || /^(\d) +$/.test(cpf)) return false;
+  if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
   let soma = 0, resto;
   for (let i = 1; i <= 9; i++) soma += parseInt(cpf.substring(i-1, i)) * (11 - i);
   resto = (soma * 10) % 11;
@@ -717,7 +703,7 @@ function classificarLinha(row) {
 }
 
 function goStep(n){
-  if(n===3&&state.allRows.length===0){alert('Importe a planilha.');return;}
+  if(n===3&&state.allRows.length===0){alert('Importe a planilha primeiro.');return;}
   if(n===4){filterReview();}
   state.step=n;
   document.querySelectorAll('.section').forEach((s,i)=>s.classList.toggle('active',i===n-1));
@@ -780,11 +766,23 @@ function processFile(file){
 }
 
 function parseRows(data){
+  let wrongDates = 0;
+  const compStr = state.ug.competencia || ''; 
+  const [cMes, cAno] = compStr.split('/');
+
   state.allRows=data.map((row,i)=>{
     const doc=state.ug.tipoEvento==='4010'?cleanCPF(row['CPF/CNPJ']):cleanCNPJ(row['CPF/CNPJ']); 
     const vlBruto=parseBRL(row['Vl Bruto']); const irrf=parseBRL(row['IRRF']);
+    const dtPag = (row['Dt Pag']||'').trim();
     let class_=classificarLinha(row); 
     let sugestao=class_.cls==='incluir'?sugerirNatureza(row):null;
+
+    if (cMes && cAno && dtPag) {
+         const parts = dtPag.split('/');
+         if (parts.length === 3) {
+             if (parts[1] !== cMes || parts[2] !== cAno) wrongDates++;
+         }
+    }
 
     const colKeys = Object.keys(row);
     const colNat = colKeys.find(k => /natureza.*rendimento|c[oó]digo.*receita|c[oó]digo.*origem/i.test(k));
@@ -795,10 +793,18 @@ function parseRows(data){
          sugestao = {cod: natCsvVal, confianca: 'alta', fonte: 'Lido da Planilha CSV'};
     }
 
-    return{idx:i,doc:doc,nome:(row['Nome do Credor']||'').trim(),vlBruto,irrf,dtPag:(row['Dt Pag']||'').trim(),
+    return{idx:i,doc:doc,nome:(row['Nome do Credor']||'').trim(),vlBruto,irrf,dtPag:dtPag,
       hist:(row['Hist']||'').trim(),elemento:(row['Elemento']||'').trim(),cls:class_.cls,motivo:class_.motivo,avisos:class_.avisos||[],
       natureza:sugestao?sugestao.cod:'',sugestao,selected:class_.cls==='incluir',raw:row};
   });
+
+  if (wrongDates > 0) {
+      document.getElementById('comp-alert-msg').innerHTML = `<b>Atenção:</b> Encontramos <b>${wrongDates} pagamento(s)</b> com data fora da competência informada (<b>${compStr}</b>). Verifique se importou a planilha correta do GRPFOR.`;
+      document.getElementById('comp-alert').style.display = 'flex';
+  } else {
+      document.getElementById('comp-alert').style.display = 'none';
+  }
+
   document.getElementById('nat-global').innerHTML = buildNatOpts();
   buildPreviewMetrics(); 
   document.getElementById('preview-area').style.display='block';
@@ -886,7 +892,7 @@ function selAll(el){
 
 function applyNatToAll(){ 
   const val=document.getElementById('nat-global').value; 
-  if(!val) { alert('Selecione uma natureza na lista acima antes de aplicar.'); return; }
+  if(!val) { alert('Selecione uma natureza global na lista acima antes de aplicar em massa.'); return; }
   
   const filtrados = getFiltrados();
   let afetados = 0;
@@ -906,9 +912,6 @@ function updateReviewSummary(){
   document.getElementById('btn-gerar').disabled=valid.length===0||semNat>0;
 }
 
-// -------------------------------------------------------------
-// RELATÓRIO DE AUDITORIA E COMPLIANCE
-// -------------------------------------------------------------
 function baixarRelatorioAuditoria() {
   const is4010 = state.ug.tipoEvento === '4010';
   let csv = "Nome do Credor;CPF/CNPJ;Elemento;Vl Bruto;IRRF;Dt Pag;Status Final;Natureza de Rendimento;Justificativa do Sistema\n";
@@ -932,9 +935,6 @@ function baixarRelatorioAuditoria() {
   document.body.removeChild(a);
 }
 
-// -------------------------------------------------------------
-// GERAÇÃO DOS XMLS (R-4010 OU R-4020)
-// -------------------------------------------------------------
 function gerarXML(){
   const ug=state.ug;
   if(!ug||!ug.cnpjRaiz){ alert('Configure os dados da Unidade Gestora no Passo 1.'); goStep(1); return; }
