@@ -120,7 +120,6 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
   label { font-size: 12px; font-weight: 600; color: var(--text-secondary); }
   label .req { color: var(--brand-primary); margin-left: 2px; }
 
-  /* TOOLTIP (BALÕES DE AJUDA) CORRIGIDO */
   .help-icon { 
     position: relative; 
     display: inline-flex; align-items: center; justify-content: center; 
@@ -232,7 +231,7 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
 <div class="header">
   <div class="header-logo"><svg viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zm-7 3l5 4-5-4-5-4 5-4zm0 10l-5-4h10l-5 4z"/></svg></div>
   <div><h1 id="header-title">EFD-Reinf — Gerador R-4020 e R-4010</h1><p>Prefeitura de Fortaleza · Administração pública municipal descentralizada</p></div>
-  <div class="header-badge">v11.2 Enterprise UI</div>
+  <div class="header-badge">v11.3 Enterprise UI</div>
   <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">🌙 Modo Escuro</button>
 </div>
 
@@ -462,10 +461,49 @@ function toggleTheme() {
 }
 
 // -------------------------------------------------------------
-// TABELA OFICIAL COMPLETA (TODAS AS OPÇÕES DISPONIBILIZADAS)
+// TABELA 01 OFICIAL COMPLETA (TODA A RECEITA FEDERAL)
 // -------------------------------------------------------------
 const NATUREZAS_REINF = {
-  'Órgãos da Administração Pública (Série 17000)': [
+  'Série 10000 - Rendimentos do Trabalho': [
+    { cod: "10001", desc: "Trabalho assalariado - Servidor público" },
+    { cod: "10002", desc: "Trabalho assalariado - Setor privado" },
+    { cod: "10003", desc: "Rendimento decorrente do trabalho avulso" },
+    { cod: "10004", desc: "Participação nos lucros ou resultados - PLR" },
+    { cod: "10005", desc: "Remuneração de diretores, conselheiros e sócios" },
+    { cod: "10006", desc: "Remuneração de conselheiros fiscais e de administração" },
+    { cod: "10007", desc: "Remuneração de titular de empresa individual" },
+    { cod: "10008", desc: "Remuneração de dirigentes sindicais" },
+    { cod: "10009", desc: "Rendimentos pagos a ministros de confissão religiosa" },
+    { cod: "10010", desc: "Serviços de transporte de passageiros" },
+    { cod: "10011", desc: "Serviços de transporte de cargas" },
+    { cod: "10012", desc: "Remuneração de serviços de natureza profissional (PF)" },
+    { cod: "10013", desc: "Remuneração de serviços de corretagem (PF)" },
+    { cod: "10014", desc: "Trabalhador Autônomo / Cooperativas de trabalho (RPA)" }
+  ],
+  'Série 11k/12k - Aplicações Financeiras e Fundos': [
+    { cod: "11001", desc: "Aplicações financeiras - Renda fixa" },
+    { cod: "11002", desc: "Aplicações financeiras - Renda variável" },
+    { cod: "11003", desc: "Aplicações em Fundos de Investimento" },
+    { cod: "12001", desc: "Rendimentos de fundos de investimento imobiliário" }
+  ],
+  'Série 13000 - Aluguéis e Royalties': [
+    { cod: "13001", desc: "Aluguéis de imóveis - PF" },
+    { cod: "13002", desc: "Aluguéis de bens móveis" },
+    { cod: "13003", desc: "Arrendamento ou Subarrendamento" },
+    { cod: "13004", desc: "Royalties e direitos autorais" },
+    { cod: "13009", desc: "Aluguéis e royalties pagos a Pessoa Jurídica" }
+  ],
+  'Série 14k/15k - Prêmios, Bolsas e Diversos': [
+    { cod: "14001", desc: "Prêmios em concursos, sorteios e loterias" },
+    { cod: "14002", desc: "Prêmios em bens e serviços" },
+    { cod: "14003", desc: "Títulos de capitalização" },
+    { cod: "15001", desc: "Bolsas de estudo e de pesquisa" },
+    { cod: "15002", desc: "Lucros e dividendos distribuídos" },
+    { cod: "15003", desc: "Conselheiro tutelar e assemelhados (Voluntários)" },
+    { cod: "15004", desc: "Doações e patrocínios" },
+    { cod: "15005", desc: "Rendimentos pagos por fundações e associações" }
+  ],
+  'Série 17000 - Administração Pública': [
     { cod: "17001", desc: "Fornecimento de alimentação" },
     { cod: "17002", desc: "Fornecimento de energia elétrica" },
     { cod: "17003", desc: "Serviços prestados com emprego de materiais" },
@@ -507,53 +545,14 @@ const NATUREZAS_REINF = {
     { cod: "17039", desc: "Honorários advocatícios e sucumbência" },
     { cod: "17099", desc: "Demais serviços retidos pela alíquota global" }
   ],
-  'Rendimentos do Trabalho (Série 10000)': [
-    { cod: "10001", desc: "Trabalho assalariado - Servidor público" },
-    { cod: "10002", desc: "Trabalho assalariado - Setor privado" },
-    { cod: "10003", desc: "Rendimento decorrente do trabalho avulso" },
-    { cod: "10004", desc: "Participação nos lucros ou resultados (PLR)" },
-    { cod: "10005", desc: "Remuneração de diretores, conselheiros e sócios" },
-    { cod: "10006", desc: "Remuneração de conselheiros fiscais e de administração" },
-    { cod: "10007", desc: "Remuneração de titular de empresa individual" },
-    { cod: "10008", desc: "Remuneração de dirigentes sindicais" },
-    { cod: "10009", desc: "Rendimentos pagos a ministros de confissão religiosa" },
-    { cod: "10010", desc: "Serviços de transporte de passageiros" },
-    { cod: "10011", desc: "Serviços de transporte de cargas" },
-    { cod: "10012", desc: "Remuneração de serviços de natureza profissional (PF)" },
-    { cod: "10013", desc: "Remuneração de serviços de corretagem (PF)" },
-    { cod: "10014", desc: "Trabalhador Autônomo / Cooperativas de trabalho (RPA)" }
-  ],
-  'Aplicações Financeiras e Fundos (Série 11k/12k)': [
-    { cod: "11001", desc: "Aplicações financeiras - Renda fixa" },
-    { cod: "11002", desc: "Aplicações financeiras - Renda variável" },
-    { cod: "11003", desc: "Aplicações em Fundos de Investimento" },
-    { cod: "12001", desc: "Rendimentos de fundos de investimento imobiliário" }
-  ],
-  'Aluguéis e Royalties (Série 13000)': [
-    { cod: "13001", desc: "Aluguéis de imóveis - PF" },
-    { cod: "13002", desc: "Aluguéis de bens móveis" },
-    { cod: "13003", desc: "Arrendamento ou Subarrendamento" },
-    { cod: "13004", desc: "Royalties e direitos autorais" },
-    { cod: "13009", desc: "Aluguéis e royalties pagos a Pessoa Jurídica" }
-  ],
-  'Prêmios, Bolsas e Diversos (Série 14k/15k)': [
-    { cod: "14001", desc: "Prêmios em concursos, sorteios e loterias" },
-    { cod: "14002", desc: "Prêmios em bens e serviços" },
-    { cod: "14003", desc: "Títulos de capitalização" },
-    { cod: "15001", desc: "Bolsas de estudo e de pesquisa" },
-    { cod: "15002", desc: "Lucros e dividendos distribuídos" },
-    { cod: "15003", desc: "Conselheiro tutelar e assemelhados (Voluntários)" },
-    { cod: "15004", desc: "Doações e patrocínios" },
-    { cod: "15005", desc: "Rendimentos pagos por fundações e associações" }
-  ],
-  'Decisões Judiciais (Série 18000)': [
+  'Série 18000 - Decisões Judiciais': [
     { cod: "18001", desc: "Cumprimento de decisão da Justiça Federal (RPV/Precatórios)" },
     { cod: "18002", desc: "Cumprimento de decisão da Justiça do Trabalho" },
     { cod: "18003", desc: "Cumprimento de decisão da Justiça Estadual e do DF" },
     { cod: "18004", desc: "Cumprimento de decisão judicial - Pessoa Jurídica" },
     { cod: "18005", desc: "Rendimentos Recebidos Acumuladamente - RRA PF" }
   ],
-  'Aposentadorias e Exterior (Série 19k/20k)': [
+  'Série 19k/20k - Aposentadorias e Exterior': [
     { cod: "19001", desc: "Aposentadorias e pensões pagas por RPPS" },
     { cod: "19009", desc: "Previdência complementar" },
     { cod: "20001", desc: "Remessa ao Exterior - Rendimentos e ganhos" }
@@ -593,6 +592,10 @@ function sugerirNatureza(row){
     if(/ALUGUEL|LOCACAO/.test(hist)) return getCod('13009','alta','Locação de Imóvel PF');
     if(/BOLSA DE ESTUDO|RESIDENTE/.test(hist) || row['Elemento'] === '339018') return getCod('15001','alta','Bolsas de Estudo');
   } else {
+    // REGRAS PARA PESSOA JURÍDICA (R-4020)
+    if(/HONORÁRIO|HONORARIO|HONOR/.test(hist)) return getCod('17039', 'alta', 'Honorários Advocatícios');
+    if(/PROCESSO JUDICIAL|RPV|REQUISIÇÃO DE PEQUENO VALOR|DECISÃO JUDICIAL/.test(hist) || row['Elemento'] === '339091' || row['Elemento'] === '319091') return getCod('18004', 'alta', 'Decisão Judicial PJ');
+    
     if(['07047251','00360305'].includes(raiz8) || /ENERGIA ELETRICA/.test(hist)) return getCod('17002','alta','Energia elétrica');
     if(raiz8==='07040108' || /AGUA E ESGO/.test(hist)) return getCod('17028','alta','Abastecimento de água');
     if(/TELEFON|INTERNET/.test(hist)) return getCod('17029','alta','Telecomunicações');
@@ -956,7 +959,7 @@ function filterReview(){
       <td><div style="font-weight:600;font-size:12px;">${r.nome}</div><div style="font-size:10px;color:var(--text-muted);">${r.elemento} · ${r.hist.slice(0,50)}</div></td>
       <td class="td-mono">${fmtDoc(r.doc)}</td><td class="td-num">R$ ${fmtBRL(r.vlBruto)}</td><td class="td-num">${r.irrf>0?'R$ '+fmtBRL(r.irrf):'—'}</td>
       <td class="td-mono">${r.dtPag}</td>
-      <td><select class="nat-sel" style="width:100%;min-width:280px;" onchange="setNatureza(${r.idx},this.value)">${buildNatOpts(r.natureza)}</select></td>
+      <td><select class="nat-sel" style="width:100%;min-width:320px;" onchange="setNatureza(${r.idx},this.value)">${buildNatOpts(r.natureza)}</select></td>
       <td>${r.natureza?'<span class="badge badge-ok">OK</span>':'<span class="badge badge-err">Falta Nat.</span>'}</td>
     </tr>`).join('');
     
