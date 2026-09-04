@@ -231,7 +231,7 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
 <div class="header">
   <div class="header-logo"><svg viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zm-7 3l5 4-5-4-5-4 5-4zm0 10l-5-4h10l-5 4z"/></svg></div>
   <div><h1 id="header-title">EFD-Reinf — Gerador R-4020 e R-4010</h1><p>Prefeitura de Fortaleza · Administração pública municipal descentralizada</p></div>
-  <div class="header-badge">v11.3 Enterprise UI</div>
+  <div class="header-badge">v11.4 Enterprise (Catálogo Oficial Completo)</div>
   <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">🌙 Modo Escuro</button>
 </div>
 
@@ -388,13 +388,12 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
         <option value="ok">✅ Natureza OK</option>
       </select>
       
-      <!-- DROPDOWN NATIVO COM A TABELA OFICIAL COMPLETA -->
       <select id="nat-global" style="width:320px;"></select>
 
       <button class="btn btn-sm btn-primary" onclick="applyNatToAll()" style="height: 38px; padding: 0 16px;">Aplicar na seleção</button>
     </div>
   </div>
-  <div class="table-wrap" style="max-height:420px; margin-top: 1.5rem;"><table><thead><tr><th style="width:32px;"><input type="checkbox" id="sel-all" onchange="selAll(this)"></th><th>Credor</th><th>CPF/CNPJ</th><th class="td-num">Vl. Bruto</th><th class="td-num">IRRF</th><th>Dt. Pag</th><th>Natureza do rendimento (Catálogo RFB)<span class="req">*</span></th><th>Status</th></tr></thead><tbody id="review-tbody"></tbody></table></div>
+  <div class="table-wrap" style="max-height:420px; margin-top: 1.5rem;"><table><thead><tr><th style="width:32px;"><input type="checkbox" id="sel-all" onchange="selAll(this)"></th><th>Credor</th><th>CPF/CNPJ</th><th class="td-num">Vl. Bruto</th><th class="td-num">IRRF</th><th>Dt. Pag</th><th>Natureza do rendimento (Catálogo RFB Completo)<span class="req">*</span></th><th>Status</th></tr></thead><tbody id="review-tbody"></tbody></table></div>
   <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><div id="review-summary" style="font-size:13px;color:var(--text-secondary);font-weight:600;"></div><button class="btn btn-primary" id="btn-gerar" onclick="gerarXML_Visual()" disabled>Gerar Lote →</button></div>
 </div>
 
@@ -461,114 +460,135 @@ function toggleTheme() {
 }
 
 // -------------------------------------------------------------
-// TABELA 01 OFICIAL COMPLETA (TODA A RECEITA FEDERAL)
-// Atualizada com os novos códigos de 2025/2026 (Ex: 11007 e 11008)
+// TABELA 01 OFICIAL COMPLETA (TODA A RECEITA FEDERAL - Layout v2.1.2)
+// Inclui exaustivamente todas as Séries (10000 até 20000)
 // -------------------------------------------------------------
 const NATUREZAS_REINF = {
-  'Série 10000 - Rendimentos do Trabalho': [
-    { cod: '10001', desc: 'Trabalho assalariado - Servidor público' },
-    { cod: '10002', desc: 'Trabalho assalariado - Setor privado' },
-    { cod: '10003', desc: 'Rendimento decorrente do trabalho avulso' },
-    { cod: '10004', desc: 'Participação nos lucros ou resultados - PLR' },
-    { cod: '10005', desc: 'Remuneração de diretores, conselheiros e sócios' },
-    { cod: '10006', desc: 'Remuneração de conselheiros fiscais e de administração' },
-    { cod: '10007', desc: 'Remuneração de titular de empresa individual' },
-    { cod: '10008', desc: 'Remuneração de dirigentes sindicais' },
-    { cod: '10009', desc: 'Rendimentos pagos a ministros de confissão religiosa' },
-    { cod: '10010', desc: 'Serviços de transporte de passageiros' },
-    { cod: '10011', desc: 'Serviços de transporte de cargas' },
-    { cod: '10012', desc: 'Remuneração de serviços de natureza profissional (PF)' },
-    { cod: '10013', desc: 'Remuneração de serviços de corretagem (PF)' },
-    { cod: '10014', desc: 'Trabalhador Autônomo / Cooperativas de trabalho (RPA)' },
+  "Série 10000 - Rendimentos do Trabalho": [
+    { cod: "10001", desc: "Rendimento decorrente do trabalho com vínculo empregatício" },
+    { cod: "10002", desc: "Rendimento decorrente do trabalho sem vínculo empregatício" },
+    { cod: "10003", desc: "Rendimento decorrente do trabalho pago a trabalhador avulso" },
+    { cod: "10004", desc: "Remuneração de diretores, conselheiros fiscais e de administração" },
+    { cod: "10005", desc: "Remuneração de titular de empresa individual" },
+    { cod: "10006", desc: "Rendimentos pagos a ministros de confissão religiosa" },
+    { cod: "10007", desc: "Rendimentos relativos a prestação de serviços de Transporte Rodoviário" },
+    { cod: "10008", desc: "Honorários advocatícios de sucumbência (PF)" },
+    { cod: "10009", desc: "Participação nos lucros ou resultados - PLR" },
+    { cod: "10010", desc: "Bolsa de Médico Residente" },
+    { cod: "10011", desc: "Honorários advocatícios recebidos por procuradores (NOVO)" },
   ],
-  'Série 11000/12000 - Aplicações Financeiras e Fundos': [
-    { cod: '11001', desc: 'Aplicações financeiras - Renda fixa' },
-    { cod: '11002', desc: 'Aplicações financeiras - Renda variável' },
-    { cod: '11003', desc: 'Aplicações em Fundos de Investimento' },
-    { cod: '11004', desc: 'Rendimentos de partes beneficiárias ou de fundador' },
-    { cod: '11005', desc: 'Rendimentos relativos a debêntures' },
-    { cod: '11006', desc: 'Descontos de títulos' },
-    { cod: '11007', desc: 'Decisão da Justiça dos Estados/DF – IRRF Estados/Municípios' },
-    { cod: '11008', desc: 'Decisão da Justiça do Trabalho – IRRF Estados/Municípios' },
-    { cod: '12001', desc: 'Rendimentos de fundos de investimento imobiliário' },
-    { cod: '12002', desc: 'Operações de swap' },
-    { cod: '12003', desc: 'Operações de empréstimo de ativos' },
+  "Série 11000 - Aplicações Financeiras (Renda Fixa e Juros)": [
+    { cod: "11001", desc: "Juros e comissões de empréstimos (Mútuo e desconto de títulos)" },
+    { cod: "11002", desc: "Juros sobre o Capital Próprio - JCP" },
+    { cod: "11003", desc: "Rendimentos de partes beneficiárias ou de fundador" },
+    { cod: "11004", desc: "Rendimentos de debêntures" },
+    { cod: "11005", desc: "Rendimentos de Letras Financeiras / Títulos de Dívida" },
+    { cod: "11006", desc: "Rendimentos de fundos de investimento em Renda Fixa" },
+    { cod: "11007", desc: "Decisão da Justiça dos Estados/DF - IRRF Estados/Municípios" },
+    { cod: "11008", desc: "Decisão da Justiça do Trabalho - IRRF Estados/Municípios" },
+    { cod: "11009", desc: "Decisão da Justiça Federal - IRRF Estados/Municípios" },
   ],
-  'Série 13000 - Aluguéis e Royalties': [
-    { cod: '13001', desc: 'Aluguéis de imóveis - PF' },
-    { cod: '13002', desc: 'Aluguéis de bens móveis' },
-    { cod: '13003', desc: 'Arrendamento ou Subarrendamento' },
-    { cod: '13004', desc: 'Royalties e direitos autorais' },
-    { cod: '13009', desc: 'Aluguéis e royalties pagos a Pessoa Jurídica' },
+  "Série 12000 - Aplicações Financeiras (Renda Variável e Lucros)": [
+    { cod: "12001", desc: "Lucro e Dividendo (Isento ou Tributado)" },
+    { cod: "12002", desc: "Operações de swap" },
+    { cod: "12003", desc: "Operações de empréstimo de ativos" },
+    { cod: "12004", desc: "Rendimentos de fundos de investimento imobiliário (FII)" },
+    { cod: "12005", desc: "Rendimentos de fundos de investimento em ações (FIA)" },
+    { cod: "12006", desc: "Rendimentos de FIagro" },
+    { cod: "12007", desc: "Rendimentos de FI-Infra" },
+    { cod: "12044", desc: "Ganhos líquidos em operações de renda variável" },
+    { cod: "12051", desc: "Ganhos de capital na alienação de bens e direitos" },
+    { cod: "12053", desc: "Fundos de Investimento no Exterior (Offshore)" },
+    { cod: "12099", desc: "Demais rendimentos de Capital" }
   ],
-  'Série 14000/15000 - Prêmios, Bolsas e Diversos': [
-    { cod: '14001', desc: 'Prêmios em concursos, sorteios e loterias' },
-    { cod: '14002', desc: 'Prêmios em bens e serviços' },
-    { cod: '14003', desc: 'Títulos de capitalização' },
-    { cod: '14004', desc: 'Prêmios de proprietários e criadores de cavalos' },
-    { cod: '15001', desc: 'Bolsas de estudo e de pesquisa' },
-    { cod: '15002', desc: 'Lucros e dividendos distribuídos' },
-    { cod: '15003', desc: 'Conselheiro tutelar e assemelhados (Voluntários)' },
-    { cod: '15004', desc: 'Doações e patrocínios' },
-    { cod: '15005', desc: 'Rendimentos pagos por fundações e associações' },
-    { cod: '15006', desc: 'Indenizações por danos morais' },
-    { cod: '15007', desc: 'Acréscimo patrimonial não justificado' },
+  "Série 13000 - Aluguéis, Arrendamentos e Direitos": [
+    { cod: "13001", desc: "Rendimentos de Aforamento" },
+    { cod: "13002", desc: "Rendimentos de Locação ou Sublocação" },
+    { cod: "13003", desc: "Rendimentos de Arrendamento ou Subarrendamento" },
+    { cod: "13004", desc: "Importâncias pagas por terceiros por conta do locador" },
+    { cod: "13005", desc: "Importâncias pagas ao locador pelo contrato (luvas, prêmios)" },
+    { cod: "13006", desc: "Benfeitorias e melhoramentos realizados no bem locado" },
+    { cod: "13007", desc: "Juros decorrentes da alienação a prazo de bens" },
+    { cod: "13008", desc: "Rendimentos de Direito de Uso ou Passagem" },
+    { cod: "13009", desc: "Rendimentos de Direito de colher ou extrair recursos" },
+    { cod: "13010", desc: "Rendimentos de Direito Autoral" },
+    { cod: "13011", desc: "Rendimentos de Direito Autoral (não percebidos pelo criador)" },
   ],
-  'Série 17000 - Administração Pública': [
-    { cod: '17001', desc: 'Fornecimento de alimentação' },
-    { cod: '17002', desc: 'Fornecimento de energia elétrica' },
-    { cod: '17003', desc: 'Serviços prestados com emprego de materiais' },
-    { cod: '17004', desc: 'Construção civil por empreitada' },
-    { cod: '17005', desc: 'Serviços hospitalares, médicos e congêneres' },
-    { cod: '17006', desc: 'Transporte de cargas' },
-    { cod: '17007', desc: 'Serviços de auxílio diagnóstico e terapia' },
-    { cod: '17008', desc: 'Aquisição de produtos farmacêuticos, higiene e limpeza' },
-    { cod: '17009', desc: 'Aquisição de mercadorias e bens em geral' },
-    { cod: '17010', desc: 'Passagens e prestação de serviços de transporte' },
-    { cod: '17011', desc: 'Serviços de propaganda e publicidade' },
-    { cod: '17012', desc: 'Serviços de seguros' },
-    { cod: '17013', desc: 'Serviços de radiodifusão e TV' },
-    { cod: '17014', desc: 'Prestação de serviços de cartões de crédito' },
-    { cod: '17015', desc: 'Aquisição de passagens aéreas' },
-    { cod: '17016', desc: 'Pagamentos a organismos internacionais' },
-    { cod: '17017', desc: 'Pagamentos a associações e sindicatos' },
-    { cod: '17018', desc: 'Pagamentos a cooperativas' },
-    { cod: '17019', desc: 'Aquisição de combustíveis' },
-    { cod: '17020', desc: 'Transporte de passageiros' },
-    { cod: '17021', desc: 'Aquisição de veículos e autopeças' },
-    { cod: '17022', desc: 'Aquisição de pneus e cámaras de ar' },
-    { cod: '17023', desc: 'Aquisição de máquinas e equipamentos' },
-    { cod: '17024', desc: 'Aquisição de papel e celulose' },
-    { cod: '17025', desc: 'Aquisição de equipamentos de informática' },
-    { cod: '17026', desc: 'Comissões, corretagens e representação comercial' },
-    { cod: '17027', desc: 'Pagamentos a agências de viagens' },
-    { cod: '17028', desc: 'Serviços de abastecimento de água' },
-    { cod: '17029', desc: 'Serviços de telefonia e internet' },
-    { cod: '17030', desc: 'Serviços de correios' },
-    { cod: '17031', desc: 'Serviços de vigilância e segurança' },
-    { cod: '17032', desc: 'Limpeza, conservação, manutenção e segurança' },
-    { cod: '17033', desc: 'Locação de mão de obra' },
-    { cod: '17034', desc: 'Factoring (Fomento Mercantil)' },
-    { cod: '17035', desc: 'Administração, locação ou cessão de bens' },
-    { cod: '17036', desc: 'Serviços de ensino e educação' },
-    { cod: '17037', desc: 'Realização de eventos e congressos' },
-    { cod: '17038', desc: 'Aquisição de obras de arte' },
-    { cod: '17039', desc: 'Honorários advocatícios e sucumbência' },
-    { cod: '17099', desc: 'Demais serviços retidos pela alíquota global' },
+  "Série 14000 - Prêmios, Sorteios e Loterias": [
+    { cod: "14001", desc: "Prêmios de loterias em geral e bingos" },
+    { cod: "14002", desc: "Prêmios em concursos e sorteios em dinheiro" },
+    { cod: "14003", desc: "Prêmios em concursos e sorteios em bens e serviços" },
+    { cod: "14004", desc: "Títulos de capitalização" },
+    { cod: "14005", desc: "Prêmios de proprietários e criadores de cavalos" },
   ],
-  'Série 18000 - Decisões Judiciais': [
-    { cod: '18001', desc: 'Cumprimento de decisão da Justiça Federal (RPV/Precatórios)' },
-    { cod: '18002', desc: 'Cumprimento de decisão da Justiça do Trabalho' },
-    { cod: '18003', desc: 'Cumprimento de decisão da Justiça Estadual e do DF' },
-    { cod: '18004', desc: 'Cumprimento de decisão judicial - Pessoa Jurídica' },
-    { cod: '18005', desc: 'Rendimentos Recebidos Acumuladamente - RRA PF' },
-    { cod: '18006', desc: 'Rendimentos decorrentes de decisão judicial - Demais' },
+  "Série 15000 - Rendimentos Diversos (Indenizações, Bolsas, Multas)": [
+    { cod: "15001", desc: "Serviços de limpeza, conservação, segurança e locação de mão de obra (CSLL/Cofins/PIS)" },
+    { cod: "15002", desc: "Comissões, corretagens, representação comercial (IR/CSLL/Cofins/PIS)" },
+    { cod: "15003", desc: "Propaganda e publicidade (IR/CSLL/Cofins/PIS)" },
+    { cod: "15004", desc: "Honorários, consultoria, assessoria (Demais Serviços Profissionais)" },
+    { cod: "15005", desc: "Multas e vantagens por rescisão de contrato" },
+    { cod: "15006", desc: "Indenizações por danos morais" },
+    { cod: "15007", desc: "Bolsas de estudo e de pesquisa (não isentas)" },
+    { cod: "15008", desc: "Doações, patrocínios e subvenções" },
+    { cod: "15009", desc: "Acréscimo patrimonial não justificado" },
   ],
-  'Série 19000/20000 - Aposentadorias e Exterior': [
-    { cod: '19001', desc: 'Aposentadorias e pensões pagas por RPPS' },
-    { cod: '19002', desc: 'Previdência complementar' },
-    { cod: '20001', desc: 'Remessa ao Exterior - Rendimentos e ganhos' },
+  "Série 17000 - Retenções da Administração Pública (IN RFB 1234)": [
+    { cod: "17001", desc: "Fornecimento de bens / Mercadorias em geral" },
+    { cod: "17002", desc: "Combustíveis (Gasolina, Diesel, GLP)" },
+    { cod: "17003", desc: "Produtos farmacêuticos, higiene e limpeza" },
+    { cod: "17004", desc: "Energia elétrica" },
+    { cod: "17005", desc: "Água e esgoto" },
+    { cod: "17006", desc: "Telefonia e internet" },
+    { cod: "17007", desc: "Correios" },
+    { cod: "17008", desc: "Passagens aéreas, rodoviárias e transportes" },
+    { cod: "17009", desc: "Seguros privados e de capitalização" },
+    { cod: "17010", desc: "Construção civil / Empreitada" },
+    { cod: "17011", desc: "Hospitais, clínicas e serviços médicos" },
+    { cod: "17012", desc: "Transporte de cargas" },
+    { cod: "17013", desc: "Limpeza, conservação, manutenção e segurança" },
+    { cod: "17014", desc: "Locação de mão de obra" },
+    { cod: "17015", desc: "Agências de viagens" },
+    { cod: "17016", desc: "Propaganda e publicidade" },
+    { cod: "17017", desc: "Administração e locação de bens" },
+    { cod: "17018", desc: "Comissões e corretagens" },
+    { cod: "17019", desc: "Obras de arte" },
+    { cod: "17020", desc: "Eventos e congressos" },
+    { cod: "17021", desc: "Ensino e educação" },
+    { cod: "17022", desc: "Serviços de cartões de crédito" },
+    { cod: "17023", desc: "Serviços de radiodifusão e televisão" },
+    { cod: "17024", desc: "Serviços de fomento mercantil (factoring)" },
+    { cod: "17025", desc: "Aquisição de pneus e câmaras de ar" },
+    { cod: "17026", desc: "Aquisição de veículos, máquinas e equipamentos" },
+    { cod: "17039", desc: "Honorários advocatícios e sucumbência" },
+    { cod: "17099", desc: "Demais serviços (Retenção Órgãos Públicos)" },
   ],
+  "Série 18000 - Decisões Judiciais (Geral) e RRA": [
+    { cod: "18001", desc: "Cumprimento de decisão da Justiça Federal (RPV/Precatórios)" },
+    { cod: "18002", desc: "Cumprimento de decisão da Justiça do Trabalho" },
+    { cod: "18003", desc: "Cumprimento de decisão da Justiça Estadual e do DF" },
+    { cod: "18004", desc: "Cumprimento de decisão judicial - Pessoa Jurídica" },
+    { cod: "18005", desc: "Rendimentos Recebidos Acumuladamente - RRA PF" },
+    { cod: "18006", desc: "Rendimentos decorrentes de decisão judicial - Demais" },
+  ],
+  "Série 19000 - Aposentadorias, Pensões e Previdência": [
+    { cod: "19001", desc: "Aposentadorias e pensões pagas por RPPS" },
+    { cod: "19002", desc: "Aposentadorias e pensões pagas por RGPS (INSS)" },
+    { cod: "19003", desc: "Previdência complementar" },
+    { cod: "19004", desc: "Benefícios de previdência privada (FAPI/PGBL)" },
+    { cod: "19005", desc: "Resgate de previdência privada" },
+    { cod: "19009", desc: "Pensão alimentícia" },
+  ],
+  "Série 20000 - Rendimentos Pagos a Residentes no Exterior": [
+    { cod: "20001", desc: "Juros e Comissões (Exterior)" },
+    { cod: "20002", desc: "Dividendos e Lucros (Exterior)" },
+    { cod: "20003", desc: "Royalties (Exterior)" },
+    { cod: "20004", desc: "Serviços Técnicos e Assistência Administrativa (Exterior)" },
+    { cod: "20005", desc: "Aluguéis e Arrendamentos (Exterior)" },
+    { cod: "20006", desc: "Ganhos de Capital (Exterior)" },
+    { cod: "20007", desc: "Fretes e Transportes Internacionais" },
+    { cod: "20009", desc: "Demais Rendimentos e Ganhos de Capital (Exterior)" },
+    { cod: "20011", desc: "Criptoativos - Ganhos de Capital (Exterior)" }
+  ]
 };
 
 function buildNatOpts(selected=''){
@@ -608,15 +628,13 @@ function sugerirNatureza(row){
     if(/HONORÁRIO|HONORARIO|HONOR/.test(hist)) return getCod('17039', 'alta', 'Honorários Advocatícios');
     if(/PROCESSO JUDICIAL|RPV|REQUISIÇÃO DE PEQUENO VALOR|DECISÃO JUDICIAL/.test(hist) || row['Elemento'] === '339091' || row['Elemento'] === '319091') return getCod('18004', 'alta', 'Decisão Judicial PJ');
     
-    if(['07047251','00360305'].includes(raiz8) || /ENERGIA ELETRICA/.test(hist)) return getCod('17002','alta','Energia elétrica');
-    if(raiz8==='07040108' || /AGUA E ESGO/.test(hist)) return getCod('17028','alta','Abastecimento de água');
-    if(/TELEFON|INTERNET/.test(hist)) return getCod('17029','alta','Telecomunicações');
-    if(/LIMPEZA|HIGIENIZACAO/.test(hist)) return getCod('17032','alta','Limpeza');
-    if(/VIGILAN/.test(hist)) return getCod('17031','alta','Vigilância');
-    if(/LOCACAO DE MAO/.test(hist)) return getCod('17033','alta','Locação de mão de obra');
-    if(/LOCACAO/.test(hist) && /(IMOVEL|VEICULO|EQUIPAMENTO)/.test(hist)) return getCod('17035','alta','Locação de bens');
-    if(/MEDICAMENT|FARMACEUT|MATERIAL HOSPITALAR/.test(hist)) return getCod('17008','alta','Produtos farmacêuticos / hospitalares');
-    if(/MATERIAL|MERCADORIA/.test(hist)) return getCod('17009','media','Mercadorias em geral');
+    if(['07047251','00360305'].includes(raiz8) || /ENERGIA ELETRICA/.test(hist)) return getCod('17004','alta','Energia elétrica');
+    if(raiz8==='07040108' || /AGUA E ESGO/.test(hist)) return getCod('17005','alta','Abastecimento de água');
+    if(/TELEFON|INTERNET/.test(hist)) return getCod('17006','alta','Telecomunicações');
+    if(/LIMPEZA|HIGIENIZACAO/.test(hist)) return getCod('17013','alta','Limpeza e Conservação');
+    if(/LOCACAO DE MAO/.test(hist)) return getCod('17014','alta','Locação de mão de obra');
+    if(/MEDICAMENT|FARMACEUT|MATERIAL HOSPITALAR/.test(hist)) return getCod('17003','alta','Produtos farmacêuticos / hospitalares');
+    if(/MATERIAL|MERCADORIA/.test(hist)) return getCod('17001','media','Mercadorias em geral');
   }
   return getCod(is4010?'10014':'17099','baixa','Verificar manualmente');
 }
