@@ -623,8 +623,8 @@ function buildNatOpts(selected=''){
 }
 
 function sugerirNatureza(row){
-  const hist=(row['Hist']||'').toUpperCase(); const nome=(row['Nome do Credor']||'').toUpperCase();
-  const cpfCnpj = state.ug.tipoEvento === '4010' ? cleanCPF(row['CPF/CNPJ']) : cleanCNPJ(row['CPF/CNPJ']);
+  const hist=String(row['Hist']||'').toUpperCase(); const nome=String(row['Nome do Credor']||'').toUpperCase();
+  const cpfCnpj = state.ug.tipoEvento === '4010' ? cleanCPF(String(row['CPF/CNPJ']||'')) : cleanCNPJ(String(row['CPF/CNPJ']||''));
   const raiz8 = cpfCnpj.slice(0,8);
   const is4010 = state.ug.tipoEvento === '4010';
   
@@ -638,13 +638,13 @@ function sugerirNatureza(row){
   
   if (is4010) {
     if(/SORTEIO|NOTA FORTALEZA|PREMIO/.test(hist)) return getCod('14001','alta','Sorteio / Premiação');
-    if(/PROCESSO JUDICIAL|RPV|HONOR/.test(hist) || row['Elemento'] === '319091' || row['Elemento'] === '339091') return getCod('18001','alta','Decisão Judicial PF');
-    if(/MEDICO|RPA|AUTONOMO|PRESTADOR/.test(hist) || row['Elemento'] === '339036') return getCod('10014','media','Trabalhador Autônomo');
+    if(/PROCESSO JUDICIAL|RPV|HONOR/.test(hist) || String(row['Elemento']||'').trim() === '319091' || String(row['Elemento']||'').trim() === '339091') return getCod('18001','alta','Decisão Judicial PF');
+    if(/MEDICO|RPA|AUTONOMO|PRESTADOR/.test(hist) || String(row['Elemento']||'').trim() === '339036') return getCod('10014','media','Trabalhador Autônomo');
     if(/ALUGUEL|LOCACAO/.test(hist)) return getCod('13001','alta','Locação de Imóvel PF');
-    if(/BOLSA DE ESTUDO|RESIDENTE/.test(hist) || row['Elemento'] === '339018') return getCod('15001','alta','Bolsas de Estudo');
+    if(/BOLSA DE ESTUDO|RESIDENTE/.test(hist) || String(row['Elemento']||'').trim() === '339018') return getCod('15001','alta','Bolsas de Estudo');
   } else {
     if(/HONORÁRIO|HONORARIO|HONOR/.test(hist)) return getCod('17039', 'alta', 'Honorários Advocatícios');
-    if(/PROCESSO JUDICIAL|RPV|REQUISIÇÃO DE PEQUENO VALOR|DECISÃO JUDICIAL/.test(hist) || row['Elemento'] === '339091' || row['Elemento'] === '319091') return getCod('18004', 'alta', 'Decisão Judicial PJ');
+    if(/PROCESSO JUDICIAL|RPV|REQUISIÇÃO DE PEQUENO VALOR|DECISÃO JUDICIAL/.test(hist) || String(row['Elemento']||'').trim() === '339091' || String(row['Elemento']||'').trim() === '319091') return getCod('18004', 'alta', 'Decisão Judicial PJ');
     
     if(['07047251','00360305'].includes(raiz8) || /ENERGIA ELETRICA/.test(hist)) return getCod('17004','alta','Energia elétrica');
     if(raiz8==='07040108' || /AGUA E ESGO/.test(hist)) return getCod('17005','alta','Abastecimento de água');
@@ -805,14 +805,14 @@ function validCPF(cpf) {
 
 function classificarLinha(row) {
   const is4010 = state.ug.tipoEvento === '4010';
-  const cpfCnpj = is4010 ? cleanCPF(row['CPF/CNPJ']) : cleanCNPJ(row['CPF/CNPJ']); 
+  const cpfCnpj = is4010 ? cleanCPF(String(row['CPF/CNPJ']||'')) : cleanCNPJ(String(row['CPF/CNPJ']||'')); 
   const raiz8 = cpfCnpj.slice(0,8);
-  const nome = (row['Nome do Credor']||'').trim().toUpperCase(); 
-  const elemento = (row['Elemento']||'').trim();
-  const hist = (row['Hist']||row['Hist;']||'').trim().toUpperCase();
-  const vlBruto = parseBRL(row['Vl Bruto']); 
-  const irrf = parseBRL(row['IRRF']); 
-  const dtPag = (row['Dt Pag']||'').trim();
+  const nome = String(row['Nome do Credor']||'').trim().toUpperCase(); 
+  const elemento = String(row['Elemento']||'').trim();
+  const hist = String(row['Hist']||row['Hist;']||'').trim().toUpperCase();
+  const vlBruto = parseBRL(String(row['Vl Bruto']||'0')); 
+  const irrf = parseBRL(String(row['IRRF']||'0')); 
+  const dtPag = String(row['Dt Pag']||'').trim();
 
   if(vlBruto <= 0) return{cls:'erro',motivo:'Valor bruto zero'};
   if(!dtPag) return{cls:'confirmar',motivo:'Data de pagamento ausente'};
@@ -905,8 +905,8 @@ function processFile(file){
         const firstSheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[firstSheetName];
         
-        // Converte a primeira aba do Excel para um array de objetos JSON idêntico ao do PapaParse
-        const jsonData = XLSX.utils.sheet_to_json(worksheet, {defval: ""}); 
+        // NOVO: raw:false garante que as datas e valores venham como texto formatado, evitando erros de .trim()
+        const jsonData = XLSX.utils.sheet_to_json(worksheet, {defval: "", raw: false}); 
 
         if(!jsonData || jsonData.length === 0){ zone.innerHTML = `<p style="color:var(--red-600);font-weight:700;">❌ Nenhuma linha encontrada na planilha.</p>`; return; }
         zone.innerHTML = `<p style="color:var(--green-600);font-weight:700;">✅ Arquivo Excel lido: <strong>${jsonData.length}</strong> linhas</p>`;
@@ -917,7 +917,6 @@ function processFile(file){
     };
     reader.readAsArrayBuffer(file);
   } else {
-    // Se for CSV, usa a engine nativa
     const reader = new FileReader();
     reader.onload = e => {
       try {
@@ -943,11 +942,12 @@ function parseRows(data){
   const [cMes, cAno] = compStr.split('/');
 
   state.allRows=data.map((row,i)=>{
-    const doc=state.ug.tipoEvento==='4010'?cleanCPF(row['CPF/CNPJ']):cleanCNPJ(row['CPF/CNPJ']); 
-    const vlBruto=parseBRL(row['Vl Bruto']); 
-    const irrf=parseBRL(row['IRRF']);
-    const ipm=parseBRL(row['IPM/PREVIDENCIA']); 
-    const dtPag = (row['Dt Pag']||'').trim();
+    // NOVO: Todos os valores extraídos da linha são forçados a String para blindar contra números puros
+    const doc=state.ug.tipoEvento==='4010'?cleanCPF(String(row['CPF/CNPJ']||'')):cleanCNPJ(String(row['CPF/CNPJ']||'')); 
+    const vlBruto=parseBRL(String(row['Vl Bruto']||'0')); 
+    const irrf=parseBRL(String(row['IRRF']||'0'));
+    const ipm=parseBRL(String(row['IPM/PREVIDENCIA']||'0')); 
+    const dtPag = String(row['Dt Pag']||'').trim();
     let class_=classificarLinha(row); 
     let sugestao=class_.cls==='incluir'?sugerirNatureza(row):null;
 
@@ -967,8 +967,8 @@ function parseRows(data){
          sugestao = {cod: natCsvVal, confianca: 'alta', fonte: 'Lido do Arquivo'};
     }
 
-    return{idx:i,doc:doc,nome:(row['Nome do Credor']||'').trim(),vlBruto,irrf,ipm,dtPag:dtPag,
-      hist:(row['Hist']||'').trim(),elemento:(row['Elemento']||'').trim(),cls:class_.cls,motivo:class_.motivo,avisos:class_.avisos||[],
+    return{idx:i,doc:doc,nome:String(row['Nome do Credor']||'').trim(),vlBruto,irrf,ipm,dtPag:dtPag,
+      hist:String(row['Hist']||'').trim(),elemento:String(row['Elemento']||'').trim(),cls:class_.cls,motivo:class_.motivo,avisos:class_.avisos||[],
       natureza:sugestao?sugestao.cod:'',sugestao,selected:class_.cls==='incluir',raw:row};
   });
 
@@ -1094,7 +1094,7 @@ function baixarRelatorioAuditoria() {
     let nat = r.natureza ? r.natureza : "N/A";
     let statusFinal = (r.selected && r.cls === 'incluir') ? 'Enviado no Lote' : 'Não Enviado';
     let docFmt = is4010 ? cleanCPF(r.doc) : cleanCNPJ(r.doc);
-    let histLimpo = r.hist.replace(/(\r\n|\n|\r)/gm, " ");
+    let histLimpo = String(r.hist).replace(/(\r\n|\n|\r)/gm, " ");
     
     csv += `"${r.nome}";"${docFmt}";"${r.elemento}";"${fmtDec(r.vlBruto)}";"${fmtDec(r.ipm)}";"${fmtDec(r.irrf)}";"${r.dtPag}";"${statusFinal}";"${nat}";"${r.motivo}"\n`;
   });
