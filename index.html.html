@@ -231,7 +231,7 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
 <div class="header">
   <div class="header-logo"><svg viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zm-7 3l5 4-5-4-5-4 5-4zm0 10l-5-4h10l-5 4z"/></svg></div>
   <div><h1 id="header-title">EFD-Reinf — Gerador R-4020 e R-4010</h1><p>Prefeitura de Fortaleza · Administração pública municipal descentralizada</p></div>
-  <div class="header-badge">v11.4 Enterprise (Catálogo Oficial Completo)</div>
+  <div class="header-badge">v11.5 Enterprise (Suporte RPPS)</div>
   <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">🌙 Modo Escuro</button>
 </div>
 
@@ -372,7 +372,7 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
     <div class="tab" onclick="setTab('excluido')">🚫 Excluídos</div>
     <div class="tab" onclick="setTab('erro')">❌ Erros</div>
   </div>
-  <div class="table-wrap" style="max-height:440px;"><table id="triagem-table"><thead><tr><th style="width:32px;"></th><th>Credor</th><th>CPF/CNPJ</th><th>Elemento</th><th class="td-num">Vl. Bruto</th><th class="td-num">IRRF</th><th>Dt. Pag</th><th>Classificação</th><th>Ação</th></tr></thead><tbody id="triagem-tbody"></tbody></table></div>
+  <div class="table-wrap" style="max-height:440px;"><table id="triagem-table"><thead><tr><th style="width:32px;"></th><th>Credor</th><th>CPF/CNPJ</th><th>Elemento</th><th class="td-num">Vl. Bruto</th><th class="td-num">IPM</th><th class="td-num">IRRF</th><th>Dt. Pag</th><th>Classificação</th><th>Ação</th></tr></thead><tbody id="triagem-tbody"></tbody></table></div>
   <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;"><div id="triagem-summary" style="font-size:13px;color:var(--text-secondary);font-weight:600;"></div><button class="btn btn-primary" onclick="goStep(4)">Avançar para revisão →</button></div>
 </div>
 
@@ -644,7 +644,6 @@ function sugerirNatureza(row){
     if(/ALUGUEL|LOCACAO/.test(hist)) return getCod('13001','alta','Locação de Imóvel PF');
     if(/BOLSA DE ESTUDO|RESIDENTE/.test(hist) || row['Elemento'] === '339018') return getCod('15001','alta','Bolsas de Estudo');
   } else {
-    // REGRAS PARA PESSOA JURÍDICA (R-4020)
     if(/HONORÁRIO|HONORARIO|HONOR/.test(hist)) return getCod('17039', 'alta', 'Honorários Advocatícios');
     if(/PROCESSO JUDICIAL|RPV|REQUISIÇÃO DE PEQUENO VALOR|DECISÃO JUDICIAL/.test(hist) || row['Elemento'] === '339091' || row['Elemento'] === '319091') return getCod('18004', 'alta', 'Decisão Judicial PJ');
     
@@ -659,7 +658,6 @@ function sugerirNatureza(row){
   return getCod(is4010?'10014':'17099','baixa','Verificar manualmente');
 }
 
-// AUTO-SAVE LOGIC
 function saveDraft() {
   if (state.allRows.length > 0) {
     try {
@@ -921,7 +919,12 @@ function parseRows(data){
 
   state.allRows=data.map((row,i)=>{
     const doc=state.ug.tipoEvento==='4010'?cleanCPF(row['CPF/CNPJ']):cleanCNPJ(row['CPF/CNPJ']); 
-    const vlBruto=parseBRL(row['Vl Bruto']); const irrf=parseBRL(row['IRRF']);
+    const vlBruto=parseBRL(row['Vl Bruto']); 
+    const irrf=parseBRL(row['IRRF']);
+    
+    // NOVO: O sistema agora captura o IPM/Previdência direto da planilha
+    const ipm=parseBRL(row['IPM/PREVIDENCIA']); 
+    
     const dtPag = (row['Dt Pag']||'').trim();
     let class_=classificarLinha(row); 
     let sugestao=class_.cls==='incluir'?sugerirNatureza(row):null;
@@ -942,7 +945,8 @@ function parseRows(data){
          sugestao = {cod: natCsvVal, confianca: 'alta', fonte: 'Lido da Planilha CSV'};
     }
 
-    return{idx:i,doc:doc,nome:(row['Nome do Credor']||'').trim(),vlBruto,irrf,dtPag:dtPag,
+    // NOVO: Adicionado o "ipm" ao objeto que vai para a triagem e geração do XML
+    return{idx:i,doc:doc,nome:(row['Nome do Credor']||'').trim(),vlBruto,irrf,ipm,dtPag:dtPag,
       hist:(row['Hist']||'').trim(),elemento:(row['Elemento']||'').trim(),cls:class_.cls,motivo:class_.motivo,avisos:class_.avisos||[],
       natureza:sugestao?sugestao.cod:'',sugestao,selected:class_.cls==='incluir',raw:row};
   });
@@ -977,11 +981,12 @@ function renderTriagem(){
     <div class="metric amber"><div class="metric-label">⚠ Confirmar</div><div class="metric-value">${conf.length}</div></div>`;
   const t=state.tabAtiva; const rows=t==='todos'?state.allRows:t==='incluir'?inc:t==='confirmar'?conf:t==='excluido'?state.allRows.filter(r=>r.cls==='excluido'):state.allRows.filter(r=>r.cls==='erro');
   
+  // Adicionado visualização do IPM na tabela de triagem
   document.getElementById('triagem-tbody').innerHTML=rows.map(r=>`
     <tr class="${r.cls==='confirmar'?'row-confirmar':r.cls==='excluido'?'row-excluido':r.cls==='erro'?'row-erro':''}">
       <td><span style="font-weight:bold;">${r.cls==='incluir'?'✅':r.cls==='confirmar'?'⚠':r.cls==='excluido'?'🚫':'❌'}</span></td>
       <td><div style="font-weight:600;font-size:12px;">${r.nome}</div></td><td class="td-mono">${fmtDoc(r.doc)}</td>
-      <td class="td-mono">${r.elemento}</td><td class="td-num">R$ ${fmtBRL(r.vlBruto)}</td><td class="td-num">${r.irrf>0?'R$ '+fmtBRL(r.irrf):'—'}</td>
+      <td class="td-mono">${r.elemento}</td><td class="td-num">R$ ${fmtBRL(r.vlBruto)}</td><td class="td-num">${r.ipm>0?'R$ '+fmtBRL(r.ipm):'—'}</td><td class="td-num">${r.irrf>0?'R$ '+fmtBRL(r.irrf):'—'}</td>
       <td class="td-mono">${r.dtPag}</td><td><span title="${r.motivo}" style="font-weight:600;">${r.cls}</span></td>
       <td>${r.cls==='confirmar'?`<button class="btn btn-sm btn-success" onclick="reclassificar(${r.idx},'incluir')">✅ Incluir</button> <button class="btn btn-sm" onclick="reclassificar(${r.idx},'excluido')">🚫 Excluir</button>`
         :r.cls==='excluido'||r.cls==='incluir'?`<button class="btn btn-sm" onclick="reclassificar(${r.idx},${r.cls==='excluido'?`'incluir'`:`'excluido'`})">↩ Trocar</button>`:''}</td>
@@ -1063,7 +1068,7 @@ function updateReviewSummary(){
 
 function baixarRelatorioAuditoria() {
   const is4010 = state.ug.tipoEvento === '4010';
-  let csv = "Nome do Credor;CPF/CNPJ;Elemento;Vl Bruto;IRRF;Dt Pag;Status Final;Natureza de Rendimento;Justificativa do Sistema\n";
+  let csv = "Nome do Credor;CPF/CNPJ;Elemento;Vl Bruto;IPM_PREVIDENCIA;IRRF;Dt Pag;Status Final;Natureza de Rendimento;Justificativa do Sistema\n";
   
   state.allRows.forEach(r => {
     let nat = r.natureza ? r.natureza : "N/A";
@@ -1071,7 +1076,7 @@ function baixarRelatorioAuditoria() {
     let docFmt = is4010 ? cleanCPF(r.doc) : cleanCNPJ(r.doc);
     let histLimpo = r.hist.replace(/(\r\n|\n|\r)/gm, " ");
     
-    csv += `"${r.nome}";"${docFmt}";"${r.elemento}";"${fmtDec(r.vlBruto)}";"${fmtDec(r.irrf)}";"${r.dtPag}";"${statusFinal}";"${nat}";"${r.motivo}"\n`;
+    csv += `"${r.nome}";"${docFmt}";"${r.elemento}";"${fmtDec(r.vlBruto)}";"${fmtDec(r.ipm)}";"${fmtDec(r.irrf)}";"${r.dtPag}";"${statusFinal}";"${nat}";"${r.motivo}"\n`;
   });
   
   const blob = new Blob(["\uFEFF"+csv], { type: 'text/csv;charset=utf-8;' });
@@ -1097,10 +1102,10 @@ function gerarXML(){
   const nrInscEstab = cnpjCompleto14.length===14 ? cnpjCompleto14 : nrInsc+'000100';
   const perApur=getPerApur();
   
-  let vlIrTotal=0, vlBrutoTotal=0;
+  let vlIrTotal=0, vlBrutoTotal=0, vlIpmTotal=0;
   const benefs=new Map();
   for(const p of valid){
-    vlIrTotal+=p.irrf; vlBrutoTotal+=p.vlBruto;
+    vlIrTotal+=p.irrf; vlBrutoTotal+=p.vlBruto; vlIpmTotal+=p.ipm;
     const documento = is4010 ? cleanCPF(p.doc) : cleanCNPJ(p.doc);
     if(!benefs.has(documento)) benefs.set(documento, new Map());
     const pgtos=benefs.get(documento);
@@ -1120,15 +1125,27 @@ function gerarXML(){
       const pgtosByDate = new Map();
       for (const p of pagamentos) {
         const dataFmt = fmtDate(p.dtPag);
-        if (!pgtosByDate.has(dataFmt)) pgtosByDate.set(dataFmt, { vlrBruto: 0, irrf: 0 });
+        if (!pgtosByDate.has(dataFmt)) pgtosByDate.set(dataFmt, { vlrBruto: 0, irrf: 0, ipm: 0 });
         const agrupado = pgtosByDate.get(dataFmt);
         agrupado.vlrBruto += p.vlBruto;
         agrupado.irrf += p.irrf;
+        
+        // NOVO: Agrupa os valores de IPM retidos naquela data para aquele credor
+        agrupado.ipm += p.ipm || 0;
       }
       
       for (const [dataFG, valores] of pgtosByDate) {
-        const ret = valores.irrf > 0 ? `<retencoes><vlrBaseIR>${fmtDec(valores.vlrBruto)}</vlrBaseIR><vlrIR>${fmtDec(valores.irrf)}</vlrIR></retencoes>` : '';
-        ideBenefInner += `<infoPgto><dtFG>${dataFG}</dtFG><vlrBruto>${fmtDec(valores.vlrBruto)}</vlrBruto>${ret}</infoPgto>`;
+        // NOVO: A Previdência Oficial é mapeada como indTpDeducao = 1 apenas para R-4010
+        const deducao = (is4010 && valores.ipm > 0) ? `<deducoes><indTpDeducao>1</indTpDeducao><vlrDeducao>${fmtDec(valores.ipm)}</vlrDeducao></deducoes>` : '';
+        
+        // NOVO: Se houve IPM, a Base do Imposto de Renda declarada sofre a dedução
+        const baseIr = (is4010 && valores.ipm > 0) ? (valores.vlrBruto - valores.ipm) : valores.vlrBruto;
+        const ret = valores.irrf > 0 ? `<retencoes><vlrBaseIR>${fmtDec(baseIr)}</vlrBaseIR><vlrIR>${fmtDec(valores.irrf)}</vlrIR></retencoes>` : '';
+        
+        // NOVO: A tag do valor bruto tem nome diferente dependendo do evento
+        const tagBruto = is4010 ? 'vlrRendBruto' : 'vlrBruto';
+        
+        ideBenefInner += `<infoPgto><dtFG>${dataFG}</dtFG><${tagBruto}>${fmtDec(valores.vlrBruto)}</${tagBruto}>${ret}${deducao}</infoPgto>`;
       }
       ideBenefInner += `</idePgto>`;
     }
@@ -1190,8 +1207,11 @@ function gerarXML(){
     <div class="metric amber"><div class="metric-label">IRRF retido</div><div class="metric-value">R$ ${fmtBRL(vlIrTotal)}</div></div>`;
 
   document.getElementById('totalizador-table').innerHTML=`
-    <thead><tr><th style="padding:10px 14px;background:var(--bg-secondary);font-size:11px;border-bottom:1px solid var(--border);">Tributo</th><th style="padding:10px 14px;background:var(--bg-secondary);font-size:11px;text-align:right;border-bottom:1px solid var(--border);">Retenção</th></tr></thead>
-    <tbody><tr><td style="padding:10px 14px;font-size:12px;border-bottom:none;font-weight:600;">IRRF (${is4010?'PF':'PJ'})</td><td style="padding:10px 14px;font-size:13px;text-align:right;border-bottom:none;font-weight:700;color:var(--brand-primary);">R$ ${fmtBRL(vlIrTotal)}</td></tr></tbody>`;
+    <thead><tr><th style="padding:10px 14px;background:var(--bg-secondary);font-size:11px;border-bottom:1px solid var(--border);">Tributo</th><th style="padding:10px 14px;background:var(--bg-secondary);font-size:11px;text-align:right;border-bottom:1px solid var(--border);">Retenção Informada</th></tr></thead>
+    <tbody>
+      <tr><td style="padding:10px 14px;font-size:12px;border-bottom:1px solid var(--border);font-weight:600;">IRRF (${is4010?'PF':'PJ'})</td><td style="padding:10px 14px;font-size:13px;text-align:right;border-bottom:1px solid var(--border);font-weight:700;color:var(--brand-primary);">R$ ${fmtBRL(vlIrTotal)}</td></tr>
+      ${is4010 && vlIpmTotal > 0 ? `<tr><td style="padding:10px 14px;font-size:12px;border-bottom:none;font-weight:600;color:var(--text-muted);">IPM (Dedução Base IR)</td><td style="padding:10px 14px;font-size:13px;text-align:right;border-bottom:none;font-weight:700;color:var(--text-muted);">R$ ${fmtBRL(vlIpmTotal)}</td></tr>` : ''}
+    </tbody>`;
 
   document.getElementById('xml-ok-msg').innerHTML = `Foram gerados <b style="color:var(--green-800);">${benefs.size} arquivos ${ug.tipoEvento}</b>. Se o navegador bloqueou o download múltiplo, baixe os arquivos manualmente na lista abaixo.`;
   document.getElementById('banner-producao').style.display = ug.ambiente === '1' ? 'flex' : 'none';
