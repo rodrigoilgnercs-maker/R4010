@@ -5,9 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>EFD-Reinf — Prefeitura de Fortaleza</title>
 <script>
-// Parser CSV embutido
+// Parser CSV embutido (PapaParse)
 var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=text.split(/\r?\n/);var headers=[];var data=[];var inQ=false,row=[],field='';function pushField(){row.push(field);field='';}function pushRow(){if(row.length===0||(row.length===1&&row[0]===''))return;if(headers.length===0){headers=row.slice();}else{var obj={};for(var k=0;k<headers.length;k++)obj[headers[k]]=row[k]!==undefined?row[k]:'';data.push(obj);}row=[];}for(var i=0;i<lines.length;i++){var line=lines[i];for(var j=0;j<line.length;j++){var ch=line[j];if(inQ){if(ch==='"'){if(line[j+1]==='"'){field+='"';j++;}else{inQ=false;}}else{field+=ch;}}else{if(ch==='"'){inQ=true;}else if(ch===delim){pushField();}else{field+=ch;}}}pushField();pushRow();}if(cfg.skipEmptyLines){data=data.filter(function(r){return Object.values(r).some(function(v){return v&&v.trim()!=='';});});}if(cfg.complete)cfg.complete({data:data,errors:[]});}catch(e){if(cfg.error)cfg.error(e);else throw e;}}};
 </script>
+<!-- Leitor nativo de Excel (.xlsx e .xls) via SheetJS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
   pre, code { white-space: pre-wrap !important; word-wrap: break-word !important; overflow-x: hidden !important; }
   @media (max-width: 768px) {
@@ -231,7 +233,7 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
 <div class="header">
   <div class="header-logo"><svg viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zm-7 3l5 4-5-4-5-4 5-4zm0 10l-5-4h10l-5 4z"/></svg></div>
   <div><h1 id="header-title">EFD-Reinf — Gerador R-4020 e R-4010</h1><p>Prefeitura de Fortaleza · Administração pública municipal descentralizada</p></div>
-  <div class="header-badge">v11.5 Enterprise (Suporte RPPS)</div>
+  <div class="header-badge">v11.6 Enterprise (Leitor Excel XLSX/CSV)</div>
   <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">🌙 Modo Escuro</button>
 </div>
 
@@ -341,12 +343,13 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
 <div class="section" id="step2">
   <div class="section-header"><div><div class="section-title">Importar planilha do GRPFOR-FC</div></div><button class="btn" onclick="goStep(1)">← Voltar</button></div>
   <div class="card" style="padding: 0; border: none; box-shadow: none;">
+    <!-- Atualizado para aceitar XLSX e XLS -->
     <div class="upload-zone" id="dropzone" onclick="document.getElementById('file-input').click()" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropFile(event)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-      <h3>Arraste o CSV aqui ou clique para selecionar</h3>
-      <p>O sistema lê as colunas automaticamente e ativa o Auto-Save a partir da triagem.</p>
+      <h3>Arraste o arquivo Excel (.xlsx) ou CSV aqui</h3>
+      <p>Não é mais necessário "Salvar como CSV" no Excel. O sistema lê ambos nativamente.</p>
     </div>
-    <input type="file" id="file-input" accept=".csv" onchange="loadFile(event)">
+    <input type="file" id="file-input" accept=".csv, .xlsx, .xls" onchange="loadFile(event)">
   </div>
   <div id="preview-area" style="display:none;">
     <div id="comp-alert" class="alert alert-warn" style="display:none; margin-top:1.5rem;">
@@ -459,10 +462,6 @@ function toggleTheme() {
   try { localStorage.setItem("reinf_theme", newTheme); } catch(e){}
 }
 
-// -------------------------------------------------------------
-// TABELA 01 OFICIAL COMPLETA (TODA A RECEITA FEDERAL - Layout v2.1.2)
-// Inclui exaustivamente todas as Séries (10000 até 20000) e IN 1.234
-// -------------------------------------------------------------
 const NATUREZAS_REINF = {
   "Série 10000 - Rendimentos do Trabalho": [
     { cod: "10001", desc: "Rendimento decorrente do trabalho com vínculo empregatício" },
@@ -850,7 +849,7 @@ function classificarLinha(row) {
 }
 
 function goStep(n){
-  if(n===3&&state.allRows.length===0){alert('Importe a planilha primeiro.');return;}
+  if(n===3&&state.allRows.length===0){alert('Importe o arquivo primeiro.');return;}
   if(n===4){filterReview();}
   state.step=n;
   document.querySelectorAll('.section').forEach((s,i)=>s.classList.toggle('active',i===n-1));
@@ -894,22 +893,48 @@ function processFile(file){
   document.getElementById('draft-alert').style.display = 'none'; 
   const zone = document.getElementById('dropzone');
   zone.innerHTML = `<p style="color:var(--brand-dark-light);font-weight:600;">⏳ Lendo arquivo: <strong>${file.name}</strong>...</p>`;
-  const reader = new FileReader();
-  reader.onload = e => {
-    try {
-      const text = e.target.result;
-      if(!text){ zone.innerHTML = `<p style="color:var(--red-600);font-weight:700;">❌ Arquivo vazio.</p>`; return; }
-      const delim = text.split('\n')[0].includes(';') ? ';' : ',';
-      Papa.parse(text, { delimiter: delim, header: true, skipEmptyLines: true,
-        complete: r => {
-          if(!r.data || r.data.length === 0){ zone.innerHTML = `<p style="color:var(--red-600);font-weight:700;">❌ Nenhuma linha encontrada.</p>`; return; }
-          zone.innerHTML = `<p style="color:var(--green-600);font-weight:700;">✅ Arquivo lido: <strong>${r.data.length}</strong> linhas</p>`;
-          parseRows(r.data);
-        }
-      });
-    } catch(err){ zone.innerHTML = `<p style="color:var(--red-600);font-weight:700;">❌ Erro: ${err.message}</p>`; }
-  };
-  reader.readAsText(file, 'latin1');
+  
+  const isExcel = file.name.toLowerCase().endsWith('.xlsx') || file.name.toLowerCase().endsWith('.xls');
+
+  if(isExcel) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, {type: 'array'});
+        const firstSheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[firstSheetName];
+        
+        // Converte a primeira aba do Excel para um array de objetos JSON idêntico ao do PapaParse
+        const jsonData = XLSX.utils.sheet_to_json(worksheet, {defval: ""}); 
+
+        if(!jsonData || jsonData.length === 0){ zone.innerHTML = `<p style="color:var(--red-600);font-weight:700;">❌ Nenhuma linha encontrada na planilha.</p>`; return; }
+        zone.innerHTML = `<p style="color:var(--green-600);font-weight:700;">✅ Arquivo Excel lido: <strong>${jsonData.length}</strong> linhas</p>`;
+        parseRows(jsonData);
+      } catch(err) {
+        zone.innerHTML = `<p style="color:var(--red-600);font-weight:700;">❌ Erro ao ler Excel: ${err.message}</p>`;
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  } else {
+    // Se for CSV, usa a engine nativa
+    const reader = new FileReader();
+    reader.onload = e => {
+      try {
+        const text = e.target.result;
+        if(!text){ zone.innerHTML = `<p style="color:var(--red-600);font-weight:700;">❌ Arquivo vazio.</p>`; return; }
+        const delim = text.split('\n')[0].includes(';') ? ';' : ',';
+        Papa.parse(text, { delimiter: delim, header: true, skipEmptyLines: true,
+          complete: r => {
+            if(!r.data || r.data.length === 0){ zone.innerHTML = `<p style="color:var(--red-600);font-weight:700;">❌ Nenhuma linha encontrada no CSV.</p>`; return; }
+            zone.innerHTML = `<p style="color:var(--green-600);font-weight:700;">✅ Arquivo CSV lido: <strong>${r.data.length}</strong> linhas</p>`;
+            parseRows(r.data);
+          }
+        });
+      } catch(err){ zone.innerHTML = `<p style="color:var(--red-600);font-weight:700;">❌ Erro: ${err.message}</p>`; }
+    };
+    reader.readAsText(file, 'latin1');
+  }
 }
 
 function parseRows(data){
@@ -921,10 +946,7 @@ function parseRows(data){
     const doc=state.ug.tipoEvento==='4010'?cleanCPF(row['CPF/CNPJ']):cleanCNPJ(row['CPF/CNPJ']); 
     const vlBruto=parseBRL(row['Vl Bruto']); 
     const irrf=parseBRL(row['IRRF']);
-    
-    // NOVO: O sistema agora captura o IPM/Previdência direto da planilha
     const ipm=parseBRL(row['IPM/PREVIDENCIA']); 
-    
     const dtPag = (row['Dt Pag']||'').trim();
     let class_=classificarLinha(row); 
     let sugestao=class_.cls==='incluir'?sugerirNatureza(row):null;
@@ -942,10 +964,9 @@ function parseRows(data){
     
     if(natCsvVal && natCsvVal.length >= 4) {
          class_.cls = 'incluir'; 
-         sugestao = {cod: natCsvVal, confianca: 'alta', fonte: 'Lido da Planilha CSV'};
+         sugestao = {cod: natCsvVal, confianca: 'alta', fonte: 'Lido do Arquivo'};
     }
 
-    // NOVO: Adicionado o "ipm" ao objeto que vai para a triagem e geração do XML
     return{idx:i,doc:doc,nome:(row['Nome do Credor']||'').trim(),vlBruto,irrf,ipm,dtPag:dtPag,
       hist:(row['Hist']||'').trim(),elemento:(row['Elemento']||'').trim(),cls:class_.cls,motivo:class_.motivo,avisos:class_.avisos||[],
       natureza:sugestao?sugestao.cod:'',sugestao,selected:class_.cls==='incluir',raw:row};
@@ -981,7 +1002,6 @@ function renderTriagem(){
     <div class="metric amber"><div class="metric-label">⚠ Confirmar</div><div class="metric-value">${conf.length}</div></div>`;
   const t=state.tabAtiva; const rows=t==='todos'?state.allRows:t==='incluir'?inc:t==='confirmar'?conf:t==='excluido'?state.allRows.filter(r=>r.cls==='excluido'):state.allRows.filter(r=>r.cls==='erro');
   
-  // Adicionado visualização do IPM na tabela de triagem
   document.getElementById('triagem-tbody').innerHTML=rows.map(r=>`
     <tr class="${r.cls==='confirmar'?'row-confirmar':r.cls==='excluido'?'row-excluido':r.cls==='erro'?'row-erro':''}">
       <td><span style="font-weight:bold;">${r.cls==='incluir'?'✅':r.cls==='confirmar'?'⚠':r.cls==='excluido'?'🚫':'❌'}</span></td>
@@ -1129,20 +1149,13 @@ function gerarXML(){
         const agrupado = pgtosByDate.get(dataFmt);
         agrupado.vlrBruto += p.vlBruto;
         agrupado.irrf += p.irrf;
-        
-        // NOVO: Agrupa os valores de IPM retidos naquela data para aquele credor
         agrupado.ipm += p.ipm || 0;
       }
       
       for (const [dataFG, valores] of pgtosByDate) {
-        // NOVO: A Previdência Oficial é mapeada como indTpDeducao = 1 apenas para R-4010
         const deducao = (is4010 && valores.ipm > 0) ? `<deducoes><indTpDeducao>1</indTpDeducao><vlrDeducao>${fmtDec(valores.ipm)}</vlrDeducao></deducoes>` : '';
-        
-        // NOVO: Se houve IPM, a Base do Imposto de Renda declarada sofre a dedução
         const baseIr = (is4010 && valores.ipm > 0) ? (valores.vlrBruto - valores.ipm) : valores.vlrBruto;
         const ret = valores.irrf > 0 ? `<retencoes><vlrBaseIR>${fmtDec(baseIr)}</vlrBaseIR><vlrIR>${fmtDec(valores.irrf)}</vlrIR></retencoes>` : '';
-        
-        // NOVO: A tag do valor bruto tem nome diferente dependendo do evento
         const tagBruto = is4010 ? 'vlrRendBruto' : 'vlrBruto';
         
         ideBenefInner += `<infoPgto><dtFG>${dataFG}</dtFG><${tagBruto}>${fmtDec(valores.vlrBruto)}</${tagBruto}>${ret}${deducao}</infoPgto>`;
