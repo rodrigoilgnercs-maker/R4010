@@ -233,7 +233,7 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
 <div class="header">
   <div class="header-logo"><svg viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zm-7 3l5 4-5-4-5-4 5-4zm0 10l-5-4h10l-5 4z"/></svg></div>
   <div><h1 id="header-title">EFD-Reinf — Gerador R-4020 e R-4010</h1><p>Prefeitura de Fortaleza · Administração pública municipal descentralizada</p></div>
-  <div class="header-badge">v11.7 Enterprise (Motor Nativo Excel)</div>
+  <div class="header-badge">v11.7.1 Enterprise (Correção Leitor Excel)</div>
   <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">🌙 Modo Escuro</button>
 </div>
 
@@ -343,6 +343,7 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
 <div class="section" id="step2">
   <div class="section-header"><div><div class="section-title">Importar planilha do GRPFOR-FC</div></div><button class="btn" onclick="goStep(1)">← Voltar</button></div>
   <div class="card" style="padding: 0; border: none; box-shadow: none;">
+    <!-- Atualizado para aceitar XLSX e XLS -->
     <div class="upload-zone" id="dropzone" onclick="document.getElementById('file-input').click()" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropFile(event)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
       <h3>Arraste o arquivo Excel (.xlsx) ou CSV aqui</h3>
@@ -609,6 +610,92 @@ const NATUREZAS_REINF = {
   ]
 };
 
+// -------------------------------------------------------------
+// FUNÇÕES UTILITÁRIAS RESTAURADAS
+// -------------------------------------------------------------
+function fmtCnpjRaiz(el){ let v=el.value.replace(/[^0-9A-Za-z]/g,'').slice(0,14).toUpperCase(); if(v.length<=8){ if(v.length>5) v=v.slice(0,2)+'.'+v.slice(2,5)+'.'+v.slice(5); else if(v.length>2) v=v.slice(0,2)+'.'+v.slice(2); } else { v=v.slice(0,2)+'.'+v.slice(2,5)+'.'+v.slice(5,8)+'/'+v.slice(8,12)+(v.length>12?'-'+v.slice(12):''); } el.value=v; }
+function fmtComp(el){let v=el.value.replace(/\D/g,'').slice(0,6);if(v.length>2)v=v.slice(0,2)+'/'+v.slice(2);el.value=v;}
+function fmtCpf(el){let v=el.value.replace(/\D/g,'').slice(0,11);if(v.length>9)v=v.slice(0,3)+'.'+v.slice(3,6)+'.'+v.slice(6,9)+'-'+v.slice(9);else if(v.length>6)v=v.slice(0,3)+'.'+v.slice(3,6)+'.'+v.slice(6);else if(v.length>3)v=v.slice(0,3)+'.'+v.slice(3);el.value=v;}
+function fmtBRL(n){return Number(n||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function cleanCNPJ(s) { return String(s || '').replace(/[^0-9A-Za-z]/g, '').toUpperCase(); }
+function cleanCPF(s) { return String(s || '').replace(/\D/g, ''); }
+function fmtDec(n){if(isNaN(n) || n === null || n === '') return "0,00";return Number(n).toFixed(2).replace('.', ',');}
+function getPerApur(){const c=document.getElementById('competencia').value;if(!c||c.length<7)return'';const[mm,yyyy]=c.split('/');return`${yyyy}-${mm}`;}
+
+function fmtDoc(s) { 
+  let c = cleanCNPJ(s);
+  if(c.length === 11) return c.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+  return c.length === 14 ? c.replace(/^([0-9A-Z]{2})([0-9A-Z]{3})([0-9A-Z]{3})([0-9A-Z]{4})([0-9]{2})$/, '$1.$2.$3/$4-$5') : c; 
+}
+
+function validCNPJ(cnpj) {
+  cnpj = cleanCNPJ(cnpj);
+  if (cnpj.length !== 14) return false;
+  const calcDigit = (cnpjStr, weight) => {
+    let sum = 0;
+    for (let i = 0; i < weight.length; i++) {
+      let val = cnpjStr.charCodeAt(i) - 48;
+      sum += val * weight[i];
+    }
+    let rest = sum % 11;
+    return rest < 2 ? 0 : 11 - rest;
+  };
+  const w1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+  const w2 = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+  if (parseInt(cnpj[12]) !== calcDigit(cnpj, w1)) return false;
+  if (parseInt(cnpj[13]) !== calcDigit(cnpj, w2)) return false;
+  return true;
+}
+
+function validCPF(cpf) {
+  cpf = cleanCPF(cpf);
+  if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
+  let soma = 0, resto;
+  for (let i = 1; i <= 9; i++) soma += parseInt(cpf.substring(i-1, i)) * (11 - i);
+  resto = (soma * 10) % 11;
+  if ((resto == 10) || (resto == 11)) resto = 0;
+  if (resto != parseInt(cpf.substring(9, 10))) return false;
+  soma = 0;
+  for (let i = 1; i <= 10; i++) soma += parseInt(cpf.substring(i-1, i)) * (12 - i);
+  resto = (soma * 10) % 11;
+  if ((resto == 10) || (resto == 11)) resto = 0;
+  if (resto != parseInt(cpf.substring(10, 11))) return false;
+  return true;
+}
+
+// BLINDAGEM DE DATAS E VALORES MONETÁRIOS DO EXCEL
+function parseBRL(s) {
+  if (typeof s === 'number') return s;
+  let str = String(s || '0').trim();
+  if (str.includes(',') && str.includes('.')) {
+    if (str.lastIndexOf(',') > str.lastIndexOf('.')) {
+      str = str.replace(/\./g, '').replace(',', '.');
+    } else {
+      str = str.replace(/,/g, '');
+    }
+  } else if (str.includes(',')) {
+    str = str.replace(',', '.');
+  }
+  return parseFloat(str) || 0;
+}
+
+function fmtDate(s) {
+  if (!s) return '';
+  if (typeof s === 'number') {
+    const d = new Date(Math.round((s - 25569) * 86400 * 1000));
+    const y = d.getUTCFullYear();
+    const m = String(d.getUTCMonth() + 1).padStart(2, '0');
+    const day = String(d.getUTCDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+  }
+  const p = String(s).trim().split('/');
+  if(p.length === 3) {
+    let y = p[2]; if(y.length === 2) y = '20' + y;
+    return `${y}-${p[1].padStart(2, '0')}-${p[0].padStart(2, '0')}`;
+  }
+  return String(s).slice(0, 10);
+}
+
 function buildNatOpts(selected=''){
   let opts = '<option value="">Selecionar natureza de rendimento...</option>';
   for (const [group, items] of Object.entries(NATUREZAS_REINF)) {
@@ -654,44 +741,6 @@ function sugerirNatureza(row){
     if(/MATERIAL|MERCADORIA/.test(hist)) return getCod('17001','media','Mercadorias em geral');
   }
   return getCod(is4010?'10014':'17099','baixa','Verificar manualmente');
-}
-
-// -------------------------------------------------------------
-// BLINDAGEM DE DATAS E VALORES MONETÁRIOS DO EXCEL
-// -------------------------------------------------------------
-function parseBRL(s) {
-  if (typeof s === 'number') return s;
-  let str = String(s || '0').trim();
-  if (str.includes(',') && str.includes('.')) {
-    // Ex: 1.250,50 (Padrão BR)
-    if (str.lastIndexOf(',') > str.lastIndexOf('.')) {
-      str = str.replace(/\./g, '').replace(',', '.');
-    } else {
-      // Ex: 1,250.50 (Padrão US)
-      str = str.replace(/,/g, '');
-    }
-  } else if (str.includes(',')) {
-    str = str.replace(',', '.');
-  }
-  return parseFloat(str) || 0;
-}
-
-function fmtDate(s) {
-  if (!s) return '';
-  if (typeof s === 'number') {
-    // Converte código serial de data do Excel (ex: 46204) para YYYY-MM-DD
-    const d = new Date(Math.round((s - 25569) * 86400 * 1000));
-    const y = d.getUTCFullYear();
-    const m = String(d.getUTCMonth() + 1).padStart(2, '0');
-    const day = String(d.getUTCDate()).padStart(2, '0');
-    return `${y}-${m}-${day}`;
-  }
-  const p = String(s).trim().split('/');
-  if(p.length === 3) {
-    let y = p[2]; if(y.length === 2) y = '20' + y;
-    return `${y}-${p[1].padStart(2, '0')}-${p[0].padStart(2, '0')}`;
-  }
-  return String(s).slice(0, 10);
 }
 
 function saveDraft() {
@@ -798,8 +847,6 @@ function classificarLinha(row) {
   const hist = String(row['Hist']||row['Hist;']||'').trim().toUpperCase();
   const vlBruto = parseBRL(row['Vl Bruto']); 
   const irrf = parseBRL(row['IRRF']); 
-  
-  // Utiliza a função blindada
   const dtPag = fmtDate(row['Dt Pag']);
 
   if(vlBruto <= 0) return{cls:'erro',motivo:'Valor bruto zero'};
@@ -893,7 +940,6 @@ function processFile(file){
         const firstSheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[firstSheetName];
         
-        // Leitura com "raw: true" extrai números e datas originais do motor do Excel
         const jsonData = XLSX.utils.sheet_to_json(worksheet, {defval: "", raw: true}); 
 
         if(!jsonData || jsonData.length === 0){ zone.innerHTML = `<p style="color:var(--red-600);font-weight:700;">❌ Nenhuma linha encontrada na planilha.</p>`; return; }
@@ -936,7 +982,6 @@ function parseRows(data){
     const ipm = parseBRL(row['IPM/PREVIDENCIA']); 
     const dtPag = fmtDate(row['Dt Pag']); 
     
-    // Objeto temporário para passar à função classificar
     let tempRow = {...row, 'Vl Bruto': vlBruto, 'IRRF': irrf, 'Dt Pag': dtPag};
     let class_=classificarLinha(tempRow); 
     let sugestao=class_.cls==='incluir'?sugerirNatureza(tempRow):null;
