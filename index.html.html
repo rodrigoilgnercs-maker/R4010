@@ -242,7 +242,7 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
 <div class="header">
   <div class="header-logo"><svg viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zm-7 3l5 4-5-4-5-4 5-4zm0 10l-5-4h10l-5 4z"/></svg></div>
   <div><h1 id="header-title">EFD-Reinf — Gerador R-4020 e R-4010</h1><p>Prefeitura de Fortaleza · Administração pública municipal descentralizada</p></div>
-  <div class="header-badge">v11.9 Enterprise (Padrão Corporativo)</div>
+  <div class="header-badge">v11.9.1 Enterprise (Padrão Corporativo)</div>
   <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">🌙 Modo Escuro</button>
 </div>
 
@@ -812,6 +812,81 @@ function classificarLinha(row) {
   }
 }
 
+// -------------------------------------------------------------
+// FUNÇÕES DE AUTO-SAVE RESTAURADAS
+// -------------------------------------------------------------
+function saveDraft() {
+  if (state.allRows.length > 0) {
+    try {
+      localStorage.setItem('reinf_draft_rows', JSON.stringify(state.allRows));
+      const t = new Date();
+      const timeStr = String(t.getHours()).padStart(2, '0') + ':' + String(t.getMinutes()).padStart(2, '0');
+      const stamps = document.querySelectorAll('[id^="autosave-stamp"]');
+      stamps.forEach(s => s.innerHTML = `Sessão salva automaticamente às ${timeStr}.`);
+    } catch(e) {}
+  }
+}
+
+function restoreDraft() {
+  try {
+    const draft = localStorage.getItem('reinf_draft_rows');
+    if (draft) {
+      state.allRows = JSON.parse(draft);
+      document.getElementById('draft-alert').style.display = 'none';
+      document.getElementById('nat-global').innerHTML = buildNatOpts();
+      buildPreviewMetrics(); 
+      document.getElementById('preview-area').style.display='block';
+      goStep(3);
+    }
+  } catch(e) {}
+}
+
+function clearDraft() {
+  try { localStorage.removeItem('reinf_draft_rows'); } catch(e){}
+  document.getElementById('draft-alert').style.display = 'none';
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  try {
+    const draft = localStorage.getItem('reinf_draft_rows');
+    if (draft && draft.length > 50) {
+      document.getElementById('draft-alert').style.display = 'flex';
+    }
+
+    const savedTheme = localStorage.getItem("reinf_theme");
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (savedTheme === "dark" || (!savedTheme && prefersDark)) {
+      document.documentElement.setAttribute("data-theme", "dark");
+      document.getElementById("theme-btn").innerHTML = "☀️ Modo Claro";
+    }
+
+    const saved = sessionStorage.getItem('reinf_ug');
+    if(saved){
+      state.ug = JSON.parse(saved);
+      if(!state.ug.tipoEvento) state.ug.tipoEvento = '4020';
+      const radio = document.querySelector(`input[name="tipoEvento"][value="${state.ug.tipoEvento}"]`);
+      if(radio) radio.checked = true;
+      mudarEvento();
+      
+      if(state.ug.cnpjRaiz){
+        const r=state.ug.cnpjRaiz.replace(/[^0-9A-Za-z]/g,'').slice(0,8);
+        const el = document.getElementById('cnpjRaiz');
+        if(el) el.value=r.length>=8?r.slice(0,2)+'.'+r.slice(2,5)+'.'+r.slice(5,8):r;
+      }
+      if(state.ug.competencia && document.getElementById('competencia')) document.getElementById('competencia').value = state.ug.competencia;
+      if(state.ug.razaoSocial && document.getElementById('razaoSocial')) document.getElementById('razaoSocial').value = state.ug.razaoSocial;
+      if(state.ug.naturezaJuridica && document.getElementById('naturezaJuridica')) document.getElementById('naturezaJuridica').value = state.ug.naturezaJuridica;
+      if(state.ug.classifTrib && document.getElementById('classifTrib')) document.getElementById('classifTrib').value = state.ug.classifTrib;
+      if(state.ug.indPertIRRF && document.getElementById('indPertIRRF')) document.getElementById('indPertIRRF').value = state.ug.indPertIRRF;
+      if(state.ug.nomeContato && document.getElementById('nomeContato')) document.getElementById('nomeContato').value = state.ug.nomeContato;
+      if(state.ug.cpfContato && document.getElementById('cpfContato')) document.getElementById('cpfContato').value = state.ug.cpfContato.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/,'$1.$2.$3-$4');
+      if(state.ug.telefoneContato && document.getElementById('telefoneContato')) document.getElementById('telefoneContato').value = state.ug.telefoneContato;
+      if(state.ug.emailContato && document.getElementById('emailContato')) document.getElementById('emailContato').value = state.ug.emailContato;
+      if(state.ug.ambiente && document.getElementById('ambiente')) document.getElementById('ambiente').value = state.ug.ambiente;
+    }
+  } catch(e) {}
+});
+
 function goStep(n){
   if(n===3&&state.allRows.length===0){alert('Importe o arquivo primeiro.');return;}
   if(n===4){filterReview();}
@@ -1076,6 +1151,14 @@ function baixarRelatorioAuditoria() {
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
+}
+
+function gerarXML_Visual() {
+  const btn = document.getElementById('btn-gerar');
+  const txtOriginal = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = `<svg class="spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;margin-right:6px;"><circle cx="12" cy="12" r="10" stroke-dasharray="32" stroke-dashoffset="10"/></svg> Gerando Lote...`;
+  setTimeout(() => { try { gerarXML(); } finally { btn.innerHTML = txtOriginal; btn.disabled = false; } }, 400);
 }
 
 function gerarXML(){
