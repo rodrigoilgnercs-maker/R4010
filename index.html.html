@@ -8,10 +8,17 @@
 // Parser CSV embutido (PapaParse)
 var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=text.split(/\r?\n/);var headers=[];var data=[];var inQ=false,row=[],field='';function pushField(){row.push(field);field='';}function pushRow(){if(row.length===0||(row.length===1&&row[0]===''))return;if(headers.length===0){headers=row.slice();}else{var obj={};for(var k=0;k<headers.length;k++)obj[headers[k]]=row[k]!==undefined?row[k]:'';data.push(obj);}row=[];}for(var i=0;i<lines.length;i++){var line=lines[i];for(var j=0;j<line.length;j++){var ch=line[j];if(inQ){if(ch==='"'){if(line[j+1]==='"'){field+='"';j++;}else{inQ=false;}}else{field+=ch;}}else{if(ch==='"'){inQ=true;}else if(ch===delim){pushField();}else{field+=ch;}}}pushField();pushRow();}if(cfg.skipEmptyLines){data=data.filter(function(r){return Object.values(r).some(function(v){return v&&v.trim()!=='';});});}if(cfg.complete)cfg.complete({data:data,errors:[]});}catch(e){if(cfg.error)cfg.error(e);else throw e;}}};
 </script>
-<!-- Leitor nativo de Excel (.xlsx e .xls) via SheetJS com Redundância Anti-Firewall corporativo -->
+<!-- Leitor nativo de Excel (.xlsx e .xls) via SheetJS com Redundância Anti-Firewall -->
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-<script>if(typeof XLSX === 'undefined') document.write('<script src="https://unpkg.com/xlsx@0.18.5/dist/xlsx.full.min.js"><\/script>')</script>
-<script>if(typeof XLSX === 'undefined') document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"><\/script>')</script>
+<script>
+  setTimeout(function(){
+    if(typeof XLSX === 'undefined') {
+      var s = document.createElement('script');
+      s.src = 'https://unpkg.com/xlsx@0.18.5/dist/xlsx.full.min.js';
+      document.head.appendChild(s);
+    }
+  }, 600);
+</script>
 <style>
   pre, code { white-space: pre-wrap !important; word-wrap: break-word !important; overflow-x: hidden !important; }
   @media (max-width: 768px) {
@@ -235,7 +242,7 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
 <div class="header">
   <div class="header-logo"><svg viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zm-7 3l5 4-5-4-5-4 5-4zm0 10l-5-4h10l-5 4z"/></svg></div>
   <div><h1 id="header-title">EFD-Reinf — Gerador R-4020 e R-4010</h1><p>Prefeitura de Fortaleza · Administração pública municipal descentralizada</p></div>
-  <div class="header-badge">v11.8 Enterprise (Multi-Secretarias Fort-Saúde)</div>
+  <div class="header-badge">v11.9 Enterprise (Padrão Corporativo)</div>
   <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">🌙 Modo Escuro</button>
 </div>
 
@@ -343,7 +350,7 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
 
 <!-- STEP 2 -->
 <div class="section" id="step2">
-  <div class="section-header"><div><div class="section-title">Importar planilha (GRPFOR ou Fort-Saúde)</div></div><button class="btn" onclick="goStep(1)">← Voltar</button></div>
+  <div class="section-header"><div><div class="section-title">Importar planilha (GRPFOR ou Sistema da Secretaria)</div></div><button class="btn" onclick="goStep(1)">← Voltar</button></div>
   <div class="card" style="padding: 0; border: none; box-shadow: none;">
     <div class="upload-zone" id="dropzone" onclick="document.getElementById('file-input').click()" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropFile(event)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
@@ -461,6 +468,21 @@ function toggleTheme() {
   const btn = document.getElementById("theme-btn");
   btn.innerHTML = newTheme === "dark" ? "☀️ Modo Claro" : "🌙 Modo Escuro";
   try { localStorage.setItem("reinf_theme", newTheme); } catch(e){}
+}
+
+const ELEMENTOS_EXCLUIR = ['319011','319012','319013','319016','319092','319096','319113','339046','339049','311'];
+const CNPJS_EXCLUIR = ['66666666666','29979036'];
+const CNPJS_CONFIRMAR = ['07040108','07047251','15139629','09444530','07354939','07965184','00000000'];
+const NOMES_CONFIRMAR = ['TRIBUNAL','JUDICI','PREVFOR','IPM ','INSS','COELCE','ENEL','CAGECE','EMBASA','SABESP','COPASA','COGERH','ELETROBRAS','CHESF','CORREIOS','BANCO DO BRASIL','CAIXA ECONOM','SINDIONIBUS','SIND '];
+
+let state = { step:1, ug:{tipoEvento:'4020'}, allRows:[], tabAtiva:'todos', xmlContent:'', arquivosGerados:[] };
+
+function mudarEvento() {
+  const el = document.querySelector('input[name="tipoEvento"]:checked');
+  if(el) {
+    state.ug.tipoEvento = el.value;
+    document.getElementById('header-title').innerText = `EFD-Reinf — Gerador R-${el.value}`;
+  }
 }
 
 const NATUREZAS_REINF = {
@@ -709,7 +731,7 @@ function buildNatOpts(selected=''){
   return opts;
 }
 
-// ADAPTADO PARA MÚLTIPLOS LAYOUTS (GRPFOR E FORT SAUDE)
+// ADAPTADO PARA MÚLTIPLOS LAYOUTS (GRPFOR E SECRETARIAS)
 function sugerirNatureza(row){
   const hist=String(row['Hist']||'').toUpperCase(); const nome=String(row['Nome do Credor']||'').toUpperCase();
   const cpfCnpj = state.ug.tipoEvento === '4010' ? cleanCPF(String(row['CPF/CNPJ']||'')) : cleanCNPJ(String(row['CPF/CNPJ']||''));
