@@ -242,7 +242,7 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
 <div class="header">
   <div class="header-logo"><svg viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zm-7 3l5 4-5-4-5-4 5-4zm0 10l-5-4h10l-5 4z"/></svg></div>
   <div><h1 id="header-title">EFD-Reinf — Gerador R-4020 e R-4010</h1><p>Prefeitura de Fortaleza · Administração pública municipal descentralizada</p></div>
-  <div class="header-badge">v11.9.1 Enterprise (Padrão Corporativo)</div>
+  <div class="header-badge">v11.9.2 Enterprise (Release Candidate)</div>
   <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">🌙 Modo Escuro</button>
 </div>
 
@@ -287,7 +287,7 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
     <div class="card">
       <div class="card-title">Identificação da UG</div>
       <div class="form-row c2">
-        <div><label>CNPJ da UG (completo ou raiz)<span class="req">*</span></label><input type="text" id="cnpjRaiz" placeholder="00.000.000/0001-00" maxlength="18" oninput="fmtCnpjRaiz(this)"></div>
+        <div><label>CNPJ da UG (14 dígitos)<span class="req">*</span></label><input type="text" id="cnpjRaiz" placeholder="00.000.000/0001-00" maxlength="18" oninput="fmtCnpjRaiz(this)"></div>
         <div><label>Competência (MM/AAAA)<span class="req">*</span></label><input type="text" id="competencia" placeholder="05/2026" maxlength="7" oninput="fmtComp(this)"></div>
       </div>
       <div class="form-row"><div><label>Razão Social da UG<span class="req">*</span></label><input type="text" id="razaoSocial" placeholder="SECRETARIA MUNICIPAL DE URBANISMO E MEIO AMBIENTE"></div></div>
@@ -636,13 +636,21 @@ const NATUREZAS_REINF = {
 // -------------------------------------------------------------
 // FUNÇÕES UTILITÁRIAS
 // -------------------------------------------------------------
+function getVal(row, possibleKeys) {
+  for (let k of possibleKeys) {
+    let match = Object.keys(row).find(key => key.trim().toLowerCase() === k.toLowerCase());
+    if (match) return row[match];
+  }
+  return '';
+}
+
 function fmtCnpjRaiz(el){ let v=el.value.replace(/[^0-9A-Za-z]/g,'').slice(0,14).toUpperCase(); if(v.length<=8){ if(v.length>5) v=v.slice(0,2)+'.'+v.slice(2,5)+'.'+v.slice(5); else if(v.length>2) v=v.slice(0,2)+'.'+v.slice(2); } else { v=v.slice(0,2)+'.'+v.slice(2,5)+'.'+v.slice(5,8)+'/'+v.slice(8,12)+(v.length>12?'-'+v.slice(12):''); } el.value=v; }
 function fmtComp(el){let v=el.value.replace(/\D/g,'').slice(0,6);if(v.length>2)v=v.slice(0,2)+'/'+v.slice(2);el.value=v;}
 function fmtCpf(el){let v=el.value.replace(/\D/g,'').slice(0,11);if(v.length>9)v=v.slice(0,3)+'.'+v.slice(3,6)+'.'+v.slice(6,9)+'-'+v.slice(9);else if(v.length>6)v=v.slice(0,3)+'.'+v.slice(3,6)+'.'+v.slice(6);else if(v.length>3)v=v.slice(0,3)+'.'+v.slice(3);el.value=v;}
 function fmtBRL(n){return Number(n||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});}
 function cleanCNPJ(s) { return String(s || '').replace(/[^0-9A-Za-z]/g, '').toUpperCase(); }
 function cleanCPF(s) { return String(s || '').replace(/\D/g, ''); }
-function fmtDec(n){if(isNaN(n) || n === null || n === '') return "0,00";return Number(n).toFixed(2).replace('.', ',');}
+function fmtDec(n){if(isNaN(n) || n === null || n === '') return "0.00";return Number(n).toFixed(2).replace('.', ',');}
 function getPerApur(){const c=document.getElementById('competencia').value;if(!c||c.length<7)return'';const[mm,yyyy]=c.split('/');return`${yyyy}-${mm}`;}
 
 function fmtDoc(s) { 
@@ -686,7 +694,6 @@ function validCPF(cpf) {
   return true;
 }
 
-// BLINDAGEM DE DATAS E VALORES MONETÁRIOS DO EXCEL
 function parseBRL(s) {
   if (typeof s === 'number') return s;
   let str = String(s || '0').trim();
@@ -731,12 +738,12 @@ function buildNatOpts(selected=''){
   return opts;
 }
 
-// ADAPTADO PARA MÚLTIPLOS LAYOUTS (GRPFOR E SECRETARIAS)
 function sugerirNatureza(row){
-  const hist=String(row['Hist']||'').toUpperCase(); const nome=String(row['Nome do Credor']||'').toUpperCase();
-  const cpfCnpj = state.ug.tipoEvento === '4010' ? cleanCPF(String(row['CPF/CNPJ']||'')) : cleanCNPJ(String(row['CPF/CNPJ']||''));
+  const hist=String(getVal(row, ['Hist','Hist;'])).toUpperCase(); 
+  const cpfCnpj = state.ug.tipoEvento === '4010' ? cleanCPF(String(getVal(row, ['CPF/CNPJ']))) : cleanCNPJ(String(getVal(row, ['CPF/CNPJ'])));
   const raiz8 = cpfCnpj.slice(0,8);
   const is4010 = state.ug.tipoEvento === '4010';
+  const elemento = String(getVal(row, ['Elemento', 'Despesa'])).trim();
   
   function getCod(cod, conf, fonte) {
     for (const items of Object.values(NATUREZAS_REINF)) {
@@ -748,13 +755,13 @@ function sugerirNatureza(row){
   
   if (is4010) {
     if(/SORTEIO|NOTA FORTALEZA|PREMIO/.test(hist)) return getCod('14001','alta','Sorteio / Premiação');
-    if(/PROCESSO JUDICIAL|RPV|HONOR/.test(hist) || String(row['Elemento']||row['Despesa']||'').trim() === '319091' || String(row['Elemento']||row['Despesa']||'').trim() === '339091') return getCod('18001','alta','Decisão Judicial PF');
-    if(/MEDICO|RPA|AUTONOMO|PRESTADOR/.test(hist) || String(row['Elemento']||row['Despesa']||'').trim() === '339036') return getCod('10014','media','Trabalhador Autônomo');
+    if(/PROCESSO JUDICIAL|RPV|HONOR/.test(hist) || elemento === '319091' || elemento === '339091') return getCod('18001','alta','Decisão Judicial PF');
+    if(/MEDICO|RPA|AUTONOMO|PRESTADOR/.test(hist) || elemento === '339036') return getCod('10014','media','Trabalhador Autônomo');
     if(/ALUGUEL|LOCACAO/.test(hist)) return getCod('13001','alta','Locação de Imóvel PF');
-    if(/BOLSA DE ESTUDO|RESIDENTE/.test(hist) || String(row['Elemento']||row['Despesa']||'').trim() === '339018') return getCod('15001','alta','Bolsas de Estudo');
+    if(/BOLSA DE ESTUDO|RESIDENTE/.test(hist) || elemento === '339018') return getCod('15001','alta','Bolsas de Estudo');
   } else {
     if(/HONORÁRIO|HONORARIO|HONOR/.test(hist)) return getCod('17039', 'alta', 'Honorários Advocatícios');
-    if(/PROCESSO JUDICIAL|RPV|REQUISIÇÃO DE PEQUENO VALOR|DECISÃO JUDICIAL/.test(hist) || String(row['Elemento']||row['Despesa']||'').trim() === '339091' || String(row['Elemento']||row['Despesa']||'').trim() === '319091') return getCod('18004', 'alta', 'Decisão Judicial PJ');
+    if(/PROCESSO JUDICIAL|RPV|REQUISIÇÃO DE PEQUENO VALOR|DECISÃO JUDICIAL/.test(hist) || elemento === '339091' || elemento === '319091') return getCod('18004', 'alta', 'Decisão Judicial PJ');
     
     if(['07047251','00360305'].includes(raiz8) || /ENERGIA ELETRICA/.test(hist)) return getCod('17004','alta','Energia elétrica');
     if(raiz8==='07040108' || /AGUA E ESGO/.test(hist)) return getCod('17005','alta','Abastecimento de água');
@@ -769,14 +776,14 @@ function sugerirNatureza(row){
 
 function classificarLinha(row) {
   const is4010 = state.ug.tipoEvento === '4010';
-  const cpfCnpj = is4010 ? cleanCPF(String(row['CPF/CNPJ']||'')) : cleanCNPJ(String(row['CPF/CNPJ']||'')); 
+  const cpfCnpj = is4010 ? cleanCPF(String(getVal(row, ['CPF/CNPJ']))) : cleanCNPJ(String(getVal(row, ['CPF/CNPJ']))); 
   const raiz8 = cpfCnpj.slice(0,8);
-  const nome = String(row['Nome do Credor']||'').trim().toUpperCase(); 
-  const elemento = String(row['Elemento']||row['Despesa']||'').trim(); 
-  const hist = String(row['Hist']||row['Hist;']||'').trim().toUpperCase();
-  const vlBruto = parseBRL(row['Vl Bruto']); 
-  const irrf = parseBRL(row['IRRF']); 
-  const dtPag = fmtDate(row['Dt Pag']);
+  const nome = String(getVal(row, ['Nome do Credor'])).trim().toUpperCase(); 
+  const elemento = String(getVal(row, ['Elemento', 'Despesa'])).trim(); 
+  const hist = String(getVal(row, ['Hist', 'Hist;'])).trim().toUpperCase();
+  const vlBruto = parseBRL(getVal(row, ['Vl Bruto'])); 
+  const irrf = parseBRL(getVal(row, ['IRRF'])); 
+  const dtPag = fmtDate(getVal(row, ['Dt Pag']));
 
   if(vlBruto <= 0) return{cls:'erro',motivo:'Valor bruto zero'};
   if(!dtPag) return{cls:'confirmar',motivo:'Data de pagamento ausente'};
@@ -812,9 +819,6 @@ function classificarLinha(row) {
   }
 }
 
-// -------------------------------------------------------------
-// FUNÇÕES DE AUTO-SAVE RESTAURADAS
-// -------------------------------------------------------------
 function saveDraft() {
   if (state.allRows.length > 0) {
     try {
@@ -868,10 +872,8 @@ window.addEventListener('DOMContentLoaded', () => {
       if(radio) radio.checked = true;
       mudarEvento();
       
-      if(state.ug.cnpjRaiz){
-        const r=state.ug.cnpjRaiz.replace(/[^0-9A-Za-z]/g,'').slice(0,8);
-        const el = document.getElementById('cnpjRaiz');
-        if(el) el.value=r.length>=8?r.slice(0,2)+'.'+r.slice(2,5)+'.'+r.slice(5,8):r;
+      if(state.ug.cnpjCompleto){
+        document.getElementById('cnpjRaiz').value = state.ug.cnpjCompleto.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5");
       }
       if(state.ug.competencia && document.getElementById('competencia')) document.getElementById('competencia').value = state.ug.competencia;
       if(state.ug.razaoSocial && document.getElementById('razaoSocial')) document.getElementById('razaoSocial').value = state.ug.razaoSocial;
@@ -902,11 +904,20 @@ function goStep(n){
 function validateStep1(){
   const req=['cnpjRaiz','competencia','razaoSocial','naturezaJuridica','nomeContato','cpfContato']; let ok=true;
   req.forEach(id=>{const el=document.getElementById(id);if(!el.value.trim()){el.classList.add('error');ok=false;}else el.classList.remove('error');});
-  if(!ok){alert('Preencha os campos obrigatórios.');return;}
+  
+  const cnpjInp = cleanCNPJ(document.getElementById('cnpjRaiz').value);
+  if(cnpjInp.length !== 14 || !validCNPJ(cnpjInp)) {
+      alert('Por favor, informe o CNPJ completo de 14 dígitos (válido) da Unidade Gestora.');
+      document.getElementById('cnpjRaiz').classList.add('error');
+      ok=false;
+  }
+  
+  if(!ok) return;
+
   state.ug={
     tipoEvento:document.querySelector('input[name="tipoEvento"]:checked').value,
-    cnpjRaiz:cleanCNPJ(document.getElementById('cnpjRaiz').value).slice(0,8),
-    cnpjCompleto:cleanCNPJ(document.getElementById('cnpjRaiz').value),
+    cnpjRaiz:cnpjInp.slice(0,8),
+    cnpjCompleto:cnpjInp,
     competencia:document.getElementById('competencia').value,
     razaoSocial:document.getElementById('razaoSocial').value,
     naturezaJuridica:document.getElementById('naturezaJuridica').value,
@@ -980,14 +991,16 @@ function parseRows(data){
   const [cMes, cAno] = compStr.split('/');
 
   state.allRows=data.map((row,i)=>{
-    const doc = state.ug.tipoEvento==='4010' ? cleanCPF(String(row['CPF/CNPJ']||'')) : cleanCNPJ(String(row['CPF/CNPJ']||'')); 
-    const vlBruto = parseBRL(row['Vl Bruto']); 
-    const irrf = parseBRL(row['IRRF']);
-    const ipm = parseBRL(String(row['IPM/PREVIDENCIA']||row['INSS']||'0')); 
-    const pensao = parseBRL(String(row['Pensão Aliment']||'0'));
-    const dtPag = fmtDate(row['Dt Pag']); 
+    const doc = state.ug.tipoEvento==='4010' ? cleanCPF(String(getVal(row, ['CPF/CNPJ']))) : cleanCNPJ(String(getVal(row, ['CPF/CNPJ']))); 
+    const vlBruto = parseBRL(getVal(row, ['Vl Bruto'])); 
+    const irrf = parseBRL(getVal(row, ['IRRF']));
+    const ipm = parseBRL(String(getVal(row, ['IPM/PREVIDENCIA', 'INSS']))); 
+    const pensao = parseBRL(String(getVal(row, ['Pensão Aliment', 'Pensao'])));
+    const dtPag = fmtDate(getVal(row, ['Dt Pag'])); 
+    const hist = String(getVal(row, ['Hist', 'Hist;'])).trim();
+    const elemento = String(getVal(row, ['Elemento', 'Despesa'])).trim();
     
-    let tempRow = {...row, 'Vl Bruto': vlBruto, 'IRRF': irrf, 'Dt Pag': dtPag, 'Elemento': String(row['Elemento']||row['Despesa']||'')};
+    let tempRow = {...row, 'Vl Bruto': vlBruto, 'IRRF': irrf, 'Dt Pag': dtPag, 'Elemento': elemento, 'Hist': hist};
     let class_=classificarLinha(tempRow); 
     let sugestao=class_.cls==='incluir'?sugerirNatureza(tempRow):null;
 
@@ -1007,8 +1020,8 @@ function parseRows(data){
          sugestao = {cod: natCsvVal, confianca: 'alta', fonte: 'Lido do Arquivo'};
     }
 
-    return{idx:i,doc:doc,nome:String(row['Nome do Credor']||'').trim(),vlBruto,irrf,ipm,pensao,dtPag:dtPag,
-      hist:String(row['Hist']||'').trim(),elemento:String(row['Elemento']||row['Despesa']||'').trim(),cls:class_.cls,motivo:class_.motivo,avisos:class_.avisos||[],
+    return{idx:i,doc:doc,nome:String(getVal(row, ['Nome do Credor'])).trim(),vlBruto,irrf,ipm,pensao,dtPag:dtPag,
+      hist:hist,elemento:elemento,cls:class_.cls,motivo:class_.motivo,avisos:class_.avisos||[],
       natureza:sugestao?sugestao.cod:'',sugestao,selected:class_.cls==='incluir',raw:row};
   });
 
@@ -1163,15 +1176,14 @@ function gerarXML_Visual() {
 
 function gerarXML(){
   const ug=state.ug;
-  if(!ug||!ug.cnpjRaiz){ alert('Configure os dados da Unidade Gestora no Passo 1.'); goStep(1); return; }
+  if(!ug||!ug.cnpjCompleto){ alert('Configure os dados da Unidade Gestora no Passo 1.'); goStep(1); return; }
   const is4010 = ug.tipoEvento === '4010';
 
   const valid=state.allRows.filter(r=>r.selected&&r.cls==='incluir'&&r.natureza);
   if(!valid.length)return;
 
   const nrInsc=String(ug.cnpjRaiz).padEnd(8,'0');
-  const cnpjCompleto14 = String(ug.cnpjCompleto||'');
-  const nrInscEstab = cnpjCompleto14.length===14 ? cnpjCompleto14 : nrInsc+'000100';
+  const nrInscEstab = String(ug.cnpjCompleto).padEnd(14,'0');
   const perApur=getPerApur();
   
   let vlIrTotal=0, vlBrutoTotal=0, vlIpmTotal=0, vlPensaoTotal=0;
@@ -1196,7 +1208,7 @@ function gerarXML(){
       
       const pgtosByDate = new Map();
       for (const p of pagamentos) {
-        const dataFmt = fmtDate(p.dtPag);
+        const dataFmt = p.dtPag;
         if (!pgtosByDate.has(dataFmt)) pgtosByDate.set(dataFmt, { vlrBruto: 0, irrf: 0, ipm: 0, pensao: 0 });
         const agrupado = pgtosByDate.get(dataFmt);
         agrupado.vlrBruto += p.vlBruto;
@@ -1214,7 +1226,8 @@ function gerarXML(){
         const ret = valores.irrf > 0 ? `<retencoes><vlrBaseIR>${fmtDec(baseIr)}</vlrBaseIR><vlrIR>${fmtDec(valores.irrf)}</vlrIR></retencoes>` : '';
         const tagBruto = is4010 ? 'vlrRendBruto' : 'vlrBruto';
         
-        ideBenefInner += `<infoPgto><dtFG>${dataFG}</dtFG><${tagBruto}>${fmtDec(valores.vlrBruto)}</${tagBruto}>${ret}${deducoes}</infoPgto>`;
+        // CORREÇÃO CRÍTICA XSD: ${deducoes} sempre antes de ${ret}
+        ideBenefInner += `<infoPgto><dtFG>${dataFG}</dtFG><${tagBruto}>${fmtDec(valores.vlrBruto)}</${tagBruto}>${deducoes}${ret}</infoPgto>`;
       }
       ideBenefInner += `</idePgto>`;
     }
