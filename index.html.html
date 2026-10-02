@@ -242,7 +242,7 @@ var Papa={parse:function(text,cfg){try{var delim=cfg.delimiter||';';var lines=te
 <div class="header">
   <div class="header-logo"><svg viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zm-7 3l5 4-5-4-5-4 5-4zm0 10l-5-4h10l-5 4z"/></svg></div>
   <div><h1 id="header-title">EFD-Reinf — Gerador R-4020 e R-4010</h1><p>Prefeitura de Fortaleza · Administração pública municipal descentralizada</p></div>
-  <div class="header-badge">v11.9.3 Enterprise (Tratamento RPPS/IPM)</div>
+  <div class="header-badge">v11.9.4 Enterprise (Fix Deduções RFB)</div>
   <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">🌙 Modo Escuro</button>
 </div>
 
@@ -650,7 +650,13 @@ function fmtCpf(el){let v=el.value.replace(/\D/g,'').slice(0,11);if(v.length>9)v
 function fmtBRL(n){return Number(n||0).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});}
 function cleanCNPJ(s) { return String(s || '').replace(/[^0-9A-Za-z]/g, '').toUpperCase(); }
 function cleanCPF(s) { return String(s || '').replace(/\D/g, ''); }
-function fmtDec(n){if(isNaN(n) || n === null || n === '') return "0.00";return Number(n).toFixed(2).replace('.', ',');}
+
+// Formatação para exibição com vírgula (R$ 100,50)
+function fmtDec(n){if(isNaN(n) || n === null || n === '') return "0,00";return Number(n).toFixed(2).replace('.', ',');}
+
+// NOVO: Formatação estrita com ponto para tags XML da Receita (Ex: 100.50)
+function fmtEn(n){if(isNaN(n) || n === null || n === '') return "0.00";return Number(n).toFixed(2);}
+
 function getPerApur(){const c=document.getElementById('competencia').value;if(!c||c.length<7)return'';const[mm,yyyy]=c.split('/');return`${yyyy}-${mm}`;}
 
 function fmtDoc(s) { 
@@ -758,7 +764,7 @@ function sugerirNatureza(row){
   if (is4010) {
     if(/SORTEIO|NOTA FORTALEZA|PREMIO/.test(hist)) return getCod('14001','alta','Sorteio / Premiação');
     
-    // NOVA REGRA: Se for sentença judicial e houver IPM retido, sugere código 10001 (Aceita dedução)
+    // REGRA: Se for sentença judicial e houver IPM retido, sugere código 10001 (Aceita dedução)
     if((/PROCESSO JUDICIAL|RPV|HONOR/.test(hist) || elemento === '319091' || elemento === '339091') && ipm > 0) {
         return getCod('10001', 'alta', 'Decisão Judicial c/ RPPS (Tabela 01)');
     }
@@ -1229,14 +1235,16 @@ function gerarXML(){
       
       for (const [dataFG, valores] of pgtosByDate) {
         let deducoes = '';
-        if (is4010 && valores.ipm > 0) deducoes += `<deducoes><indTpDeducao>1</indTpDeducao><vlrDeducao>${fmtDec(valores.ipm)}</vlrDeducao></deducoes>`;
-        if (is4010 && valores.pensao > 0) deducoes += `<deducoes><indTpDeducao>3</indTpDeducao><vlrDeducao>${fmtDec(valores.pensao)}</vlrDeducao></deducoes>`;
+        // CORREÇÃO: Formatação americana obrigatória nas tags da Receita (fmtEn em vez de fmtDec)
+        if (is4010 && valores.ipm > 0) deducoes += `<deducoes><indTpDeducao>1</indTpDeducao><vlrDeducao>${fmtEn(valores.ipm)}</vlrDeducao></deducoes>`;
+        if (is4010 && valores.pensao > 0) deducoes += `<deducoes><indTpDeducao>3</indTpDeducao><vlrDeducao>${fmtEn(valores.pensao)}</vlrDeducao></deducoes>`;
         
+        // A base do IR é reduzida automaticamente se houver deduções preenchidas
         const baseIr = (is4010 && (valores.ipm > 0 || valores.pensao > 0)) ? (valores.vlrBruto - valores.ipm - valores.pensao) : valores.vlrBruto;
-        const ret = valores.irrf > 0 ? `<retencoes><vlrBaseIR>${fmtDec(baseIr)}</vlrBaseIR><vlrIR>${fmtDec(valores.irrf)}</vlrIR></retencoes>` : '';
+        const ret = valores.irrf > 0 ? `<retencoes><vlrBaseIR>${fmtEn(baseIr)}</vlrBaseIR><vlrIR>${fmtEn(valores.irrf)}</vlrIR></retencoes>` : '';
         const tagBruto = is4010 ? 'vlrRendBruto' : 'vlrBruto';
         
-        ideBenefInner += `<infoPgto><dtFG>${dataFG}</dtFG><${tagBruto}>${fmtDec(valores.vlrBruto)}</${tagBruto}>${deducoes}${ret}</infoPgto>`;
+        ideBenefInner += `<infoPgto><dtFG>${dataFG}</dtFG><${tagBruto}>${fmtEn(valores.vlrBruto)}</${tagBruto}>${deducoes}${ret}</infoPgto>`;
       }
       ideBenefInner += `</idePgto>`;
     }
@@ -1249,7 +1257,7 @@ function gerarXML(){
 
     const evtName = is4010 ? 'evt4010PagtoBeneficiarioPF' : 'evt4020PagtoBeneficiarioPJ';
     const evtRoot = is4010 ? 'evtRetPF' : 'evtRetPJ';
-    const tagBenef = is4010 ? 'cpfBenef' : 'cnpjBenef';
+    const tagBenef = is4010 ? 'cpfBenef' : 'cpfCnpjBenef';
 
     const xmlContent = `<?xml version="1.0" encoding="UTF-8"?>
 <Reinf xmlns="http://www.reinf.esocial.gov.br/schemas/${evtName}/v2_01_02">
